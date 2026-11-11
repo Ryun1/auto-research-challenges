@@ -1,15 +1,26 @@
 {
-  "generated_at": "2026-11-11T22:26:16Z",
+  "generated_at": "2026-11-11T22:28:11Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-11T22:27:10Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-11T22:28:03Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111880982",
+      "workflow": "Comment"
+    },
+    {
       "branch": "results-union-merge",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T22:26:08Z",
       "event": "pull_request_target",
-      "status": "queued",
+      "status": "completed",
       "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
-      "updated_at": "2026-11-11T22:26:08Z",
+      "updated_at": "2026-11-11T22:27:07Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738452",
       "workflow": "Submission"
     },
@@ -18,9 +29,9 @@
       "conclusion": null,
       "created_at": "2026-11-11T22:26:08Z",
       "event": "pull_request",
-      "status": "queued",
+      "status": "in_progress",
       "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
-      "updated_at": "2026-11-11T22:26:08Z",
+      "updated_at": "2026-11-11T22:26:12Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738350",
       "workflow": "CI"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-11T16:20:58Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057246846",
       "workflow": "Comment"
-    },
-    {
-      "branch": "launch/ledger-cbor",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:19:09Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-get retry",
-      "updated_at": "2026-11-11T16:24:23Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057124997",
-      "workflow": "CI"
     }
   ],
   "pulls": [
