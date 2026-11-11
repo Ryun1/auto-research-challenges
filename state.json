@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-11T17:27:36Z",
+  "generated_at": "2026-11-11T17:30:31Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T17:29:38Z",
+      "event": "workflow_run",
+      "status": "pending",
+      "title": "Comment",
+      "updated_at": "2026-11-11T17:29:39Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068687770",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "site/ledger-only",
+      "conclusion": null,
+      "created_at": "2026-11-11T17:28:35Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Close pedersen and golomb-14; site lists open challenges only",
+      "updated_at": "2026-11-11T17:28:42Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068521761",
+      "workflow": "CI"
+    },
+    {
+      "branch": "site/ledger-only",
+      "conclusion": "success",
+      "created_at": "2026-11-11T17:28:35Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Close pedersen and golomb-14; site lists open challenges only",
+      "updated_at": "2026-11-11T17:29:34Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068521365",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": null,
@@ -9,7 +42,7 @@
       "event": "workflow_dispatch",
       "status": "in_progress",
       "title": "Promote",
-      "updated_at": "2026-11-11T17:27:02Z",
+      "updated_at": "2026-11-11T17:27:44Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068264792",
       "workflow": "Promote"
     },
@@ -408,40 +441,20 @@
       "updated_at": "2026-11-10T14:51:34Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42838211422",
       "workflow": "Comment"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T14:49:34Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T14:57:49Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42838030866",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T14:49:31Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-10T16:06:03Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42838022484",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T14:49:31Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T14:50:29Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42838022021",
-      "workflow": "Submission"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-11T17:28:30Z",
+      "draft": false,
+      "number": 63,
+      "title": "Close pedersen and golomb-14; site lists open challenges only",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/63",
+      "challenges": [
+        "golomb-14",
+        "pedersen"
+      ]
+    }
+  ]
 }
