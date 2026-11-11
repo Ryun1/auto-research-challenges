@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-11T18:53:54Z",
+  "generated_at": "2026-11-11T22:25:22Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:24:21Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-11T22:24:25Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111485509",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "fix/ledger-cbor-offline-build",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:23:19Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
+      "updated_at": "2026-11-11T22:23:23Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111338657",
+      "workflow": "CI"
+    },
+    {
+      "branch": "fix/ledger-cbor-offline-build",
+      "conclusion": "success",
+      "created_at": "2026-11-11T22:23:17Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
+      "updated_at": "2026-11-11T22:24:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111335185",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "fix/ledger-cbor-offline-build",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:23:16Z",
+      "event": "workflow_dispatch",
+      "status": "in_progress",
+      "title": "Preflight",
+      "updated_at": "2026-11-11T22:23:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111331287",
+      "workflow": "Preflight"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -30,7 +74,7 @@
       "created_at": "2026-11-11T18:38:16Z",
       "event": "pull_request_target",
       "status": "completed",
-      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
       "updated_at": "2026-11-11T18:39:16Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079665963",
       "workflow": "Submission"
@@ -41,7 +85,7 @@
       "created_at": "2026-11-11T18:38:16Z",
       "event": "pull_request",
       "status": "completed",
-      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
       "updated_at": "2026-11-11T18:45:12Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079665951",
       "workflow": "CI"
@@ -397,59 +441,15 @@
       "updated_at": "2026-11-11T18:24:12Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057114325",
       "workflow": "Preflight"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:07:07Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T16:08:03Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43055096456",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:06:03Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:07:04Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054915743",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "failure",
-      "created_at": "2026-11-11T16:06:03Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:11:03Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054915615",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:03:22Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T16:04:17Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054465607",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
     {
       "author": "Ryun1",
       "created_at": "2026-11-11T18:38:13Z",
-      "draft": true,
+      "draft": false,
       "number": 65,
-      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/65",
       "challenges": [
         "ledger-cbor"
