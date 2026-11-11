@@ -1,15 +1,37 @@
 {
-  "generated_at": "2026-11-11T22:25:22Z",
+  "generated_at": "2026-11-11T22:26:16Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "main",
+      "branch": "results-union-merge",
       "conclusion": null,
+      "created_at": "2026-11-11T22:26:08Z",
+      "event": "pull_request_target",
+      "status": "queued",
+      "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
+      "updated_at": "2026-11-11T22:26:08Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738452",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "results-union-merge",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:26:08Z",
+      "event": "pull_request",
+      "status": "queued",
+      "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
+      "updated_at": "2026-11-11T22:26:08Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738350",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-11T22:24:21Z",
       "event": "workflow_run",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Comment",
-      "updated_at": "2026-11-11T22:24:25Z",
+      "updated_at": "2026-11-11T22:25:21Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111485509",
       "workflow": "Comment"
     },
@@ -419,31 +441,18 @@
       "updated_at": "2026-11-11T16:24:23Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057124997",
       "workflow": "CI"
-    },
-    {
-      "branch": "launch/ledger-cbor",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:19:06Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-get retry",
-      "updated_at": "2026-11-11T16:19:49Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057115267",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "launch/ledger-cbor",
-      "conclusion": "failure",
-      "created_at": "2026-11-11T16:19:06Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-11T18:24:12Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057114325",
-      "workflow": "Preflight"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-11T22:26:04Z",
+      "draft": false,
+      "number": 66,
+      "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/66",
+      "challenges": []
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-11T18:38:13Z",
