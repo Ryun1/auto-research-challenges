@@ -1,26 +1,26 @@
 {
-  "generated_at": "2026-11-11T17:30:31Z",
+  "generated_at": "2026-11-11T17:39:28Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T17:29:38Z",
       "event": "workflow_run",
-      "status": "pending",
+      "status": "completed",
       "title": "Comment",
-      "updated_at": "2026-11-11T17:29:39Z",
+      "updated_at": "2026-11-11T17:39:21Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068687770",
       "workflow": "Comment"
     },
     {
       "branch": "site/ledger-only",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T17:28:35Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Close pedersen and golomb-14; site lists open challenges only",
-      "updated_at": "2026-11-11T17:28:42Z",
+      "updated_at": "2026-11-11T17:34:46Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068521761",
       "workflow": "CI"
     },
@@ -37,23 +37,23 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T17:26:57Z",
       "event": "workflow_dispatch",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Promote",
-      "updated_at": "2026-11-11T17:27:44Z",
+      "updated_at": "2026-11-11T17:38:29Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068264792",
       "workflow": "Promote"
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T17:26:49Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Promote: baseline skips upstream tests; results push fails loudly (#62)",
-      "updated_at": "2026-11-11T17:26:53Z",
+      "updated_at": "2026-11-11T17:33:08Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43068244758",
       "workflow": "CI"
     },

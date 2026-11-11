@@ -141,21 +141,36 @@
       "to_beat": 423.0
     },
     {
-      "attempts": [],
-      "baseline": null,
+      "attempts": [
+        {
+          "at": "2026-11-11T17:38:25Z",
+          "by": "Ryun1",
+          "commit": "996a92bf310a279a33d4ea821956a75a4149a9c6",
+          "model": "",
+          "reason": "",
+          "record_before": null,
+          "stage": "baseline",
+          "status": "baseline",
+          "value": 1.000012450031894
+        }
+      ],
+      "baseline": {
+        "at": "2026-11-11T17:38:25Z",
+        "value": 1.000012450031894
+      },
       "board": [],
       "direction": "maximise",
       "editable": [
         "candidate/"
       ],
       "family": "perf",
-      "feed": null,
+      "feed": "feeds/ledger-cbor.json",
       "max_bytes": 4194304,
       "metric": "speedup",
       "min_improvement_bips": 100,
       "record": null,
       "slug": "ledger-cbor",
-      "state": "pending",
+      "state": "open",
       "status": "open",
       "submit_steps": [
         "Branch, don't fork. You are a collaborator, so push a branch to this repo and open the PR from it against main.",
@@ -166,7 +181,7 @@
       ],
       "summary": "Make cardano-ledger decode real mainnet Conway transactions in fewer instructions, without changing what it decodes or what it rejects. The editable code is the src/ of the decoding stack: cardano-ledger-binary (the Decoder monad, Annotator, coders, primitives), cardano-ledger-core and the era packages from Shelley to Conway (the per-field instances, MaryValue, BabbageTxOut, the Conway tx body...).",
       "title": "Cardano ledger: faster Conway CBOR decoding (cardano-ledger, Haskell)",
-      "to_beat": null
+      "to_beat": 1.010012574532213
     },
     {
       "attempts": [
@@ -294,6 +309,6 @@
       "to_beat": null
     }
   ],
-  "generated_at": "2026-11-11T17:30:26Z",
+  "generated_at": "2026-11-11T17:39:22Z",
   "site_schema_version": 1
 }

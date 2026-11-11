@@ -1,0 +1,69 @@
+{
+  "attempts_by_status": {},
+  "attempts_count": 0,
+  "bar": {
+    "baseline": 1.000012450031894,
+    "direction": "maximise",
+    "metric": "speedup",
+    "min_improvement_bips": 100,
+    "pairing": "two independent runs on main must agree within half the bar",
+    "statistic": "the challenge's score command"
+  },
+  "benchmark": "ledger-cbor",
+  "board": [],
+  "challenge": "ledger-cbor",
+  "feed_schema_version": 1,
+  "fetched_at": "2026-11-11T17:39:22Z",
+  "generated_at": "2026-11-11T17:39:22Z",
+  "policy": {
+    "allowed_paths": [
+      "challenges/ledger-cbor/candidate/**"
+    ],
+    "forbidden_paths": [
+      "challenges/ledger-cbor/.gitignore",
+      "challenges/ledger-cbor/LICENSE",
+      "challenges/ledger-cbor/NOTICE",
+      "challenges/ledger-cbor/README.md",
+      "challenges/ledger-cbor/SUBMITTING.md",
+      "challenges/ledger-cbor/THREAT_MODEL.md",
+      "challenges/ledger-cbor/baseline/**",
+      "challenges/ledger-cbor/bench/**",
+      "challenges/ledger-cbor/build.sh",
+      "challenges/ledger-cbor/challenge.toml",
+      "challenges/ledger-cbor/corpus/**",
+      "challenges/ledger-cbor/harness/**",
+      "challenges/ledger-cbor/packages.txt",
+      "challenges/ledger-cbor/preflight/**",
+      "challenges/ledger-cbor/setup.sh",
+      "challenges/ledger-cbor/verifier/**",
+      ".github/**"
+    ],
+    "measurement_policy": {
+      "host_policy": {
+        "arch": "x86_64",
+        "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+        "logical_cpu_count": 2,
+        "memory_bytes": 8317935616,
+        "os": "linux"
+      },
+      "max_submission_bytes": 4194304,
+      "perf": {
+        "blocks": 4,
+        "max_dispersion": 0.08
+      },
+      "runner": "ubuntu-24.04",
+      "rust_allow": null,
+      "salted_inputs": true
+    },
+    "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
+  },
+  "record": {
+    "at": "2026-11-11T17:38:25Z",
+    "by": "Ryun1",
+    "unit": "speedup",
+    "value": 1.000012450031894
+  },
+  "source": "builder",
+  "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
+  "url": "https://ryun1.github.io/auto-research-challenges/feeds/ledger-cbor.json"
+}
