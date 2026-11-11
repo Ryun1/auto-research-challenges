@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T22:48:58Z",
+  "generated_at": "2026-11-11T22:51:14Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
@@ -114,12 +114,12 @@
     },
     {
       "branch": "fix/ledger-cbor-offline-build",
-      "conclusion": null,
+      "conclusion": "failure",
       "created_at": "2026-11-11T22:23:16Z",
       "event": "workflow_dispatch",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Preflight",
-      "updated_at": "2026-11-11T22:23:20Z",
+      "updated_at": "2026-11-11T22:50:22Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111331287",
       "workflow": "Preflight"
     },
