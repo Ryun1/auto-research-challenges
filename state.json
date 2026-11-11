@@ -1,15 +1,26 @@
 {
-  "generated_at": "2026-11-11T17:05:31Z",
+  "generated_at": "2026-11-11T17:18:49Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "cancelled",
+      "created_at": "2026-11-11T17:05:32Z",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "title": "Promote",
+      "updated_at": "2026-11-11T17:17:46Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43064726976",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-11T17:01:06Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Status site: cb feed writes the site; Site workflow publishes it to t…",
-      "updated_at": "2026-11-11T17:01:10Z",
+      "updated_at": "2026-11-11T17:07:57Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43063990596",
       "workflow": "CI"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-10T12:41:52Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817834717",
       "workflow": "Comment"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T12:40:02Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-10T13:08:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817698303",
-      "workflow": "Preflight"
     }
   ],
   "pulls": []
