@@ -1,0 +1,87 @@
+{
+  "attempts_by_status": {
+    "pr:rejected": 2,
+    "pr:valid_claim_better": 1,
+    "promotion:promoted": 1
+  },
+  "attempts_count": 4,
+  "bar": {
+    "baseline": 1.0,
+    "direction": "maximise",
+    "metric": "speedup",
+    "min_improvement_bips": 100,
+    "pairing": "two independent runs on main must agree within half the bar",
+    "statistic": "callgrind instruction ratio vs frozen reference; paired wall-time guard (mirrored blocks, rel-MAD)"
+  },
+  "benchmark": "pedersen",
+  "board": [
+    {
+      "at": "2026-09-30T19:09:05Z",
+      "commit": "61f0009e252edf3432a78377894ecfed5bfc0062",
+      "delta": 0.023730946073213133,
+      "delta_pct": 2.37,
+      "model": "",
+      "rank": 1,
+      "solver": "Ryun1",
+      "value": 1.0237309460732131
+    }
+  ],
+  "challenge": "pedersen",
+  "feed_schema_version": 1,
+  "fetched_at": "2026-11-11T16:19:37Z",
+  "generated_at": "2026-11-11T16:19:37Z",
+  "policy": {
+    "allowed_paths": [
+      "challenges/pedersen/candidate/src/**"
+    ],
+    "forbidden_paths": [
+      "challenges/pedersen/Cargo.lock",
+      "challenges/pedersen/Cargo.toml",
+      "challenges/pedersen/GUIDE.md",
+      "challenges/pedersen/NOTICE",
+      "challenges/pedersen/README.md",
+      "challenges/pedersen/SUBMITTING.md",
+      "challenges/pedersen/THREAT_MODEL.md",
+      "challenges/pedersen/baseline/**",
+      "challenges/pedersen/bench/**",
+      "challenges/pedersen/build.sh",
+      "challenges/pedersen/candidate/Cargo.toml",
+      "challenges/pedersen/challenge.toml",
+      "challenges/pedersen/harness/**",
+      "challenges/pedersen/oracle/**",
+      "challenges/pedersen/preflight/**",
+      "challenges/pedersen/reference/**",
+      "challenges/pedersen/rust-toolchain.toml",
+      "challenges/pedersen/setup.sh",
+      "challenges/pedersen/verifier/**",
+      ".github/**"
+    ],
+    "measurement_policy": {
+      "host_policy": {
+        "arch": "x86_64",
+        "cpu_model": "AMD EPYC 7763 64-Core Processor",
+        "logical_cpu_count": 2,
+        "memory_bytes": 8323969024,
+        "os": "linux"
+      },
+      "max_submission_bytes": 1048576,
+      "perf": {
+        "blocks": 4,
+        "max_dispersion": 0.08
+      },
+      "runner": "ubuntu-24.04",
+      "rust_allow": [],
+      "salted_inputs": true
+    },
+    "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
+  },
+  "record": {
+    "at": "2026-09-30T19:09:05Z",
+    "by": "Ryun1",
+    "unit": "speedup",
+    "value": 1.0237309460732131
+  },
+  "source": "builder",
+  "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
+  "url": "https://ryun1.github.io/auto-research-challenges/feeds/pedersen.json"
+}

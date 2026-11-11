@@ -1,0 +1,60 @@
+{
+  "attempts_by_status": {},
+  "attempts_count": 0,
+  "bar": {
+    "baseline": 423.0,
+    "direction": "minimise",
+    "metric": "proof_chars",
+    "min_improvement_bips": 0,
+    "pairing": "two independent runs on main must agree within half the bar",
+    "statistic": "the challenge's score command"
+  },
+  "benchmark": "lean-sum",
+  "board": [],
+  "challenge": "lean-sum",
+  "feed_schema_version": 1,
+  "fetched_at": "2026-11-11T16:19:37Z",
+  "generated_at": "2026-11-11T16:19:37Z",
+  "policy": {
+    "allowed_paths": [
+      "challenges/lean-sum/candidate/**"
+    ],
+    "forbidden_paths": [
+      "challenges/lean-sum/SUBMITTING.md",
+      "challenges/lean-sum/THREAT_MODEL.md",
+      "challenges/lean-sum/baseline/**",
+      "challenges/lean-sum/bench/**",
+      "challenges/lean-sum/challenge.toml",
+      "challenges/lean-sum/judge/**",
+      "challenges/lean-sum/lean-toolchain",
+      "challenges/lean-sum/preflight/**",
+      "challenges/lean-sum/setup.sh",
+      "challenges/lean-sum/verifier/**",
+      ".github/**"
+    ],
+    "measurement_policy": {
+      "host_policy": {
+        "arch": "x86_64",
+        "cpu_model": "AMD EPYC 7763 64-Core Processor",
+        "logical_cpu_count": 2,
+        "memory_bytes": 8323969024,
+        "os": "linux"
+      },
+      "max_submission_bytes": 16384,
+      "perf": null,
+      "runner": "ubuntu-24.04",
+      "rust_allow": null,
+      "salted_inputs": true
+    },
+    "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
+  },
+  "record": {
+    "at": "2026-09-30T18:48:50Z",
+    "by": "Ryun1",
+    "unit": "proof_chars",
+    "value": 423.0
+  },
+  "source": "builder",
+  "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
+  "url": "https://ryun1.github.io/auto-research-challenges/feeds/lean-sum.json"
+}

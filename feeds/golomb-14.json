@@ -1,0 +1,68 @@
+{
+  "attempts_by_status": {
+    "pr:valid_claim_better": 1,
+    "pr:valid_not_promoted": 1,
+    "promotion:promoted": 1,
+    "promotion:valid_not_promoted": 1
+  },
+  "attempts_count": 4,
+  "bar": {
+    "baseline": 181.0,
+    "direction": "minimise",
+    "metric": "length",
+    "min_improvement_bips": 0,
+    "pairing": "two independent runs on main must agree within half the bar",
+    "statistic": "exact: certificate checked as data"
+  },
+  "benchmark": "golomb-14",
+  "board": [
+    {
+      "at": "2026-09-30T15:46:42Z",
+      "commit": "ccc47418cbd4fa553dc562428ac7c61e673653b7",
+      "delta": -54.0,
+      "delta_pct": -29.83,
+      "model": "",
+      "rank": 1,
+      "solver": "Ryun1",
+      "value": 127.0
+    }
+  ],
+  "challenge": "golomb-14",
+  "feed_schema_version": 1,
+  "fetched_at": "2026-11-11T16:19:37Z",
+  "generated_at": "2026-11-11T16:19:37Z",
+  "policy": {
+    "allowed_paths": [
+      "challenges/golomb-14/candidate/**"
+    ],
+    "forbidden_paths": [
+      "challenges/golomb-14/SUBMITTING.md",
+      "challenges/golomb-14/THREAT_MODEL.md",
+      "challenges/golomb-14/baseline/**",
+      "challenges/golomb-14/bench/**",
+      "challenges/golomb-14/challenge.toml",
+      "challenges/golomb-14/preflight/**",
+      "challenges/golomb-14/setup.sh",
+      "challenges/golomb-14/verifier/**",
+      ".github/**"
+    ],
+    "measurement_policy": {
+      "host_policy": null,
+      "max_submission_bytes": 4096,
+      "perf": null,
+      "runner": "ubuntu-24.04",
+      "rust_allow": null,
+      "salted_inputs": false
+    },
+    "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
+  },
+  "record": {
+    "at": "2026-09-30T15:46:42Z",
+    "by": "Ryun1",
+    "unit": "length",
+    "value": 127.0
+  },
+  "source": "builder",
+  "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
+  "url": "https://ryun1.github.io/auto-research-challenges/feeds/golomb-14.json"
+}
