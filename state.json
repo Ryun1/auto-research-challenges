@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-11T22:29:23Z",
+  "generated_at": "2026-11-11T22:40:21Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:39:23Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Results recording: union-merge results.jsonl, stop committing public/…",
+      "updated_at": "2026-11-11T22:39:27Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43113577153",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -26,12 +37,12 @@
     },
     {
       "branch": "results-union-merge",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T22:26:08Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
-      "updated_at": "2026-11-11T22:26:12Z",
+      "updated_at": "2026-11-11T22:33:01Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738350",
       "workflow": "CI"
     },
@@ -430,29 +441,9 @@
       "updated_at": "2026-11-11T16:25:33Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058028162",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:19:53Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T16:20:58Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43057246846",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-11T22:26:04Z",
-      "draft": false,
-      "number": 66,
-      "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/66",
-      "challenges": []
-    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-11T18:38:13Z",
