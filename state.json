@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-11T23:36:52Z",
+  "generated_at": "2026-11-11T23:46:57Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "debug/upstream-offline",
+      "conclusion": null,
+      "created_at": "2026-11-11T23:46:47Z",
+      "event": "workflow_dispatch",
+      "status": "in_progress",
+      "title": "Preflight",
+      "updated_at": "2026-11-11T23:46:52Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43122405897",
+      "workflow": "Preflight"
+    },
+    {
+      "branch": "debug/upstream-offline",
+      "conclusion": "success",
+      "created_at": "2026-11-11T23:37:20Z",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "title": "Preflight",
+      "updated_at": "2026-11-11T23:46:05Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43121226598",
+      "workflow": "Preflight"
+    },
     {
       "branch": "debug/upstream-offline",
       "conclusion": "success",
@@ -419,28 +441,6 @@
       "updated_at": "2026-11-11T16:38:49Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060233839",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:37:03Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Promote",
-      "updated_at": "2026-11-11T17:01:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060093096",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:36:56Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-…",
-      "updated_at": "2026-11-11T16:43:07Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074615",
-      "workflow": "CI"
     }
   ],
   "pulls": [
