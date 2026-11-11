@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-11T17:18:49Z",
+  "generated_at": "2026-11-11T17:21:17Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T17:20:16Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-11T17:20:19Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43067163921",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "fix/promote-baseline-and-push",
+      "conclusion": null,
+      "created_at": "2026-11-11T17:19:12Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Promote: baseline skips upstream tests; results push fails loudly",
+      "updated_at": "2026-11-11T17:19:16Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43066987985",
+      "workflow": "CI"
+    },
+    {
+      "branch": "fix/promote-baseline-and-push",
+      "conclusion": "success",
+      "created_at": "2026-11-11T17:19:12Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Promote: baseline skips upstream tests; results push fails loudly",
+      "updated_at": "2026-11-11T17:20:12Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43066987703",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "cancelled",
@@ -408,40 +441,17 @@
       "updated_at": "2026-11-10T13:48:33Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42826782599",
       "workflow": "CI"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T13:41:09Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-10T14:46:32Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42826776224",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T13:41:09Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T13:42:06Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42826775997",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T12:40:59Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-10T12:41:52Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817834717",
-      "workflow": "Comment"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-11T17:19:08Z",
+      "draft": false,
+      "number": 62,
+      "title": "Promote: baseline skips upstream tests; results push fails loudly",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/62",
+      "challenges": []
+    }
+  ]
 }
