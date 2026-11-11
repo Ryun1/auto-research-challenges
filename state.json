@@ -1,37 +1,125 @@
 {
-  "generated_at": "2026-11-11T16:37:55Z",
+  "generated_at": "2026-11-11T17:01:57Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
       "conclusion": null,
-      "created_at": "2026-11-11T16:37:03Z",
-      "event": "workflow_dispatch",
-      "status": "pending",
-      "title": "Promote",
-      "updated_at": "2026-11-11T16:37:05Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060093096",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": null,
-      "created_at": "2026-11-11T16:36:56Z",
+      "created_at": "2026-11-11T17:01:06Z",
       "event": "push",
       "status": "in_progress",
-      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-…",
-      "updated_at": "2026-11-11T16:37:01Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074615",
+      "title": "Status site: cb feed writes the site; Site workflow publishes it to t…",
+      "updated_at": "2026-11-11T17:01:10Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43063990596",
       "workflow": "CI"
     },
     {
       "branch": "main",
       "conclusion": null,
+      "created_at": "2026-11-11T17:01:06Z",
+      "event": "push",
+      "status": "pending",
+      "title": "Status site: cb feed writes the site; Site workflow publishes it to t…",
+      "updated_at": "2026-11-11T17:01:07Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43063990504",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-11T16:46:07Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-11T17:01:08Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061553696",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "status-site",
+      "conclusion": "success",
+      "created_at": "2026-11-11T16:45:04Z",
+      "event": "pull_request",
+      "status": "completed",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
+      "updated_at": "2026-11-11T16:52:01Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061381554",
+      "workflow": "CI"
+    },
+    {
+      "branch": "status-site",
+      "conclusion": "success",
+      "created_at": "2026-11-11T16:45:03Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
+      "updated_at": "2026-11-11T16:46:03Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061378341",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-11T16:38:52Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-11T16:46:08Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060386292",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "status-site",
+      "conclusion": "success",
+      "created_at": "2026-11-11T16:37:56Z",
+      "event": "pull_request",
+      "status": "completed",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
+      "updated_at": "2026-11-11T16:43:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060236912",
+      "workflow": "CI"
+    },
+    {
+      "branch": "status-site",
+      "conclusion": "success",
+      "created_at": "2026-11-11T16:37:54Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
+      "updated_at": "2026-11-11T16:38:49Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060233839",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T16:37:03Z",
+      "event": "workflow_dispatch",
+      "status": "in_progress",
+      "title": "Promote",
+      "updated_at": "2026-11-11T17:00:46Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060093096",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-11T16:36:56Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-…",
-      "updated_at": "2026-11-11T16:37:01Z",
+      "updated_at": "2026-11-11T16:43:07Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074615",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-11T16:36:56Z",
+      "event": "push",
+      "status": "completed",
+      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-…",
+      "updated_at": "2026-11-11T16:37:54Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074229",
       "workflow": "Promote"
     },
@@ -63,7 +151,7 @@
       "created_at": "2026-11-11T16:24:32Z",
       "event": "pull_request",
       "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide (after #60)",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
       "updated_at": "2026-11-11T16:31:41Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058028219",
       "workflow": "CI"
@@ -74,7 +162,7 @@
       "created_at": "2026-11-11T16:24:32Z",
       "event": "pull_request_target",
       "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide (after #60)",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
       "updated_at": "2026-11-11T16:25:33Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058028162",
       "workflow": "Submission"
@@ -140,7 +228,7 @@
       "created_at": "2026-11-11T16:06:03Z",
       "event": "pull_request_target",
       "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide (after #60)",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
       "updated_at": "2026-11-11T16:07:04Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054915743",
       "workflow": "Submission"
@@ -151,7 +239,7 @@
       "created_at": "2026-11-11T16:06:03Z",
       "event": "pull_request",
       "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide (after #60)",
+      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
       "updated_at": "2026-11-11T16:11:03Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054915615",
       "workflow": "CI"
@@ -353,107 +441,7 @@
       "updated_at": "2026-11-10T13:08:31Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817698303",
       "workflow": "Preflight"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T12:40:00Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T12:48:40Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817692004",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T12:39:57Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T12:40:56Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42817686598",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T10:59:42Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-10T11:00:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42803756510",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T10:58:48Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-10T11:14:35Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42803641918",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T10:58:46Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T11:00:53Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42803637137",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "success",
-      "created_at": "2026-11-10T10:58:44Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T10:59:39Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42803632936",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T10:47:30Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-10T10:48:26Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42802111455",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "fix/ledger-cbor-haskell-policy",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T10:46:39Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack scope",
-      "updated_at": "2026-11-10T10:52:01Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42801994465",
-      "workflow": "CI"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-11T16:05:58Z",
-      "draft": false,
-      "number": 61,
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide (after #60)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/61",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }

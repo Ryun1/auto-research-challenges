@@ -158,7 +158,8 @@
     return a.slug < b.slug ? -1 : 1;
   });
   function current() {
-    var h = decodeURIComponent(location.hash.replace(/^#/, ""));
+    var h = location.hash.replace(/^#/, "");
+    try { h = decodeURIComponent(h); } catch (e) { /* "#%": not a slug, fall through to the first */ }
     for (var i = 0; i < challenges.length; i++) if (challenges[i].slug === h) return challenges[i];
     return challenges[0] || null;
   }
