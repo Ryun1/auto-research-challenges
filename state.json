@@ -1,7 +1,73 @@
 {
-  "generated_at": "2026-11-11T18:31:06Z",
+  "generated_at": "2026-11-11T18:38:37Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "fix/ledger-cbor-offline-build",
+      "conclusion": null,
+      "created_at": "2026-11-11T18:38:16Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "updated_at": "2026-11-11T18:38:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079665963",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "fix/ledger-cbor-offline-build",
+      "conclusion": null,
+      "created_at": "2026-11-11T18:38:16Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "updated_at": "2026-11-11T18:38:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079665951",
+      "workflow": "CI"
+    },
+    {
+      "branch": "demo/ledger-cbor-first-submission",
+      "conclusion": null,
+      "created_at": "2026-11-11T18:37:53Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter",
+      "updated_at": "2026-11-11T18:37:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079604991",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "demo/ledger-cbor-first-submission",
+      "conclusion": null,
+      "created_at": "2026-11-11T18:37:53Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter",
+      "updated_at": "2026-11-11T18:37:58Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079604855",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-11T18:37:35Z",
+      "event": "push",
+      "status": "completed",
+      "title": "Close pedersen and golomb-14; site lists open challenges only (#63)",
+      "updated_at": "2026-11-11T18:38:23Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079557527",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T18:37:35Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Close pedersen and golomb-14; site lists open challenges only (#63)",
+      "updated_at": "2026-11-11T18:37:38Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079557474",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -375,85 +441,29 @@
       "updated_at": "2026-11-11T16:03:20Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054310705",
       "workflow": "Submission"
-    },
-    {
-      "branch": "launch/ledger-cbor",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-11T16:02:24Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-11T16:19:22Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43054305229",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "fix/ledger-cbor-upstream-tests-asserts",
-      "conclusion": "failure",
-      "created_at": "2026-11-11T14:54:21Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-11T18:30:01Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43043005147",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T14:39:23Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack s…",
-      "updated_at": "2026-11-11T14:40:22Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43040559826",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-11T14:39:23Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack s…",
-      "updated_at": "2026-11-11T14:54:19Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43040559812",
-      "workflow": "Warm"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-11T14:39:23Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: launch blockers (#51 #53 #54 #56 #57) + decoding-stack s…",
-      "updated_at": "2026-11-11T14:52:27Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43040559787",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "failure",
-      "created_at": "2026-11-10T14:50:36Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-10T14:51:34Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/42838211422",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
     {
       "author": "Ryun1",
-      "created_at": "2026-11-11T17:28:30Z",
-      "draft": false,
-      "number": 63,
-      "title": "Close pedersen and golomb-14; site lists open challenges only",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/63",
+      "created_at": "2026-11-11T18:38:13Z",
+      "draft": true,
+      "number": 65,
+      "title": "ledger-cbor build.sh: cabal --offline for the sandboxed builds (promotion blocker, unproven)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/65",
       "challenges": [
-        "golomb-14",
-        "pedersen"
+        "ledger-cbor"
+      ]
+    },
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-11T18:37:50Z",
+      "draft": false,
+      "number": 64,
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/64",
+      "challenges": [
+        "ledger-cbor"
       ]
     }
   ]
