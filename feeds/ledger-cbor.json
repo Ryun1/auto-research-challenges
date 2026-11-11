@@ -15,8 +15,8 @@
   "board": [],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-11T22:40:16Z",
-  "generated_at": "2026-11-11T22:40:16Z",
+  "fetched_at": "2026-11-11T22:48:52Z",
+  "generated_at": "2026-11-11T22:48:52Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
@@ -37,6 +37,7 @@
       "challenges/ledger-cbor/packages.txt",
       "challenges/ledger-cbor/preflight/**",
       "challenges/ledger-cbor/setup.sh",
+      "challenges/ledger-cbor/upstream-tests.txt",
       "challenges/ledger-cbor/verifier/**",
       ".github/**"
     ],

@@ -1,15 +1,48 @@
 {
-  "generated_at": "2026-11-11T22:40:21Z",
+  "generated_at": "2026-11-11T22:48:58Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
       "conclusion": null,
-      "created_at": "2026-11-11T22:39:23Z",
+      "created_at": "2026-11-11T22:48:06Z",
       "event": "push",
       "status": "in_progress",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate …",
+      "updated_at": "2026-11-11T22:48:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766486",
+      "workflow": "Warm"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-11T22:48:06Z",
+      "event": "push",
+      "status": "completed",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate …",
+      "updated_at": "2026-11-11T22:48:50Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766473",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-11T22:48:06Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate …",
+      "updated_at": "2026-11-11T22:48:10Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766453",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-11T22:39:23Z",
+      "event": "push",
+      "status": "completed",
       "title": "Results recording: union-merge results.jsonl, stop committing public/…",
-      "updated_at": "2026-11-11T22:39:27Z",
+      "updated_at": "2026-11-11T22:46:39Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43113577153",
       "workflow": "CI"
     },
@@ -408,53 +441,9 @@
       "updated_at": "2026-11-11T17:03:51Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074036",
       "workflow": "Warm"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:25:36Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T16:26:36Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058206096",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:24:32Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:31:41Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058028219",
-      "workflow": "CI"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:24:32Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:25:33Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43058028162",
-      "workflow": "Submission"
     }
   ],
   "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-11T18:38:13Z",
-      "draft": false,
-      "number": 65,
-      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/65",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-11T18:37:50Z",
