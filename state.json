@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-11T23:02:00Z",
+  "generated_at": "2026-11-11T23:17:36Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "debug/upstream-offline",
+      "conclusion": null,
+      "created_at": "2026-11-11T23:10:32Z",
+      "event": "workflow_dispatch",
+      "status": "in_progress",
+      "title": "Preflight",
+      "updated_at": "2026-11-11T23:10:46Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43117757924",
+      "workflow": "Preflight"
+    },
     {
       "branch": "debug/upstream-offline",
       "conclusion": "cancelled",
@@ -15,12 +26,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-11T22:48:06Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate …",
-      "updated_at": "2026-11-11T22:48:18Z",
+      "updated_at": "2026-11-11T23:16:45Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766486",
       "workflow": "Warm"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-11T16:43:07Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074615",
       "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:36:56Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: open for submissions; upstream tests with +asserts; apt-…",
-      "updated_at": "2026-11-11T16:37:54Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060074229",
-      "workflow": "Promote"
     }
   ],
   "pulls": [
