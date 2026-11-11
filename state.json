@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-11T18:25:14Z",
+  "generated_at": "2026-11-11T18:31:06Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
@@ -389,12 +389,12 @@
     },
     {
       "branch": "fix/ledger-cbor-upstream-tests-asserts",
-      "conclusion": null,
+      "conclusion": "failure",
       "created_at": "2026-11-11T14:54:21Z",
       "event": "workflow_dispatch",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Preflight",
-      "updated_at": "2026-11-11T15:53:41Z",
+      "updated_at": "2026-11-11T18:30:01Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43043005147",
       "workflow": "Preflight"
     },
