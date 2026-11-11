@@ -155,12 +155,14 @@
       "min_improvement_bips": 100,
       "record": null,
       "slug": "ledger-cbor",
-      "state": "draft",
-      "status": "draft",
+      "state": "pending",
+      "status": "open",
       "submit_steps": [
-        "Open a PR that changes only files under the editable paths in challenge.toml (candidate/ by default). Anything else is refused, as are symlinks and submodules.",
-        "CI verifies and scores it and comments the result. That score is a claim.",
-        "A maintainer merges; a clean re-run on main with a fresh seed decides the record and appends it to results.jsonl. Rejected and slower attempts are recorded too."
+        "Branch, don't fork. You are a collaborator, so push a branch to this repo and open the PR from it against main.",
+        "What you may change",
+        "Build and test locally (Linux only). The build needs GHC 9.6.7, cabal 3.16, python3, rsync and the Cardano system libraries (libsodium, secp256k1, blst). Scoring also needs valgrind. setup.sh uses GNU sed -i, so it fails on macOS. On a Mac, edit there and build on a Linux machine, or let CI build it.",
+        "Open the PR and read the result. Opening the PR, and every later push to it, starts the Submission workflow. A new push cancels the run in progress for that PR.",
+        "After the merge. The maintainer merges PRs one at a time. The merge starts the Promote workflow on main, which takes hours. It makes two independent runs, each on its own fresh pool and seed. Each run scores your tree and the current record's tree on the same sample, and it also builds and runs the upstream test suites of all eight packages. The attempt is promoted only if both runs pass, they agr…"
       ],
       "summary": "Make cardano-ledger decode real mainnet Conway transactions in fewer instructions, without changing what it decodes or what it rejects. The editable code is the src/ of the decoding stack: cardano-ledger-binary (the Decoder monad, Annotator, coders, primitives), cardano-ledger-core and the era packages from Shelley to Conway (the per-field instances, MaryValue, BabbageTxOut, the Conway tx body...).",
       "title": "Cardano ledger: faster Conway CBOR decoding (cardano-ledger, Haskell)",
@@ -292,6 +294,6 @@
       "to_beat": null
     }
   ],
-  "generated_at": "2026-11-11T16:19:37Z",
+  "generated_at": "2026-11-11T16:37:51Z",
   "site_schema_version": 1
 }
