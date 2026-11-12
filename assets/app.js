@@ -6,16 +6,18 @@
   var DATA = JSON.parse(document.getElementById("site-data").textContent);
   var STATE = null; // state.json, when published
   var app = document.getElementById("app");
+  var SVG = "http://www.w3.org/2000/svg";
+  var LOADED = Date.now(); // the record line draws in on load only (and on the re-render state.json triggers)
 
   var STATES = {
     pending: { word: "Open, baseline pending", short: "Baseline pending", order: 0 },
-    open: { word: "Open", short: "Open", order: 1 },
+    open: { word: "Open for submissions", short: "Open", order: 1 },
     draft: { word: "Draft", short: "Draft", order: 2 },
     closed: { word: "Closed", short: "Closed", order: 3 }
   };
   var OUTCOMES = {
     baseline: ["Baseline", "base"],
-    promoted: ["Promoted", "good"],
+    promoted: ["New record", "good"],
     valid_claim_better: ["Claims a record", "claim"],
     valid_not_promoted: ["Valid, not a record", "plain"],
     rejected: ["Rejected", "bad"],
@@ -28,6 +30,11 @@
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text !== undefined && text !== null) e.textContent = String(text);
+    return e;
+  }
+  function svg(tag, attrs) {
+    var e = document.createElementNS(SVG, tag);
+    for (var k in attrs) if (Object.prototype.hasOwnProperty.call(attrs, k)) e.setAttribute(k, String(attrs[k]));
     return e;
   }
   function add(parent) {
@@ -100,10 +107,11 @@
     return isNaN(d.getTime()) ? str(iso) || "–" : d.toISOString().slice(0, 16).replace("T", " ") + " UTC";
   }
   function bipsText(b) {
-    if (!b) return "Any improvement counts";
+    if (!b) return "Any improvement on the record counts";
     return (b / 100).toFixed(b % 100 ? 2 : 0) + "% (" + b + " bips) past the record";
   }
-  function better(c) { return c.direction === "maximise" ? "Higher is better" : "Lower is better"; }
+  function better(c) { return c.direction === "maximise" ? "higher is better" : "lower is better"; }
+  function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function lastActivity(c) {
     var a = c.attempts && c.attempts[0];
     var t = a ? Date.parse(a.at) : NaN;
@@ -116,7 +124,7 @@
     return b;
   }
   function section(title, note) {
-    var s = el("section", "block");
+    var s = el("section", "panel block");
     var h = add(el("div", "block-head"), el("h2", null, title));
     if (note) add(h, note);
     add(s, h);
@@ -148,6 +156,16 @@
     return add(wrap, t);
   }
   function short(sha) { return str(sha).slice(0, 7); }
+  function pullsFor(c) {
+    return STATE && Array.isArray(STATE.pulls) ? STATE.pulls.filter(function (p) {
+      return Array.isArray(p.challenges) && p.challenges.indexOf(c.slug) >= 0;
+    }) : [];
+  }
+  function targetText(c) {
+    if (num(c.to_beat) === null) return "–";
+    var maxi = c.direction === "maximise";
+    return (maxi ? (c.min_improvement_bips ? "≥ " : "> ") : (c.min_improvement_bips ? "≤ " : "< ")) + fmt(c.to_beat);
+  }
 
   // ---------- ordering & routing ----------
   var challenges = (DATA.challenges || []).slice().sort(function (a, b) {
@@ -164,105 +182,364 @@
     return challenges[0] || null;
   }
 
-  // ---------- the ratchet: baseline, each record, the bar to beat ----------
-  function ratchet(c) {
-    var box = el("div", "ratchet");
-    var readouts = el("div", "readouts");
+  // ---------- the scoreboard ----------
+  function goal(c) {
+    var box = el("aside", "goal");
+    box.setAttribute("aria-label", "The bar to beat");
     var base = c.baseline && num(c.baseline.value);
-    var rec = c.record && num(c.record.value);
-    function readout(label, value, sub, cls) {
-      var r = el("div", "readout " + (cls || ""));
-      add(r, el("div", "readout-label", label), el("div", "readout-value", value), sub ? add(el("div", "readout-sub"), sub) : null);
-      return r;
-    }
-    var unit = c.metric;
     if (base === null) {
-      add(readouts,
-        readout("Baseline", "–", c.state === "draft" ? "Recorded when the challenge opens" : "First run on main sets it", "pending"),
-        readout("Record", "–", "None yet"),
-        readout("To beat", "–", bipsText(c.min_improvement_bips)));
-      add(box, readouts);
-      var track = el("div", "track track-empty");
-      add(track, el("span", "track-note", c.state === "draft"
-        ? "Not open yet. Results appear here once the baseline is recorded."
-        : "Baseline pending. Submissions are scored against it once it is recorded."));
-      add(box, track);
-      return box;
+      add(box, el("p", "goal-label", "The bar to beat"), el("p", "goal-value", "–"),
+        el("p", "goal-unit", c.state === "draft" ? "Set when the challenge opens." : "Set by the first run on main. Submissions are scored against it."));
+    } else {
+      add(box, el("p", "goal-label", "Your submission needs"), el("p", "goal-value", targetText(c)),
+        el("p", "goal-unit", c.metric + ", " + better(c)));
+      var rows = el("dl", "goal-rows");
+      var rec = c.record ? num(c.record.value) : null;
+      var maxi = c.direction === "maximise";
+      function row(k, v, cls) { add(rows, add(el("div", cls), el("dt", null, k), add(el("dd"), v))); }
+      row("Current record", rec !== null ? fmt(rec) : fmt(base), "rec");
+      row("Held by", c.record ? str(c.record.by) || "unknown" : "the baseline");
+      row("Margin", c.min_improvement_bips ? (c.min_improvement_bips / 100).toFixed(c.min_improvement_bips % 100 ? 2 : 0) + "% past the record" : "any improvement");
+      if (rec !== null && base) row("Improvement", pct((maxi ? rec - base : base - rec) / Math.abs(base) * 100));
+      add(box, rows);
     }
-    var recSub = c.record
-      ? add(el("span"), "by " + (str(c.record.by) || "unknown") + ", ", time(c.record.at))
-      : "No promotion yet: the baseline stands";
-    var gain = rec !== null && base ? pct((rec - base) / base * 100) : "";
-    var maxi = c.direction === "maximise";
-    add(readouts,
-      readout("Baseline", fmt(base), add(el("span"), unit + ", ", time(c.baseline.at))),
-      readout("Record", rec !== null ? fmt(rec) : fmt(base), rec !== null ? add(el("span"), recSub, gain ? " (" + gain + ")" : "") : recSub, "record"),
-      readout("To beat", (num(c.to_beat) === null ? "" : (maxi ? (c.min_improvement_bips ? "≥ " : "> ") : (c.min_improvement_bips ? "≤ " : "< "))) + fmt(c.to_beat),
-        bipsText(c.min_improvement_bips), "target"));
-    add(box, readouts);
-
-    // Scale: better is always to the right.
-    var points = [{ v: base, kind: "base", label: "baseline" }];
-    (c.attempts || []).slice().reverse().forEach(function (a) {
-      if (a.status === "promoted" && num(a.value) !== null) points.push({ v: a.value, kind: "rec", label: str(a.by) });
+    var go = el("button", "cta", c.state === "open" || c.state === "pending" ? "How to enter" : "How submissions work");
+    go.setAttribute("type", "button");
+    go.addEventListener("click", function () {
+      var t = document.getElementById("enter");
+      if (t) { t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }); t.focus({ preventScroll: true }); }
     });
-    var target = num(c.to_beat);
-    var vals = points.map(function (p) { return p.v; });
-    if (target !== null) vals.push(target);
-    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
-    var span = hi - lo || Math.abs(hi) * 0.02 || 1;
-    lo -= span * 0.08; hi += span * 0.08;
-    function pos(v) { var f = (v - lo) / (hi - lo); return (maxi ? f : 1 - f) * 100; }
-    var track = el("div", "track");
-    track.setAttribute("role", "img");
-    track.setAttribute("aria-label", "Baseline " + fmt(base) + ", record " + fmt(rec !== null ? rec : base) + ", next record needs " + fmt(target) + " " + unit + ". " + better(c) + ".");
-    var bestPos = pos(rec !== null ? rec : base);
-    var fill = el("span", "track-fill");
-    fill.style.left = Math.min(pos(base), bestPos) + "%";
-    fill.style.width = Math.abs(bestPos - pos(base)) + "%";
-    track.appendChild(fill);
-    points.forEach(function (p, i) {
-      var m = el("span", "mark mark-" + p.kind + (i === points.length - 1 ? " mark-current" : ""));
-      m.style.left = pos(p.v) + "%";
-      m.setAttribute("title", p.label + ": " + fmt(p.v));
-      track.appendChild(m);
-    });
-    if (target !== null) {
-      var t = el("span", "mark mark-target");
-      t.style.left = pos(target) + "%";
-      t.setAttribute("title", "to beat: " + fmt(target));
-      track.appendChild(t);
-    }
-    add(box, track, add(el("div", "axis"), el("span", null, maxi ? "lower" : "higher"), el("span", null, better(c).replace(" is better", "") + " is better, to the right")));
+    add(box, go);
     return box;
   }
 
+  function stats(c) {
+    var list = (c.attempts || []).filter(function (a) { return a.status !== "baseline"; });
+    var people = {};
+    list.forEach(function (a) { if (str(a.by)) people[a.by] = 1; });
+    var lastRec = (c.attempts || []).filter(function (a) { return a.status === "promoted" || a.status === "baseline"; })[0];
+    var dl = el("dl", "stats");
+    function stat(k, v) { add(dl, add(el("div", "stat"), el("dt", null, k), add(el("dd"), v))); }
+    stat("Attempts", String(list.length));
+    stat("Contributors", String(Object.keys(people).length));
+    stat("Open PRs", STATE ? String(pullsFor(c).length) : "–");
+    stat(c.record ? "Last record" : "Baseline set", lastRec ? time(lastRec.at) : "–");
+    return dl;
+  }
+
+  function chartBox(c) {
+    var box = el("div", "chart-box");
+    var ch = el("div", "chart" + (c.baseline && num(c.baseline.value) !== null ? "" : " chart-pending"));
+    ch.setAttribute("data-slug", c.slug);
+    var legend = el("ul", "legend");
+    [["key-rec", "Record"], ["key-claim", "PR claiming a record"], ["key-plain", "Valid, not a record"], ["key-bad", "Rejected"], ["key-tgt", "Bar to beat"]]
+      .forEach(function (k) { add(legend, add(el("li"), el("span", "key " + k[0]), k[1])); });
+    return add(box, ch, ch.className === "chart" ? legend : null);
+  }
+
+  // Record progression: every scored attempt as a point, the record as a
+  // stepped line, the bar to beat as a dashed line. Better is always up.
+  function drawChart(c, host) {
+    host.textContent = "";
+    var W = host.clientWidth, H = host.clientHeight;
+    if (!W || !H) return;
+    var base = c.baseline && num(c.baseline.value);
+    if (base === null) {
+      add(host, el("div", "chart-empty", c.state === "draft"
+        ? "Not open yet. The record line starts when the baseline is recorded."
+        : "Baseline pending. Submissions are scored against it once it is recorded."));
+      return;
+    }
+    var maxi = c.direction === "maximise";
+    var now = Date.parse(DATA.generated_at) || Date.now();
+    var pts = (c.attempts || []).filter(function (a) { return num(a.value) !== null && !isNaN(Date.parse(a.at)); })
+      .map(function (a) { return { t: Date.parse(a.at), v: a.value, s: str(a.status), by: str(a.by), stage: str(a.stage) }; })
+      .sort(function (a, b) { return a.t - b.t; });
+    var steps = pts.filter(function (p) { return p.s === "baseline" || p.s === "promoted"; });
+    if (!steps.length) steps = [{ t: Date.parse(c.baseline.at) || now, v: base, s: "baseline" }];
+    var target = num(c.to_beat);
+
+    var vals = pts.map(function (p) { return p.v; }).concat(steps.map(function (p) { return p.v; }));
+    if (target !== null) vals.push(target);
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    var span = hi - lo || Math.abs(hi) * 0.02 || 1;
+    lo -= span * 0.18; hi += span * 0.22;
+    // Round ticks: a step of 1, 2 or 5 times a power of ten, about four of them.
+    var raw = (hi - lo) / 4, mag = Math.pow(10, Math.floor(Math.log10(raw))), f = raw / mag;
+    var step = (f <= 1 ? 1 : f <= 2 ? 2 : f <= 5 ? 5 : 10) * mag;
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    var tickDec = Math.max(0, -Math.floor(Math.log10(step) + 1e-9));
+    var t0 = Math.min.apply(null, pts.map(function (p) { return p.t; }).concat([steps[0].t])), t1 = Math.max(now, t0 + 1);
+    t0 -= (t1 - t0) * 0.03;
+    var narrow = W < 520;
+    var L = narrow ? 44 : 60, R = narrow ? 12 : 24, T = 14, B = 26;
+    function x(t) { return L + (t - t0) / (t1 - t0) * (W - L - R); }
+    function y(v) { var f = (v - lo) / (hi - lo); return T + (maxi ? 1 - f : f) * (H - T - B); }
+
+    var s = svg("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, role: "img" });
+    var rec = c.record ? num(c.record.value) : null;
+    s.setAttribute("aria-label", "Record progression for " + c.slug + ": baseline " + fmt(base) + ", record " + fmt(rec !== null ? rec : base) +
+      (target !== null ? ", the next record needs " + targetText(c) : "") + " " + c.metric + ", " + better(c) + ". " + pts.length + " scored runs.");
+
+    // grid and y labels
+    for (var v = lo; v <= hi + step / 2; v += step) {
+      var yy = y(v);
+      add(s, svg("line", { x1: L, x2: W - R, y1: yy, y2: yy, "class": "grid" }));
+      var lab = svg("text", { x: L - 10, y: yy + 4, "text-anchor": "end" });
+      lab.textContent = v.toFixed(tickDec);
+      add(s, lab);
+    }
+    // x labels: the first point's date and now
+    function dateText(t) { return new Date(t).toISOString().slice(5, 10).replace("-", "/"); }
+    var xl = svg("text", { x: L, y: H - 6, "text-anchor": "start" }); xl.textContent = dateText(t0);
+    var xr = svg("text", { x: W - R, y: H - 6, "text-anchor": "end" }); xr.textContent = "now";
+    add(s, xl, xr);
+
+    // record step path, extended to now
+    var d = "", prev = null;
+    steps.forEach(function (p) {
+      var px = x(p.t), py = y(p.v);
+      d += prev === null ? "M" + px + " " + py : " H" + px + " V" + py;
+      prev = p;
+    });
+    var endX = x(t1), endY = y(steps[steps.length - 1].v);
+    d += " H" + endX;
+    var floor = H - B;
+    add(s, svg("path", { d: d + " V" + floor + " H" + x(steps[0].t) + " Z", "class": "rec-area" }));
+
+    // the bar to beat
+    if (target !== null) {
+      var ty = y(target);
+      add(s, svg("line", { x1: L, x2: W - R, y1: ty, y2: ty, "class": "tgt-line" }));
+      var tl = svg("text", { x: W - R, y: ty - 8, "text-anchor": "end", "class": "tgt-label" });
+      tl.textContent = "Beat this: " + targetText(c);
+      add(s, tl);
+    }
+    var line = svg("path", { d: d, "class": "rec-line" });
+    add(s, line);
+
+    // attempts
+    pts.forEach(function (p) {
+      var px = x(p.t), py = y(p.v), mark;
+      if (p.s === "rejected") {
+        mark = svg("path", { d: "M" + (px - 4) + " " + (py - 4) + " L" + (px + 4) + " " + (py + 4) + " M" + (px + 4) + " " + (py - 4) + " L" + (px - 4) + " " + (py + 4), "class": "pt-rejected" });
+      } else {
+        mark = svg("circle", { cx: px, cy: py, r: p.s === "baseline" || p.s === "promoted" ? 5.5 : 4.5, "class": "pt-" + (OUTCOMES[p.s] ? p.s : "valid_not_promoted") });
+      }
+      var tt = svg("title", {});
+      tt.textContent = (OUTCOMES[p.s] ? OUTCOMES[p.s][0] : p.s) + ": " + fmt(p.v) + " " + c.metric + (p.by ? ", " + p.by : "") + ", " + (STAGES[p.stage] || p.stage) + ", " + new Date(p.t).toISOString().slice(0, 16).replace("T", " ") + " UTC";
+      add(mark, tt);
+      add(s, mark);
+    });
+
+    // the standing record, at the right edge
+    add(s, svg("circle", { cx: endX, cy: endY, r: 5, "class": "halo" }), svg("circle", { cx: endX, cy: endY, r: 4, "class": "pt-promoted" }));
+    var nl = svg("text", { x: endX - 10, y: endY + 18, "text-anchor": "end", "class": "now-label" });
+    nl.textContent = "Record " + fmt(steps[steps.length - 1].v);
+    add(s, nl);
+
+    add(host, s);
+    if (Date.now() - LOADED < 1500) {
+      var len = Math.ceil(line.getTotalLength ? line.getTotalLength() : 0);
+      if (len) { host.style.setProperty("--len", String(len)); host.classList.add("animate"); }
+    }
+  }
+
+  function stage(c) {
+    var band = el("section", "stage");
+    band.setAttribute("aria-label", "Scoreboard");
+    var w = el("div", "wrap");
+    var left = el("div", "hero-text");
+    var kicker = add(el("div", "kicker"), badge(c.state, true));
+    if (str(c.family)) add(kicker, el("span", null, cap(c.family) + " challenge"));
+    add(left, kicker, el("h1", "slug", c.slug));
+    if (str(c.title)) add(left, el("p", "title", c.title));
+    if (str(c.summary)) {
+      var sum = el("p", "summary clamped", c.summary);
+      sum.setAttribute("id", "summary");
+      var more = el("button", "more", "Read more");
+      more.setAttribute("type", "button");
+      more.setAttribute("aria-expanded", "false");
+      more.setAttribute("aria-controls", "summary");
+      more.addEventListener("click", function () {
+        var open = sum.classList.toggle("clamped") === false;
+        more.textContent = open ? "Show less" : "Read more";
+        more.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+      add(left, sum, more);
+    }
+    add(w, add(el("div", "hero"), left, goal(c)), stats(c), chartBox(c));
+    return add(band, w);
+  }
+
   // ---------- sections ----------
+  // Copies text; done(true) on success. The async clipboard API needs a secure
+  // context and permission, so a hidden textarea + execCommand is the fallback.
+  function copyText(text, done) {
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.setAttribute("aria-hidden", "true");
+      ta.style.cssText = "position:fixed;top:-1000px;left:0;opacity:0";
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+      document.body.removeChild(ta);
+      done(ok);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function () { done(true); }, fallback);
+    } else fallback();
+  }
+
+  // The participant prompt (PROMPT.md): pasted into a coding agent to start on
+  // the challenge. Copy is the main action; the text itself is one click away.
+  function promptBox(c) {
+    var box = el("div", "prompt");
+    add(box, el("h3", null, "Start with your coding agent"),
+      el("p", "prompt-lead", "Paste this prompt into Claude Code, Codex or another coding agent. It gives the agent the goal, the rules and how to submit."));
+    var row = el("div", "prompt-actions");
+    var btn = el("button", "copy", "Copy prompt");
+    btn.setAttribute("type", "button");
+    var status = el("span", "copy-status");
+    status.setAttribute("role", "status");
+    var details = el("details", "prompt-text");
+    var pre = el("pre", null, c.prompt);
+    pre.setAttribute("tabindex", "0");
+    add(details, el("summary", null, "Read the prompt"), pre);
+    var timer = null;
+    btn.addEventListener("click", function () {
+      copyText(c.prompt, function (ok) {
+        clearTimeout(timer);
+        if (ok) {
+          btn.textContent = "Copied";
+          status.textContent = "Prompt copied. Paste it into your agent.";
+          timer = setTimeout(function () { btn.textContent = "Copy prompt"; status.textContent = ""; }, 4000);
+        } else {
+          // Leave the text selected so a manual copy is one keystroke.
+          details.open = true;
+          var range = document.createRange();
+          range.selectNodeContents(pre);
+          var sel = window.getSelection();
+          sel.removeAllRanges();
+          sel.addRange(range);
+          status.textContent = "Copying is blocked here. The prompt is selected below: copy it with Ctrl+C or Cmd+C.";
+        }
+      });
+    });
+    add(row, btn, status);
+    return add(box, row, details);
+  }
+
+  function enter(c) {
+    var s = el("section", "panel enter");
+    s.setAttribute("id", "enter");
+    s.setAttribute("tabindex", "-1");
+    add(s, el("h2", null, "How to enter"));
+    if (c.state === "draft" || c.state === "closed") add(s, el("p", "callout", c.state === "draft" ? "This challenge is a draft: submissions aren't scored yet." : "This challenge is closed to new submissions."));
+    var lead = el("p", "enter-lead");
+    add(lead, "Open a pull request that changes only ");
+    (c.editable || []).forEach(function (e, i) {
+      if (i) add(lead, ", ");
+      add(lead, el("code", null, "challenges/" + c.slug + "/" + e));
+    });
+    add(lead, ". CI scores it and comments the result on the PR.");
+    add(s, lead);
+    if (str(c.prompt) && (c.state === "open" || c.state === "pending")) add(s, promptBox(c));
+    var steps = c.submit_steps || [];
+    if (steps.length) {
+      var ol = el("ol", "steps");
+      steps.forEach(function (t) {
+        var i = t.indexOf(". ");
+        var li = el("li");
+        if (i > 0 && i < 80) add(li, el("span", "step-head", t.slice(0, i + 1)), el("span", "step-body", t.slice(i + 2)));
+        else add(li, el("span", "step-head", t));
+        ol.appendChild(li);
+      });
+      add(s, ol);
+    } else add(s, empty("See SUBMITTING.md in the challenge directory."));
+    add(s, el("p", "sources", "The full walkthrough is in the challenge's SUBMITTING.md, the rules in its README.md."));
+    return s;
+  }
+
   function facts(c) {
+    var s = el("section", "panel");
+    add(s, el("h2", null, "Rules at a glance"));
     var dl = el("dl", "facts");
     function row(k, v) { add(dl, add(el("div"), el("dt", null, k), add(el("dd"), v))); }
     row("Metric", el("span", "mono", c.metric));
-    row("Direction", better(c));
+    row("Direction", cap(better(c)));
     row("Bar", bipsText(c.min_improvement_bips));
     var paths = el("span");
     (c.editable || []).forEach(function (p, i) { if (i) paths.appendChild(document.createTextNode(", ")); paths.appendChild(el("code", null, "challenges/" + c.slug + "/" + p)); });
     row("Editable", paths);
     row("Size cap", fmt(c.max_bytes, 0) + " bytes");
-    row("Kind", c.family);
-    return dl;
+    var data = el("span");
+    if (c.feed) {
+      var f = el("a", null, c.feed);
+      f.setAttribute("href", c.feed);
+      add(data, f, ", ");
+    }
+    var all = el("a", null, "challenges.json");
+    all.setAttribute("href", "challenges.json");
+    add(data, all);
+    row("Data", data);
+    return add(s, dl);
+  }
+
+  function board(c) {
+    var s = section("Leaderboard", el("span", "block-note", "Promoted results: two agreeing sandboxed runs on main"));
+    if (!(c.board || []).length) {
+      var p = el("p", "empty");
+      if (c.baseline) add(p, el("strong", null, "No one is on the board yet."), " The first submission that reaches " + targetText(c) + " " + c.metric + " and passes promotion takes first place.");
+      else add(p, "Empty until the baseline is recorded.");
+      add(s, p);
+      return s;
+    }
+    add(s, table([["#", "n"], ["Solver"], [c.metric, "n"], ["vs baseline", "n"], ["When"], ["Commit"]],
+      c.board.map(function (r) {
+        var who = el("span", null, str(r.solver) || "unknown");
+        if (str(r.model)) add(who, el("span", "sub", " " + r.model));
+        return [el("span", "rank", String(r.rank)), who, fmt(r.value), pct(r.delta_pct), time(r.at), el("code", null, short(r.commit))];
+      }), "board"));
+    return s;
+  }
+
+  function attempts(c) {
+    var list = c.attempts || [];
+    var counts = {};
+    list.forEach(function (a) { counts[a.status] = (counts[a.status] || 0) + 1; });
+    var note = el("span", "block-note", list.length ? list.length + (list.length === 1 ? " entry" : " entries") + ", newest first" : "");
+    var s = section("Attempt history", note);
+    if (!list.length) {
+      add(s, empty(c.state === "draft" ? "No attempts: the challenge isn't open yet." : "No attempts yet. Every PR check and promotion run is recorded here, including rejections."));
+      return s;
+    }
+    var sum = el("p", "tally");
+    Object.keys(OUTCOMES).forEach(function (k) {
+      if (counts[k]) add(sum, el("span", "outcome o-" + OUTCOMES[k][1], OUTCOMES[k][0] + " " + counts[k]));
+    });
+    add(s, sum);
+    add(s, table([["When"], ["Stage"], ["Outcome"], [c.metric, "n"], ["By"], ["Commit"], ["Detail", "detail"]],
+      list.map(function (a) {
+        var o = OUTCOMES[a.status] || [str(a.status) || "unknown", "plain"];
+        return [time(a.at), STAGES[a.stage] || str(a.stage), el("span", "outcome o-" + o[1], o[0]), fmt(a.value),
+          str(a.by), el("code", null, short(a.commit)), el("span", "reason", str(a.reason))];
+      }), "attempts"));
+    return s;
   }
 
   function activity(c) {
     var s = section("Pipeline activity", STATE && STATE.generated_at ? add(el("span", "block-note"), "as of ", time(STATE.generated_at)) : null);
     if (!STATE) {
-      add(s, empty("Live pipeline state isn't published with this build. Results below are complete as of the generation time."));
+      add(s, empty("Live pipeline state isn't published with this build. Results above are complete as of the generation time."));
       return s;
     }
-    var pulls = (Array.isArray(STATE.pulls) ? STATE.pulls : []).filter(function (p) {
-      return Array.isArray(p.challenges) && p.challenges.indexOf(c.slug) >= 0;
-    });
+    var pulls = pullsFor(c);
     add(s, el("h3", null, pulls.length ? "Open pull requests (" + pulls.length + ")" : "Open pull requests"));
-    if (!pulls.length) add(s, empty("No open pull requests touch " + c.slug + "."));
+    if (!pulls.length) add(s, empty("No open pull requests touch " + c.slug + ". Yours could be the first."));
     else {
       var ul = el("ul", "list");
       pulls.slice(0, 20).forEach(function (p) {
@@ -298,122 +575,69 @@
     return s;
   }
 
-  function board(c) {
-    var s = section("Leaderboard", el("span", "block-note", "Promoted results: two agreeing sandboxed runs on main, fresh seeds"));
-    if (!(c.board || []).length) {
-      add(s, empty(c.baseline ? "No promoted submission yet. The baseline is the record to beat." : "Empty until the baseline is recorded."));
-      return s;
-    }
-    add(s, table([["#", "n"], ["Solver"], [c.metric, "n"], ["vs baseline", "n"], ["When"], ["Commit"]],
-      c.board.map(function (r) {
-        var who = el("span", null, str(r.solver) || "unknown");
-        if (str(r.model)) add(who, el("span", "sub", " " + r.model));
-        return [String(r.rank), who, fmt(r.value), pct(r.delta_pct), time(r.at), el("code", null, short(r.commit))];
-      }), "board"));
-    return s;
-  }
-
-  function attempts(c) {
-    var list = c.attempts || [];
-    var counts = {};
-    list.forEach(function (a) { counts[a.status] = (counts[a.status] || 0) + 1; });
-    var note = el("span", "block-note", list.length ? list.length + (list.length === 1 ? " entry" : " entries") + ", newest first" : "");
-    var s = section("Attempt history", note);
-    if (!list.length) {
-      add(s, empty(c.state === "draft" ? "No attempts: the challenge isn't open yet." : "No attempts yet. Every PR check and promotion run is recorded here, including rejections."));
-      return s;
-    }
-    var sum = el("p", "tally");
-    Object.keys(OUTCOMES).forEach(function (k) {
-      if (counts[k]) add(sum, el("span", "outcome o-" + OUTCOMES[k][1], OUTCOMES[k][0] + " " + counts[k]));
-    });
-    add(s, sum);
-    add(s, table([["When"], ["Stage"], ["Outcome"], [c.metric, "n"], ["By"], ["Commit"], ["Detail", "detail"]],
-      list.map(function (a) {
-        var o = OUTCOMES[a.status] || [str(a.status) || "unknown", "plain"];
-        return [time(a.at), STAGES[a.stage] || str(a.stage), el("span", "outcome o-" + o[1], o[0]), fmt(a.value),
-          str(a.by), el("code", null, short(a.commit)), el("span", "reason", str(a.reason))];
-      }), "attempts"));
-    return s;
-  }
-
-  function submit(c) {
-    var s = section("How to submit");
-    var steps = c.submit_steps || [];
-    if (c.state === "draft" || c.state === "closed") add(s, el("p", "callout", c.state === "draft" ? "This challenge is a draft: submissions aren't scored yet." : "This challenge is closed to new submissions."));
-    if (steps.length) {
-      var ol = el("ol", "steps");
-      steps.forEach(function (t) { ol.appendChild(el("li", null, t)); });
-      add(s, ol);
-    } else add(s, empty("See SUBMITTING.md in the challenge directory."));
-    var p = el("p", "fine");
-    add(p, "Edit only ", ...(c.editable || []).map(function (e, i) {
-      var f = document.createDocumentFragment();
-      if (i) f.appendChild(document.createTextNode(", "));
-      f.appendChild(el("code", null, "challenges/" + c.slug + "/" + e));
-      return f;
-    }), "; at most " + fmt(c.max_bytes, 0) + " bytes. Details are in the challenge's SUBMITTING.md and README.md.");
-    add(s, p);
-    return s;
-  }
-
   // ---------- page ----------
-  function nav(sel) {
-    var n = el("nav", "rail");
+  function picker(sel) {
+    if (challenges.length < 2) return null;
+    var n = el("nav", "picker");
     n.setAttribute("aria-label", "Challenges");
-    var ul = el("ul");
     challenges.forEach(function (c) {
-      var a = el("a", "rail-item" + (c === sel ? " is-current" : ""));
+      var a = el("a", "pick");
       a.setAttribute("href", "#" + encodeURIComponent(c.slug));
       if (c === sel) a.setAttribute("aria-current", "page");
       var d = decimalsFor(c);
-      var val = c.record ? fmt(c.record.value, d) : c.baseline ? fmt(c.baseline.value, d) : "–";
-      var prs = STATE && Array.isArray(STATE.pulls) ? STATE.pulls.filter(function (p) { return Array.isArray(p.challenges) && p.challenges.indexOf(c.slug) >= 0; }).length : 0;
-      add(a, el("span", "rail-slug", c.slug), add(el("span", "rail-meta"), badge(c.state), prs ? el("span", "tag", prs + " PR" + (prs > 1 ? "s" : "")) : null),
-        add(el("span", "rail-value"), val, el("span", "rail-unit", " " + c.metric)));
-      ul.appendChild(add(el("li"), a));
+      var val = c.record ? fmt(c.record.value, d) : c.baseline ? fmt(c.baseline.value, d) : null;
+      var prs = pullsFor(c).length;
+      var meta = (val !== null ? "Record " + val + " " + c.metric : STATES[c.state] ? STATES[c.state].short : "Draft") + (prs ? ", " + prs + " open PR" + (prs > 1 ? "s" : "") : "");
+      add(a, el("span", "pick-slug", c.slug), el("span", "pick-meta", meta));
+      n.appendChild(a);
     });
-    return add(n, ul);
+    return n;
   }
 
-  function detail(c) {
-    var main = el("main", "detail");
-    main.setAttribute("id", "main");
-    if (!c) return add(main, empty("No challenges are defined."));
-    DEC = decimalsFor(c);
-    var head = el("header", "detail-head");
-    add(head, add(el("div", "title-row"), el("h1", "slug", c.slug), badge(c.state, true)));
-    if (str(c.title)) add(head, el("p", "title", c.title));
-    if (str(c.summary)) add(head, el("p", "summary", c.summary));
-    add(main, head, ratchet(c), facts(c), activity(c), board(c), attempts(c), submit(c));
-    var foot = el("p", "fine sources");
-    add(foot, "Data: ");
-    if (c.feed) {
-      var f = el("a", null, c.feed);
-      f.setAttribute("href", c.feed);
-      add(foot, f, ", ");
-    }
-    var all = el("a", null, "challenges.json");
-    all.setAttribute("href", "challenges.json");
-    add(foot, all, ".");
-    add(main, foot);
-    return main;
+  function mark() {
+    // A stepped line rising to a dashed bar: the ratchet.
+    var s = svg("svg", { viewBox: "0 0 24 24", "class": "brand-mark", "aria-hidden": "true" });
+    add(s, svg("path", { d: "M3 19 H8 V14 H13 V10 H21", fill: "none", stroke: "#3ddba6", "stroke-width": 2.4, "stroke-linejoin": "round" }),
+      svg("path", { d: "M3 5 H21", fill: "none", stroke: "#aaa3ff", "stroke-width": 2, "stroke-dasharray": "3 2.5" }));
+    return s;
   }
 
   function render() {
     var c = current();
-    var top = el("header", "top");
-    var brand = add(el("div", "brand"), el("span", "brand-name", "Challenge status"));
-    var gen = add(el("p", "generated"), "Results generated ", time(DATA.generated_at), " (" + absTime(DATA.generated_at) + ")");
-    var toggle = el("button", "theme", "Theme");
+    var band = el("div", "top-band");
+    var top = el("header", "top wrap");
+    var brand = add(el("div", "brand"), mark(), "Auto-research challenges");
+    var gen = add(el("p", "generated"), "Results updated ", time(DATA.generated_at), " (" + absTime(DATA.generated_at) + ")");
+    var repo = STATE && str(STATE.repo) ? link("Repository", "https://github.com/" + STATE.repo, "ghost") : null;
+    var toggle = el("button", "ghost", "Theme");
     toggle.setAttribute("type", "button");
     toggle.setAttribute("aria-label", "Switch light or dark theme");
     toggle.addEventListener("click", flipTheme);
-    add(top, brand, gen, toggle);
-    var shell = add(el("div", "shell"), nav(c), detail(c));
+    add(top, brand, gen, repo, toggle);
+    add(band, top);
+    var pick = picker(c);
+    if (pick) add(band, add(el("div", "wrap"), pick));
     app.textContent = "";
-    add(app, top, shell);
-    document.title = c ? c.slug + ": challenge status" : "Challenge status";
+    add(app, band);
+    if (!c) {
+      add(app, add(el("main", "wrap body"), empty("No challenges are open right now.")));
+      document.title = "Auto-research challenges";
+      return;
+    }
+    DEC = decimalsFor(c);
+    var main = el("main");
+    main.setAttribute("id", "main");
+    var content = add(el("div", "content"), board(c), attempts(c), activity(c));
+    var aside = add(el("div", "aside"), enter(c), facts(c));
+    add(main, stage(c), add(el("div", "wrap body"), content, aside));
+    add(app, main);
+    document.title = c.slug + ": auto-research challenges";
+    drawCharts();
+  }
+  function drawCharts() {
+    var c = current();
+    var host = document.querySelector(".chart");
+    if (c && host) drawChart(c, host);
   }
 
   // ---------- theme ----------
@@ -430,6 +654,13 @@
   } catch (e) { /* storage unavailable */ }
 
   window.addEventListener("hashchange", function () { render(); window.scrollTo(0, 0); });
+  var resizeTimer = null, lastW = window.innerWidth;
+  window.addEventListener("resize", function () {
+    if (window.innerWidth === lastW) return;
+    lastW = window.innerWidth;
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawCharts, 120);
+  });
   render();
 
   // state.json: optional, same directory. A placeholder (no generated_at) means unpublished.
