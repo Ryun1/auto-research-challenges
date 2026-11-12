@@ -1,26 +1,37 @@
 {
-  "generated_at": "2026-11-12T20:06:42Z",
+  "generated_at": "2026-11-12T20:15:04Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "submit/ledger-cbor-maryvalue-2",
+      "branch": "main",
       "conclusion": null,
+      "created_at": "2026-11-12T20:14:14Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-12T20:14:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43298265059",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "submit/ledger-cbor-maryvalue-2",
+      "conclusion": "success",
       "created_at": "2026-11-12T20:02:37Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter (resubmission of #64)",
-      "updated_at": "2026-11-12T20:02:41Z",
+      "updated_at": "2026-11-12T20:09:44Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43296300315",
       "workflow": "CI"
     },
     {
       "branch": "submit/ledger-cbor-maryvalue-2",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-12T20:02:37Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter (resubmission of #64)",
-      "updated_at": "2026-11-12T20:03:35Z",
+      "updated_at": "2026-11-12T20:14:11Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43296300268",
       "workflow": "Submission"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-11T18:40:13Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079824977",
       "workflow": "Comment"
-    },
-    {
-      "branch": "fix/ledger-cbor-offline-build",
-      "conclusion": "success",
-      "created_at": "2026-11-11T18:38:16Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate on five upstream suites; Preflight tests the sandboxed path",
-      "updated_at": "2026-11-11T18:39:16Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079665963",
-      "workflow": "Submission"
     }
   ],
   "pulls": [
