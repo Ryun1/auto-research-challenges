@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-12T22:51:31Z",
+  "generated_at": "2026-11-12T22:58:23Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-12T22:56:25Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-12T22:57:17Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43324463015",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "malicious/th-extension-1794524125",
+      "conclusion": "success",
+      "created_at": "2026-11-12T22:55:33Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "malicious: th-extension",
+      "updated_at": "2026-11-12T22:56:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43324337169",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +37,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-12T22:49:27Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Pre-invite fixes: main-only pipeline, daily cap, malicious-PR suite o…",
-      "updated_at": "2026-11-12T22:49:31Z",
+      "updated_at": "2026-11-12T22:56:45Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43323431883",
       "workflow": "CI"
     },
@@ -418,28 +440,6 @@
       "title": "Preflight",
       "updated_at": "2026-11-12T00:09:08Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43123672413",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "debug/upstream-offline",
-      "conclusion": "success",
-      "created_at": "2026-11-11T23:46:47Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-11T23:55:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43122405897",
-      "workflow": "Preflight"
-    },
-    {
-      "branch": "debug/upstream-offline",
-      "conclusion": "success",
-      "created_at": "2026-11-11T23:37:20Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Preflight",
-      "updated_at": "2026-11-11T23:46:05Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43121226598",
       "workflow": "Preflight"
     }
   ],
