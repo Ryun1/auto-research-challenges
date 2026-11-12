@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-12T20:54:05Z",
+  "generated_at": "2026-11-12T22:38:49Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "skipped",
+      "created_at": "2026-11-12T22:37:45Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-12T22:37:56Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321654954",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "malicious/non-main-base-1794523030",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-12T22:37:20Z",
+      "event": "pull_request",
+      "status": "completed",
+      "title": "malicious: non-main-base",
+      "updated_at": "2026-11-12T22:37:39Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321588859",
+      "workflow": "CI"
+    },
+    {
+      "branch": "malicious/non-main-base-1794523030",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-12T22:37:20Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "malicious: non-main-base",
+      "updated_at": "2026-11-12T22:37:39Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321588734",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +48,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-12T20:51:56Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Site: scoreboard redesign and a participant prompt with a Copy button…",
-      "updated_at": "2026-11-12T20:52:00Z",
+      "updated_at": "2026-11-12T20:59:02Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43304506700",
       "workflow": "CI"
     },
@@ -408,39 +441,6 @@
       "updated_at": "2026-11-11T22:55:14Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766453",
       "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T22:39:23Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Results recording: union-merge results.jsonl, stop committing public/…",
-      "updated_at": "2026-11-11T22:46:39Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43113577153",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T22:27:10Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T22:28:03Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111880982",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "results-union-merge",
-      "conclusion": "success",
-      "created_at": "2026-11-11T22:26:08Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Results commits survive concurrent runs (union merge, no committed public/, per-PR Comment concurrency)",
-      "updated_at": "2026-11-11T22:27:07Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111738452",
-      "workflow": "Submission"
     }
   ],
   "pulls": []
