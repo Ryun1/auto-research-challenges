@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-12T00:59:50Z",
+  "generated_at": "2026-11-12T01:36:12Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-12T01:36:07Z",
+      "event": "workflow_dispatch",
+      "status": "queued",
+      "title": "Preflight",
+      "updated_at": "2026-11-12T01:36:07Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43135619436",
+      "workflow": "Preflight"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-12T01:35:56Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
+      "updated_at": "2026-11-12T01:36:00Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43135597558",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-12T01:35:56Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
+      "updated_at": "2026-11-12T01:36:01Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43135597462",
+      "workflow": "Promote"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,23 +48,23 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-12T00:57:33Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: build the upstream suites' dependencies in setup, so the…",
-      "updated_at": "2026-11-12T00:57:37Z",
+      "updated_at": "2026-11-12T01:02:11Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43131084500",
       "workflow": "CI"
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-12T00:57:33Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: build the upstream suites' dependencies in setup, so the…",
-      "updated_at": "2026-11-12T00:57:44Z",
+      "updated_at": "2026-11-12T01:35:22Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43131084490",
       "workflow": "Warm"
     },
@@ -408,52 +441,7 @@
       "updated_at": "2026-11-11T17:21:15Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43067163921",
       "workflow": "Comment"
-    },
-    {
-      "branch": "fix/promote-baseline-and-push",
-      "conclusion": "success",
-      "created_at": "2026-11-11T17:19:12Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Promote: baseline skips upstream tests; results push fails loudly",
-      "updated_at": "2026-11-11T17:26:18Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43066987985",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix/promote-baseline-and-push",
-      "conclusion": "success",
-      "created_at": "2026-11-11T17:19:12Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Promote: baseline skips upstream tests; results push fails loudly",
-      "updated_at": "2026-11-11T17:20:12Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43066987703",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-11T17:05:32Z",
-      "event": "workflow_dispatch",
-      "status": "completed",
-      "title": "Promote",
-      "updated_at": "2026-11-11T17:17:46Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43064726976",
-      "workflow": "Promote"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-11T18:37:50Z",
-      "draft": false,
-      "number": 64,
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/64",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }
