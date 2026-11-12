@@ -1,15 +1,26 @@
 {
-  "generated_at": "2026-11-12T22:39:55Z",
+  "generated_at": "2026-11-12T22:41:36Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "launch/pre-invite-fixes",
+      "branch": "main",
       "conclusion": null,
+      "created_at": "2026-11-12T22:40:35Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-12T22:40:42Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43322086622",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "launch/pre-invite-fixes",
+      "conclusion": "success",
       "created_at": "2026-11-12T22:39:31Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Pre-invite fixes: main-only pipeline, daily cap, malicious-PR suite on ledger-cbor",
-      "updated_at": "2026-11-12T22:39:35Z",
+      "updated_at": "2026-11-12T22:40:31Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321921517",
       "workflow": "Submission"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-11T23:01:12Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43116459933",
       "workflow": "Preflight"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T22:48:06Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor promotions: cabal --offline in the sandboxed build; gate …",
-      "updated_at": "2026-11-11T23:16:45Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43114766486",
-      "workflow": "Warm"
     }
   ],
   "pulls": [
