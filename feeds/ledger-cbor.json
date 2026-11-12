@@ -1,8 +1,9 @@
 {
   "attempts_by_status": {
-    "pr:valid_claim_better": 1
+    "pr:valid_claim_better": 1,
+    "promotion:infra_failed": 1
   },
-  "attempts_count": 1,
+  "attempts_count": 2,
   "bar": {
     "baseline": 1.000012450031894,
     "direction": "maximise",
@@ -15,8 +16,8 @@
   "board": [],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-12T01:57:05Z",
-  "generated_at": "2026-11-12T01:57:05Z",
+  "fetched_at": "2026-11-12T11:40:38Z",
+  "generated_at": "2026-11-12T11:40:38Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
@@ -34,7 +35,6 @@
       "challenges/ledger-cbor/challenge.toml",
       "challenges/ledger-cbor/corpus/**",
       "challenges/ledger-cbor/harness/**",
-      "challenges/ledger-cbor/measure/**",
       "challenges/ledger-cbor/packages.txt",
       "challenges/ledger-cbor/preflight/**",
       "challenges/ledger-cbor/setup.sh",
