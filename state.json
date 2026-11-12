@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-12T00:10:11Z",
+  "generated_at": "2026-11-12T00:13:39Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-12T00:12:39Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-12T00:13:29Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43125599801",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "fix/ledger-cbor-test-deps",
+      "conclusion": null,
+      "created_at": "2026-11-12T00:11:44Z",
+      "event": "workflow_dispatch",
+      "status": "in_progress",
+      "title": "Preflight",
+      "updated_at": "2026-11-12T00:11:48Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43125487118",
+      "workflow": "Preflight"
+    },
+    {
+      "branch": "fix/ledger-cbor-test-deps",
+      "conclusion": null,
+      "created_at": "2026-11-12T00:11:36Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor: build the upstream suites' dependencies in setup (offline test build)",
+      "updated_at": "2026-11-12T00:11:40Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43125472288",
+      "workflow": "CI"
+    },
+    {
+      "branch": "fix/ledger-cbor-test-deps",
+      "conclusion": "success",
+      "created_at": "2026-11-12T00:11:36Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor: build the upstream suites' dependencies in setup (offline test build)",
+      "updated_at": "2026-11-12T00:12:36Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43125472227",
+      "workflow": "Submission"
+    },
     {
       "branch": "debug/upstream-offline",
       "conclusion": "success",
@@ -397,53 +441,20 @@
       "updated_at": "2026-11-11T17:01:08Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061553696",
       "workflow": "Comment"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:45:04Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:52:01Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061381554",
-      "workflow": "CI"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:45:03Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:46:03Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43061378341",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-11T16:38:52Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T16:46:08Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060386292",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "status-site",
-      "conclusion": "success",
-      "created_at": "2026-11-11T16:37:56Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Status site: generator, Site deploy workflow, ledger-cbor tester guide",
-      "updated_at": "2026-11-11T16:43:20Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43060236912",
-      "workflow": "CI"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-12T00:11:33Z",
+      "draft": false,
+      "number": 67,
+      "title": "ledger-cbor: build the upstream suites' dependencies in setup (offline test build)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/67",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-11T18:37:50Z",
