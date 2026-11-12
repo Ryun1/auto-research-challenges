@@ -3,6 +3,17 @@
     {
       "attempts": [
         {
+          "at": "2026-11-12T20:41:26Z",
+          "by": "Ryun1",
+          "commit": "3bf6967fb8862eb9bd6d8e8c0464cd564133ccbf",
+          "model": "",
+          "reason": "candidate/record = 1.0134094110163863 on the same samples (bar 0.01)",
+          "record_before": 1.000012450031894,
+          "stage": "promotion",
+          "status": "promoted",
+          "value": 1.013430150878856
+        },
+        {
           "at": "2026-11-12T20:15:16Z",
           "by": "Ryun1",
           "commit": "dd457e911766e2951f723c245f4ce429f46ab823",
@@ -51,7 +62,17 @@
         "at": "2026-11-11T17:38:25Z",
         "value": 1.000012450031894
       },
-      "board": [],
+      "board": [
+        {
+          "at": "2026-11-12T20:41:26Z",
+          "commit": "3bf6967fb8862eb9bd6d8e8c0464cd564133ccbf",
+          "delta_pct": 1.34,
+          "model": "",
+          "rank": 1,
+          "solver": "Ryun1",
+          "value": 1.013430150878856
+        }
+      ],
       "direction": "maximise",
       "editable": [
         "candidate/"
@@ -61,7 +82,11 @@
       "max_bytes": 4194304,
       "metric": "speedup",
       "min_improvement_bips": 100,
-      "record": null,
+      "record": {
+        "at": "2026-11-12T20:41:26Z",
+        "by": "Ryun1",
+        "value": 1.013430150878856
+      },
       "slug": "ledger-cbor",
       "state": "open",
       "status": "open",
@@ -74,9 +99,9 @@
       ],
       "summary": "Make cardano-ledger decode real mainnet Conway transactions in fewer instructions, without changing what it decodes or what it rejects. The editable code is the src/ of the decoding stack: cardano-ledger-binary (the Decoder monad, Annotator, coders, primitives), cardano-ledger-core and the era packages from Shelley to Conway (the per-field instances, MaryValue, BabbageTxOut, the Conway tx body...).",
       "title": "Cardano ledger: faster Conway CBOR decoding (cardano-ledger, Haskell)",
-      "to_beat": 1.010012574532213
+      "to_beat": 1.0235644523876444
     }
   ],
-  "generated_at": "2026-11-12T20:20:29Z",
+  "generated_at": "2026-11-12T20:42:34Z",
   "site_schema_version": 1
 }

@@ -1,9 +1,10 @@
 {
   "attempts_by_status": {
     "pr:valid_claim_better": 2,
-    "promotion:infra_failed": 1
+    "promotion:infra_failed": 1,
+    "promotion:promoted": 1
   },
-  "attempts_count": 3,
+  "attempts_count": 4,
   "bar": {
     "baseline": 1.000012450031894,
     "direction": "maximise",
@@ -13,11 +14,22 @@
     "statistic": "the challenge's score command"
   },
   "benchmark": "ledger-cbor",
-  "board": [],
+  "board": [
+    {
+      "at": "2026-11-12T20:41:26Z",
+      "commit": "3bf6967fb8862eb9bd6d8e8c0464cd564133ccbf",
+      "delta": 0.013417700846961811,
+      "delta_pct": 1.34,
+      "model": "",
+      "rank": 1,
+      "solver": "Ryun1",
+      "value": 1.013430150878856
+    }
+  ],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-12T20:20:29Z",
-  "generated_at": "2026-11-12T20:20:29Z",
+  "fetched_at": "2026-11-12T20:42:34Z",
+  "generated_at": "2026-11-12T20:42:34Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
@@ -47,7 +59,7 @@
         "arch": "x86_64",
         "cpu_model": "AMD EPYC 9V74 80-Core Processor",
         "logical_cpu_count": 2,
-        "memory_bytes": 8317935616,
+        "memory_bytes": 8317927424,
         "os": "linux"
       },
       "max_submission_bytes": 4194304,
@@ -62,10 +74,10 @@
     "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
   },
   "record": {
-    "at": "2026-11-11T17:38:25Z",
+    "at": "2026-11-12T20:41:26Z",
     "by": "Ryun1",
     "unit": "speedup",
-    "value": 1.000012450031894
+    "value": 1.013430150878856
   },
   "source": "builder",
   "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
