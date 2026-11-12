@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-12T20:16:30Z",
+  "generated_at": "2026-11-12T20:20:33Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-12T20:19:48Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
+      "updated_at": "2026-11-12T20:19:53Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43299205502",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-12T20:19:48Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
+      "updated_at": "2026-11-12T20:19:53Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43299205399",
+      "workflow": "Promote"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -419,41 +441,7 @@
       "updated_at": "2026-11-11T22:50:22Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43111331287",
       "workflow": "Preflight"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T18:51:58Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T18:53:02Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43081789160",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-11T18:39:19Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-11T18:40:13Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43079824977",
-      "workflow": "Comment"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-12T20:02:33Z",
-      "draft": false,
-      "number": 70,
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter (resubmission of #64)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/70",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }

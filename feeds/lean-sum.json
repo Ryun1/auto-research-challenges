@@ -13,8 +13,8 @@
   "board": [],
   "challenge": "lean-sum",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-12T20:16:25Z",
-  "generated_at": "2026-11-12T20:16:25Z",
+  "fetched_at": "2026-11-12T20:20:29Z",
+  "generated_at": "2026-11-12T20:20:29Z",
   "policy": {
     "allowed_paths": [
       "challenges/lean-sum/candidate/**"
