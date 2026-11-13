@@ -1,15 +1,59 @@
 {
-  "generated_at": "2026-11-13T16:28:13Z",
+  "generated_at": "2026-11-13T17:17:24Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
       "conclusion": null,
-      "created_at": "2026-11-13T16:27:11Z",
+      "created_at": "2026-11-13T17:17:01Z",
       "event": "push",
       "status": "in_progress",
+      "title": "ledger-cbor: read single-chunk input directly instead of through cbor…",
+      "updated_at": "2026-11-13T17:17:05Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43471246031",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-13T17:17:01Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: read single-chunk input directly instead of through cbor…",
+      "updated_at": "2026-11-13T17:17:06Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43471245947",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-13T17:15:00Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-13T17:16:15Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43470904001",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-direct-bundle",
+      "conclusion": "success",
+      "created_at": "2026-11-13T16:43:02Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
+      "updated_at": "2026-11-13T17:14:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43465502388",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-13T16:27:11Z",
+      "event": "push",
+      "status": "completed",
       "title": "Submission: the repo owner is exempt from the daily cap (#82)",
-      "updated_at": "2026-11-13T16:27:15Z",
+      "updated_at": "2026-11-13T16:34:17Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43462843069",
       "workflow": "CI"
     },
@@ -397,63 +441,7 @@
       "updated_at": "2026-11-12T22:37:39Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321588859",
       "workflow": "CI"
-    },
-    {
-      "branch": "malicious/non-main-base-1794523030",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-12T22:37:20Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "malicious: non-main-base",
-      "updated_at": "2026-11-12T22:37:39Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321588734",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:51:56Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Site: scoreboard redesign and a participant prompt with a Copy button…",
-      "updated_at": "2026-11-12T20:52:47Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43304506726",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:51:56Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Site: scoreboard redesign and a participant prompt with a Copy button…",
-      "updated_at": "2026-11-12T20:59:02Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43304506700",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:45:07Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-12T20:46:12Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43303397348",
-      "workflow": "Comment"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-13T15:55:02Z",
-      "draft": false,
-      "number": 80,
-      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/80",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }
