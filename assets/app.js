@@ -23,9 +23,11 @@
     rejected: ["Rejected", "bad"],
     infra_failed: ["Infra failure", "warn"]
   };
-  // What the chart and the record history show: the baseline, each promotion,
-  // and each PR that claimed a record. Rejections and failed runs stay in the data.
+  // What the record history shows: the baseline, each promotion, and each PR
+  // that claimed a record. Rejections and failed runs stay in the data.
   var HISTORY = { baseline: 1, promoted: 1, valid_claim_better: 1 };
+  // What the chart shows: the record line's own points.
+  var RECORDS = { baseline: 1, promoted: 1 };
   var STAGES = { pr: "PR check", promotion: "Promotion on main", baseline: "Baseline on main" };
 
   // ---------- helpers ----------
@@ -253,14 +255,13 @@
     var ch = el("div", "chart" + (c.baseline && num(c.baseline.value) !== null ? "" : " chart-pending"));
     ch.setAttribute("data-slug", c.slug);
     var legend = el("ul", "legend");
-    var claims = (c.attempts || []).some(function (a) { return a.status === "valid_claim_better" && num(a.value) !== null; });
-    [["key-rec", "Record (baseline, then each promotion)"], claims ? ["key-claim", "PR claiming a record, before promotion"] : null,
+    [["key-rec", "Record (baseline, then each promotion)"],
       ["key-tgt", "Bar the next record must reach"], ["key-zone", "New-record zone"]]
       .forEach(function (k) { if (k) add(legend, add(el("li"), el("span", "key " + k[0]), k[1])); });
     return add(box, ch, ch.className === "chart" ? legend : null);
   }
 
-  // Record progression: every scored attempt as a point, the record as a
+  // Record progression: the baseline and each promotion as points on a
   // stepped line, the bar to beat as a dashed line. Better is always up.
   function drawChart(c, host) {
     host.textContent = "";
@@ -275,7 +276,7 @@
     }
     var maxi = c.direction === "maximise";
     var now = Date.parse(DATA.generated_at) || Date.now();
-    var pts = (c.attempts || []).filter(function (a) { return HISTORY[a.status] && num(a.value) !== null && !isNaN(Date.parse(a.at)); })
+    var pts = (c.attempts || []).filter(function (a) { return RECORDS[a.status] && num(a.value) !== null && !isNaN(Date.parse(a.at)); })
       .map(function (a) { return { t: Date.parse(a.at), v: a.value, s: str(a.status), by: str(a.by), stage: str(a.stage) }; })
       .sort(function (a, b) { return a.t - b.t; });
     var steps = pts.filter(function (p) { return p.s === "baseline" || p.s === "promoted"; });
@@ -302,7 +303,7 @@
     var s = svg("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, role: "img" });
     var rec = c.record ? num(c.record.value) : null;
     s.setAttribute("aria-label", "Record progression for " + c.slug + ": baseline " + val(base) + ", record " + val(rec !== null ? rec : base) +
-      (target !== null ? ", the next record needs " + targetText(c) : "") + " " + (TIMES ? "faster" : c.metric + ", " + better(c)) + ". " + pts.length + " scored runs.");
+      (target !== null ? ", the next record needs " + targetText(c) : "") + " " + (TIMES ? "faster" : c.metric + ", " + better(c)) + ". " + steps.length + " records.");
 
     // grid and y labels
     for (var v = lo; v <= hi + step / 2; v += step) {
@@ -376,17 +377,10 @@
     pts.forEach(function (p) { boxes.push({ x: x(p.t) - 6, y: y(p.v) - 6, w: 12, h: 12 }); });
     // the standing record is labelled at the right edge already
     steps.slice(0, -1).forEach(function (p) { label(p, (p.s === "baseline" ? "Baseline " : "") + val(p.v), "rec-label", true); });
-    pts.filter(function (p) { return p.s === "valid_claim_better"; }).reverse()
-      .forEach(function (p) { label(p, val(p.v) + (p.by ? " " + p.by : ""), "claim-label", false); });
 
-    // attempts
+    // records
     pts.forEach(function (p) {
-      var px = x(p.t), py = y(p.v), mark;
-      if (p.s === "rejected") {
-        mark = svg("path", { d: "M" + (px - 4) + " " + (py - 4) + " L" + (px + 4) + " " + (py + 4) + " M" + (px + 4) + " " + (py - 4) + " L" + (px - 4) + " " + (py + 4), "class": "pt-rejected" });
-      } else {
-        mark = svg("circle", { cx: px, cy: py, r: p.s === "baseline" || p.s === "promoted" ? 5.5 : 4.5, "class": "pt-" + (OUTCOMES[p.s] ? p.s : "valid_not_promoted") });
-      }
+      var mark = svg("circle", { cx: x(p.t), cy: y(p.v), r: 5.5, "class": "pt-" + p.s });
       var tt = svg("title", {});
       tt.textContent = (OUTCOMES[p.s] ? OUTCOMES[p.s][0] : p.s) + ": " + scoreText(c, p.v) + (p.by ? ", " + p.by : "") + ", " + (STAGES[p.stage] || p.stage) + ", " + new Date(p.t).toISOString().slice(0, 16).replace("T", " ") + " UTC";
       add(mark, tt);
@@ -563,7 +557,7 @@
       c.board.map(function (r) {
         var who = el("span", null, str(r.solver) || "unknown");
         if (str(r.model)) add(who, el("span", "sub", " " + r.model));
-        return [el("span", "rank", String(r.rank)), who, val(r.value), pct(r.delta_pct), time(r.at), el("code", null, short(r.commit))];
+        return [el("span", "rank", String(r.rank)), who, val(r.value), pct(r.delta_pct), time(r.at), commitCell(c, r.commit, (str(r.solver) || "unknown") + ", " + val(r.value))];
       }), "board"));
     return s;
   }
@@ -591,9 +585,100 @@
       list.map(function (a) {
         var o = OUTCOMES[a.status] || [str(a.status) || "unknown", "plain"];
         return [time(a.at), el("span", "outcome o-" + o[1], o[0]), val(a.value),
-          str(a.by), el("code", null, short(a.commit)), el("span", "reason", tidy(str(a.reason)))];
+          str(a.by), commitCell(c, a.commit, o[0] + ": " + val(a.value) + (str(a.by) ? ", " + a.by : "")), el("span", "reason", tidy(str(a.reason)))];
       }), "attempts"));
     return s;
+  }
+
+  // ---------- diffs ----------
+  // A submission's diff, diffs/<slug>/<commit>.patch, fetched when opened.
+  // Its text is the submission's own: rendered line by line as textContent.
+  function diffPath(p) {
+    p = str(p);
+    return /^diffs\/[A-Za-z0-9._-]+\/[0-9a-f]{40}\.patch$/.test(p) ? p : null;
+  }
+  function diffFor(c, commit) {
+    var a = (c.attempts || []).filter(function (a) { return a.commit === commit && diffPath(a.diff); })[0];
+    return a ? a.diff : null;
+  }
+  // The commit, with a button opening its diff when there is one.
+  function commitCell(c, commit, title) {
+    var wrap = el("span", "commit");
+    add(wrap, el("code", null, short(commit)));
+    var p = diffPath(diffFor(c, commit));
+    if (p) {
+      var b = el("button", "diff-btn", "Diff");
+      b.setAttribute("type", "button");
+      b.setAttribute("aria-label", "View the diff of " + short(commit));
+      b.addEventListener("click", function () { openDiff(p, short(commit), title); });
+      add(wrap, b);
+    }
+    return wrap;
+  }
+  function diffLines(text) {
+    var files = el("div", "diff-files");
+    var file = null, body = null, stat = null, adds = 0, dels = 0;
+    function close() { if (stat) stat.textContent = "+" + adds + " −" + dels; }
+    text.replace(/\n$/, "").split("\n").forEach(function (line) {
+      if (/^diff --git /.test(line)) {
+        close();
+        adds = dels = 0;
+        var m = /^diff --git a\/(.*) b\/(.*)$/.exec(line);
+        var name = m ? m[2] : line.slice(11);
+        file = el("details", "diff-file");
+        file.open = true;
+        stat = el("span", "diff-stat");
+        add(file, add(el("summary"), el("span", "diff-name", name), stat));
+        body = el("div", "diff-body");
+        add(file, body);
+        add(files, file);
+        return;
+      }
+      if (!body) { body = el("div", "diff-body"); add(files, body); }
+      var cls = "dl";
+      if (/^(index |--- |\+\+\+ |new file|deleted file|similarity|rename |old mode|new mode|Binary )/.test(line) && !/^@@/.test(line)) {
+        if (/^(--- |\+\+\+ |index )/.test(line)) return; // the file header says it
+        cls += " dl-meta";
+      } else if (line.charAt(0) === "@") cls += " dl-hunk";
+      else if (line.charAt(0) === "+") { cls += " dl-add"; adds++; }
+      else if (line.charAt(0) === "-") { cls += " dl-del"; dels++; }
+      else if (line.charAt(0) === "[") cls += " dl-meta";
+      add(body, el("div", cls, line || " "));
+    });
+    close();
+    return files;
+  }
+  var dialog = null;
+  function openDiff(path, sha, title) {
+    if (!dialog) {
+      dialog = el("dialog", "diff-dialog");
+      dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+      document.body.appendChild(dialog);
+    }
+    dialog.textContent = "";
+    var head = el("div", "diff-head");
+    var raw = el("a", "ghost", "Raw patch");
+    raw.setAttribute("href", path);
+    raw.setAttribute("download", sha + ".patch");
+    var close = el("button", "ghost", "Close");
+    close.setAttribute("type", "button");
+    close.addEventListener("click", function () { dialog.close(); });
+    add(head, add(el("div", "diff-title"), el("h2", null, "Diff " + sha), title ? el("p", "diff-sub", title) : null), raw, close);
+    var bodyBox = el("div", "diff-scroll");
+    add(bodyBox, el("p", "empty", "Loading…"));
+    add(dialog, head, bodyBox);
+    if (typeof dialog.showModal === "function") dialog.showModal(); else dialog.setAttribute("open", "");
+    close.focus();
+    fetch(path).then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function (t) {
+      bodyBox.textContent = "";
+      add(bodyBox, diffLines(t));
+    }).catch(function () {
+      bodyBox.textContent = "";
+      add(bodyBox, el("p", "empty", "The diff could not be loaded."));
+    });
   }
 
   // ---------- page ----------

@@ -1,0 +1,276 @@
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+index 738f1b2..419102c 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+@@ -845,6 +845,7 @@ decodeMapLikeEnforceNoDuplicatesInternal fromPairs size decodeLenOrIndef =
+   decodeListLikeEnforceNoDuplicates decodeLenOrIndef (:) $ \xs ->
+     let result = fromPairs (reverse xs)
+      in (size result, result)
++{-# INLINE decodeMapLikeEnforceNoDuplicatesInternal #-}
+ 
+ decodeIntMap :: Decoder s v -> Decoder s (IntMap.IntMap v)
+ decodeIntMap decodeValue =
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs b/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
+index 7c6377b..2c7552c 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
+@@ -46,6 +46,8 @@ import Cardano.Ledger.Binary (
+   cborError,
+   decodeBreakOr,
+   decodeInteger,
++  decodeListLen,
++  decodeListLenIndef,
+   decodeListLenOrIndef,
+   decodeMap,
+   decodeRecordNamed,
+@@ -83,7 +85,7 @@ import qualified Data.CanonicalMaps as CM
+ import Data.Foldable (foldMap')
+ import Data.Group (Abelian, Group (..))
+ import Data.Int (Int64)
+-import Data.List (sortOn)
++import Data.List (foldl', sortBy)
+ import Data.Map (Map)
+ import Data.Map.Internal (link, link2)
+ import Data.Map.Strict (assocs)
+@@ -128,6 +130,7 @@ assetNameFromText t =
+   AssetName . SBS.toShort <$> BS16.decode (encodeUtf8 t)
+ 
+ instance DecCBOR AssetName where
++  {-# INLINE decCBOR #-}
+   decCBOR = do
+     an <- decCBOR
+     if SBS.length an > 32
+@@ -302,13 +305,17 @@ decodeMaryValue = do
+   case tt of
+     TypeUInt -> inject . Coin . toInteger <$> decodeWord64
+     TypeUInt64 -> inject . Coin . toInteger <$> decodeWord64
+-    TypeListLen -> decodeValuePair (toInteger <$> decodeWord64)
+-    TypeListLen64 -> decodeValuePair (toInteger <$> decodeWord64)
+-    TypeListLenIndef -> decodeValuePair (toInteger <$> decodeWord64)
++    TypeListLen -> valuePair TypeListLen
++    TypeListLen64 -> valuePair TypeListLen64
++    TypeListLenIndef -> valuePair TypeListLenIndef
+     _ -> fail $ "MaryValue: expected array or int, got " ++ show tt
++  where
++    valuePair peeked = decodeValuePair peeked (toInteger <$> decodeWord64)
+ 
+-decodeValuePair :: (forall t. Decoder t Integer) -> Decoder s MaryValue
+-decodeValuePair decodeMultiAssetAmount =
++-- | The array form of a 'MaryValue'. The token type is the one 'decodeMaryValue'
++-- has already peeked (nothing has been consumed since).
++decodeValuePair :: TokenType -> (forall t. Decoder t Integer) -> Decoder s MaryValue
++decodeValuePair tt decodeMultiAssetAmount =
+   ifDecoderVersionAtLeast (natVersion @12) decodeMaryValue' decodeMaryValueRecD
+   where
+     -- Exactly what @decode (RecD MaryValue <! From <! D ...)@ did, without the
+@@ -317,13 +324,26 @@ decodeValuePair decodeMultiAssetAmount =
+     -- array must have length 2 and an indefinite one must hit a break straight
+     -- away. Unlike decodeMaryValue' this does not accept an indefinite array
+     -- closed after the fields.
++    --
++    -- The peeked token already says which header comes next, so a definite
++    -- (TypeListLen) or indefinite (TypeListLenIndef) header is read directly
++    -- rather than inspected again by decodeListLenOrIndef: on those tokens
++    -- decodeListLen returns the same length its Just branch would, and
++    -- decodeListLenIndef consumes the same header its Nothing branch would.
++    -- Any other token (TypeListLen64) takes decodeListLenOrIndef as before.
+     decodeMaryValueRecD = do
+-      lenOrIndef <- decodeListLenOrIndef
+-      case lenOrIndef of
+-        Just n -> matchSize "Record RecD" n 2
+-        Nothing -> do
+-          isBreak <- decodeBreakOr
+-          unless isBreak $ cborError $ DecoderErrorCustom "RecD" "Excess terms in array"
++      case tt of
++        TypeListLen -> do
++          n <- decodeListLen
++          matchSize "Record RecD" n 2
++        TypeListLenIndef -> do
++          decodeListLenIndef
++          recDIndefBreak
++        _ -> do
++          lenOrIndef <- decodeListLenOrIndef
++          case lenOrIndef of
++            Just n -> matchSize "Record RecD" n 2
++            Nothing -> recDIndefBreak
+       MaryValue
+         <$> decCBOR
+         <*> decodeMultiAsset decodeMultiAssetAmount
+@@ -332,6 +352,10 @@ decodeValuePair decodeMultiAssetAmount =
+         MaryValue
+           <$> decCBOR
+           <*> decodeMultiAsset decodeMultiAssetAmount
++    recDIndefBreak = do
++      isBreak <- decodeBreakOr
++      unless isBreak $ cborError $ DecoderErrorCustom "RecD" "Excess terms in array"
++{-# INLINE decodeValuePair #-}
+ 
+ -- | `MultiAsset` can be used in two different circumstances:
+ --
+@@ -362,6 +386,7 @@ decodeMultiAsset decodeAmount = do
+     decodeNonEmptyMap valueDecoder = do
+       m <- decodeMap decCBOR valueDecoder
+       m <$ when (Map.null m) (fail "Empty Assets are not allowed")
++{-# INLINE decodeMultiAsset #-}
+ 
+ instance EncCBOR MaryValue where
+   encCBOR (MaryValue c ma@(MultiAsset m)) =
+@@ -629,57 +654,37 @@ to ::
+   Maybe CompactValue
+ to (MaryValue ada (MultiAsset m))
+   | Map.null m = CompactValueAdaOnly <$> toCompact ada
+-to v@(MaryValue _ ma) = do
++to (MaryValue ada ma@(MultiAsset m)) = do
+   c <- assert (isMultiAssetSmallEnough ma) (toCompact ada)
+-  -- Here we convert the (pid, assetName, quantity) triples into
+-  -- (Int, (Word16,Word16,Word64))
+-  -- These represent the index, pid offset, asset name offset, and quantity.
+-  -- If any of the quantities out of bounds, this will produce Nothing.
+-  -- The triples are ordered by asset name in descending order.
+-  preparedTriples <-
+-    zip [0 ..] . sortOn (\(_, x, _) -> x) <$> traverse prepare triples
++  -- One (asset name offset, pid offset, quantity) per asset, in the order
++  -- flattenMultiAsset lists them: ascending policy, then ascending asset name.
++  -- If any of the quantities is out of bounds, this produces Nothing.
++  prepared <- traverse prepare flatEntries
++  -- Written ordered by asset name offset, ascending, which is asset name
++  -- descending (see assetNames); sortBy is stable, so entries sharing an asset
++  -- name keep ascending policy order. This is the order the triples-based
++  -- builder produced with sortOn on the same offsets.
++  let ordered = zip [0 ..] (sortBy (comparing (\(anoff, _, _) -> anoff)) prepared)
+   pure $
+     CompactValueMultiAsset c (fromIntegral numTriples) $
+       runST $ do
+         byteArray <- BA.newByteArray repSize
+-        forM_ preparedTriples $ \(i, (pidoff, anoff, q)) ->
++        forM_ ordered $ \(i, (anoff, pidoff, q)) ->
+           do
+-            -- For each triple, we write the quantity to region A,
+-            -- the pid offset to region B, and the asset name offset to region C.
+-            -- We can calculate the sizes (and therefore the starts) of each region
+-            -- using the number of triples.
+-            -- A:
+-            --   size: (#triples * 8) bytes
+-            --   start: offset 0
+-            -- B:
+-            --   size: (#triples * 2) bytes
+-            --   start: size(A) = #triples * 8
+-            -- C:
+-            --   size: (#triples * 2) bytes
+-            --   start: size(A) + size(B) = #triples * 10
+-            --
+-            -- The position argument to writeByteArray is an index in terms of the
+-            -- size of the value being written. So writeByteArray of a Word64 at
+-            -- position 1 writes at offset 8.
+-            --
+-            -- For the following, the byte offsets calculated above are converted to
+-            -- ByteArray positions by division.
+-            --
+-            -- The byte offset of the ith...
+-            --   quantity: 8i
+-            --   pid offset: 8n + 2i
+-            --   asset name offset: 8n + 2n + 2i
+-            -- Dividing by the respective sizes (8,2,2) yields the indices below.
++            -- Region A (quantities) starts at byte 0, region B (pid offsets) at
++            -- byte 8n and region C (asset name offsets) at byte 10n, where n is
++            -- the number of triples. writeByteArray indexes in units of the
++            -- written type: Word64 at i, Word16 at 4n + i and 5n + i.
+             BA.writeByteArray byteArray i q
+             BA.writeByteArray byteArray (4 * numTriples + i) pidoff
+             BA.writeByteArray byteArray (5 * numTriples + i) anoff
+ 
+-        forM_ (Map.toList pidOffsetMap) $
+-          \(PolicyID (ScriptHash sh), offset) ->
++        forM_ (zip [0 ..] usedPolicies) $
++          \(k, (PolicyID (ScriptHash sh), _)) ->
+             let pidBytes = Hash.hashToBytesShort sh
+              in BA.copyByteArray
+                   byteArray
+-                  (fromIntegral offset)
++                  (fromIntegral (pidOffset k))
+                   (byteArrayFromShortByteString pidBytes)
+                   0
+                   pidSize
+@@ -696,42 +701,43 @@ to v@(MaryValue _ ma) = do
+                   anameLen
+         byteArrayToShortByteString <$> BA.unsafeFreezeByteArray byteArray
+   where
+-    (ada, triples) = gettriples v
+-    numTriples = length triples
++    -- The policies that contribute at least one asset, ascending. These are
++    -- exactly the distinct pids of flattenMultiAsset, in Set order.
++    usedPolicies :: [(PolicyID, Map AssetName Integer)]
++    usedPolicies = [(pid, assets) | (pid, assets) <- Map.toAscList m, not (Map.null assets)]
++
++    numTriples :: Int
++    numTriples = foldl' (\n (_, assets) -> n + Map.size assets) 0 usedPolicies
+ 
+     -- abcRegionSize is the combined size of regions A, B, and C
+     abcRegionSize = numTriples * 12
+ 
+     pidSize = fromIntegral (Hash.hashSize (Proxy :: Proxy ADDRHASH))
+ 
+-    -- pids is the collection of all distinct pids
+-    pids = Set.fromList $ (\(pid, _, _) -> pid) <$> triples
++    -- the pid offsets are:
++    --   X, X + s, X + 2s, X + 3s, ...
++    -- where X is the start of block D and s is the size of a pid; the k-th
++    -- used policy (ascending) gets X + k * s
++    pidOffset :: Int -> Word16
++    pidOffset k = fromIntegral (abcRegionSize + k * pidSize)
+ 
+-    pidOffsetMap :: Map PolicyID Word16
+-    pidOffsetMap =
+-      -- the pid offsets are:
+-      --   X, X + s, X + 2s, X + 3s, ...
+-      -- where X is the start of block D and s is the size of a pid
+-      let offsets =
+-            enumFromThen (fromIntegral abcRegionSize) (fromIntegral (abcRegionSize + pidSize))
+-       in Map.fromList (zip (Set.toList pids) offsets)
+-
+-    pidOffset pid = fromJust (Map.lookup pid pidOffsetMap)
+-
+-    pidBlockSize = Set.size pids * pidSize
++    pidBlockSize = length usedPolicies * pidSize
+ 
+     -- Putting asset names in descending order ensures that the empty string
+     -- is last, so the associated offset is pointing to the end of the array
+-    assetNames = Set.toDescList $ Set.fromList $ (\(_, an, _) -> an) <$> triples
++    assetNames :: [AssetName]
++    assetNames = Set.toDescList $ Set.unions (Map.keysSet . snd <$> usedPolicies)
+ 
+-    assetNameLengths = fromIntegral . SBS.length . assetNameBytes <$> assetNames
++    assetNameLengths :: [Int]
++    assetNameLengths = SBS.length . assetNameBytes <$> assetNames
+ 
+     assetNameOffsetMap :: Map AssetName Word16
+     assetNameOffsetMap =
+       -- The asset name offsets are the running sum of the asset lengths,
+-      -- but starting with the offset of the start of block E.
++      -- but starting with the offset of the start of block E. The names are
++      -- distinct and descending.
+       let offsets = scanl (+) (abcRegionSize + pidBlockSize) assetNameLengths
+-       in fromIntegral <$> Map.fromList (zip assetNames offsets)
++       in Map.fromDistinctDescList (zip assetNames (fromIntegral <$> offsets))
+ 
+     assetNameOffset aname = fromJust (Map.lookup aname assetNameOffsetMap)
+ 
+@@ -740,9 +746,16 @@ to v@(MaryValue _ ma) = do
+     -- size = size(A+B+C)      + size(D)      + size(E)
+     repSize = abcRegionSize + pidBlockSize + anameBlockSize
+ 
+-    prepare (pid, aname, q) = do
++    flatEntries :: [(Word16, Word16, Integer)]
++    flatEntries =
++      [ (assetNameOffset aname, pidOffset k, q)
++      | (k, (_, assets)) <- zip [0 ..] usedPolicies
++      , (aname, q) <- Map.toAscList assets
++      ]
++
++    prepare (anoff, pidoff, q) = do
+       q' <- integerToWord64 q
+-      pure (pidOffset pid, assetNameOffset aname, q')
++      pure (anoff, pidoff, q')
+ 
+ -- | Unlike `representationSize`, this function cheaply checks whether
+ -- any offset within a MultiAsset compact representation is likely to overflow Word16.

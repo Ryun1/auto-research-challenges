@@ -154,12 +154,8 @@ h1, h2, h3 { margin: 0; line-height: 1.1; }
 .chart text.tgt-label { fill: var(--stage-target); font-weight: 600; }
 .chart text.now-label { fill: var(--stage-record); font-weight: 600; }
 .chart text.rec-label { fill: var(--stage-record); font-size: 11.5px; }
-.chart text.claim-label { fill: var(--stage-claim); font-size: 11.5px; }
 .chart .tgt-zone { fill: var(--stage-target); opacity: 0.08; }
 .chart .pt-baseline, .chart .pt-promoted { fill: var(--stage-record); stroke: var(--stage); stroke-width: 2; }
-.chart .pt-valid_claim_better { fill: var(--stage); stroke: var(--stage-claim); stroke-width: 2; }
-.chart .pt-valid_not_promoted { fill: var(--stage); stroke: var(--stage-plain); stroke-width: 2; }
-.chart .pt-rejected { stroke: var(--stage-bad); stroke-width: 2; }
 .chart .pt-infra_failed { fill: var(--stage); stroke: #f0b45c; stroke-width: 2; }
 .chart .halo { fill: none; stroke: var(--stage-record); stroke-width: 2; opacity: 0; }
 .chart.animate .rec-line { stroke-dasharray: var(--len); stroke-dashoffset: var(--len); animation: draw 1.4s 0.15s cubic-bezier(.4, 0, .2, 1) forwards; }
@@ -170,7 +166,6 @@ h1, h2, h3 { margin: 0; line-height: 1.1; }
 .legend li { display: inline-flex; align-items: center; gap: 7px; }
 .key { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 .key-rec { background: var(--stage-record); }
-.key-claim { border: 2px solid var(--stage-claim); }
 .key-plain { border: 2px solid var(--stage-plain); }
 .key-bad { background: var(--stage-bad); border-radius: 2px; transform: rotate(45deg); width: 8px; height: 8px; }
 .key-zone { background: var(--stage-target); opacity: 0.35; border-radius: 2px; }
@@ -287,4 +282,44 @@ tr:first-child .rank { background: var(--record); color: var(--surface); }
 @media (prefers-reduced-motion: reduce) {
   * { scroll-behavior: auto !important; }
   .chart.animate .rec-line, .chart.animate .halo { animation: none; stroke-dasharray: none; stroke-dashoffset: 0; }
+}
+
+/* ---- diffs ---- */
+.commit { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.diff-btn {
+  font: inherit; font-size: 12px; font-weight: 600; color: var(--target); background: var(--target-soft);
+  border: 0; border-radius: 999px; padding: 2px 9px; cursor: pointer;
+}
+.diff-btn:hover { filter: brightness(0.95); }
+.diff-dialog {
+  width: min(1100px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0;
+  border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); color: var(--ink);
+  display: none; flex-direction: column;
+}
+.diff-dialog[open] { display: flex; }
+.diff-dialog::backdrop { background: rgba(8, 11, 24, 0.6); }
+.diff-head {
+  display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--line);
+  background: var(--stage); color: var(--stage-ink);
+}
+.diff-title { flex: 1; min-width: 0; }
+.diff-title h2 { margin: 0; font-size: 16px; font-family: var(--code); }
+.diff-sub { margin: 2px 0 0; color: var(--stage-muted); font-size: 13px; overflow-wrap: anywhere; }
+.diff-scroll { overflow: auto; padding: 14px 18px 18px; }
+.diff-file { border: 1px solid var(--line); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+.diff-file > summary {
+  display: flex; gap: 12px; align-items: baseline; padding: 8px 12px; cursor: pointer;
+  background: var(--bg); border-bottom: 1px solid var(--line); font-size: 13px;
+}
+.diff-name { flex: 1; font-family: var(--code); overflow-wrap: anywhere; }
+.diff-stat { font-family: var(--code); color: var(--muted); white-space: nowrap; }
+.diff-body { overflow-x: auto; font-family: var(--code); font-size: 12.5px; line-height: 1.5; }
+.dl { white-space: pre; padding: 0 12px; min-width: max-content; }
+.dl-add { background: var(--record-soft); }
+.dl-del { background: var(--bad-soft); }
+.dl-hunk { color: var(--target); background: var(--target-soft); }
+.dl-meta { color: var(--muted); font-style: italic; }
+@media (max-width: 640px) {
+  .diff-dialog { width: 100vw; max-width: 100vw; max-height: 100vh; height: 100vh; border-radius: 0; margin: 0; }
+  .diff-head, .diff-scroll { padding-left: 16px; padding-right: 16px; }
 }

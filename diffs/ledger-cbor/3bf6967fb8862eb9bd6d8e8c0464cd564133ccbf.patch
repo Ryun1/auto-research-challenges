@@ -1,0 +1,58 @@
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs b/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
+index 33a12df..7c6377b 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-mary/src/Cardano/Ledger/Mary/Value.hs
+@@ -44,20 +44,20 @@ import Cardano.Ledger.Binary (
+   EncCBOR (..),
+   TokenType (..),
+   cborError,
++  decodeBreakOr,
+   decodeInteger,
++  decodeListLenOrIndef,
+   decodeMap,
+   decodeRecordNamed,
+   decodeWord64,
+   ifDecoderVersionAtLeast,
++  matchSize,
+   peekTokenType,
+  )
+ import Cardano.Ledger.Binary.Coders (
+-  Decode (D, From, RecD),
+   Encode (Rec, To),
+-  decode,
+   encode,
+   (!>),
+-  (<!),
+  )
+ import Cardano.Ledger.Binary.Version (natVersion)
+ import Cardano.Ledger.Coin (Coin (..), CompactForm (..), integerToWord64)
+@@ -309,12 +309,24 @@ decodeMaryValue = do
+ 
+ decodeValuePair :: (forall t. Decoder t Integer) -> Decoder s MaryValue
+ decodeValuePair decodeMultiAssetAmount =
+-  ifDecoderVersionAtLeast (natVersion @12) decodeMaryValue' $
+-    decode $
+-      RecD MaryValue
+-        <! From
+-        <! D (decodeMultiAsset decodeMultiAssetAmount)
++  ifDecoderVersionAtLeast (natVersion @12) decodeMaryValue' decodeMaryValueRecD
+   where
++    -- Exactly what @decode (RecD MaryValue <! From <! D ...)@ did, without the
++    -- Coders interpreter (whose recursive decodeCount is not inlined): RecD
++    -- checks the array header before any field is decoded, so a definite
++    -- array must have length 2 and an indefinite one must hit a break straight
++    -- away. Unlike decodeMaryValue' this does not accept an indefinite array
++    -- closed after the fields.
++    decodeMaryValueRecD = do
++      lenOrIndef <- decodeListLenOrIndef
++      case lenOrIndef of
++        Just n -> matchSize "Record RecD" n 2
++        Nothing -> do
++          isBreak <- decodeBreakOr
++          unless isBreak $ cborError $ DecoderErrorCustom "RecD" "Excess terms in array"
++      MaryValue
++        <$> decCBOR
++        <*> decodeMultiAsset decodeMultiAssetAmount
+     decodeMaryValue' =
+       decodeRecordNamed "MaryValue" (const 2) $
+         MaryValue

@@ -1,7 +1,73 @@
 {
-  "generated_at": "2026-11-13T13:25:26Z",
+  "generated_at": "2026-11-13T15:57:16Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "skipped",
+      "created_at": "2026-11-13T15:56:30Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-13T15:56:31Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457636824",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-13T15:56:23Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Site: a diff view for each submission; the chart shows records only (…",
+      "updated_at": "2026-11-13T15:56:27Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457617053",
+      "workflow": "CI"
+    },
+    {
+      "branch": "site-diffs-and-record-chart",
+      "conclusion": "success",
+      "created_at": "2026-11-13T15:56:14Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Site: a diff view for each submission; the chart shows records only",
+      "updated_at": "2026-11-13T15:56:27Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592159",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "site-diffs-and-record-chart",
+      "conclusion": null,
+      "created_at": "2026-11-13T15:56:14Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Site: a diff view for each submission; the chart shows records only",
+      "updated_at": "2026-11-13T15:56:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592026",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-13T15:55:22Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-13T15:56:25Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457450788",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-direct-bundle",
+      "conclusion": "success",
+      "created_at": "2026-11-13T15:55:06Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
+      "updated_at": "2026-11-13T15:55:19Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457403319",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -375,73 +441,19 @@
       "updated_at": "2026-11-12T20:41:32Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43299205399",
       "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:14:14Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-12T20:15:23Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43298265059",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "submit/ledger-cbor-maryvalue-2",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:02:37Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter (resubmission of #64)",
-      "updated_at": "2026-11-12T20:09:44Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43296300315",
-      "workflow": "CI"
-    },
-    {
-      "branch": "submit/ledger-cbor-maryvalue-2",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:02:37Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders interpreter (resubmission of #64)",
-      "updated_at": "2026-11-12T20:14:11Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43296300268",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T19:39:20Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Protect main (#22): ruleset, results and site pushes by environment-s…",
-      "updated_at": "2026-11-12T19:40:12Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43292372448",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T19:39:20Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Protect main (#22): ruleset, results and site pushes by environment-s…",
-      "updated_at": "2026-11-12T19:46:42Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43292372122",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-12T19:38:49Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: repeat an unstable wall-time measurement (up to 3 attemp…",
-      "updated_at": "2026-11-12T19:39:24Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43292284490",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-13T15:55:02Z",
+      "draft": false,
+      "number": 80,
+      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/80",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    }
+  ]
 }
