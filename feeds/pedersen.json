@@ -28,8 +28,8 @@
   ],
   "challenge": "pedersen",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-13T15:57:11Z",
-  "generated_at": "2026-11-13T15:57:11Z",
+  "fetched_at": "2026-11-13T15:58:07Z",
+  "generated_at": "2026-11-13T15:58:07Z",
   "policy": {
     "allowed_paths": [
       "challenges/pedersen/candidate/src/**"
