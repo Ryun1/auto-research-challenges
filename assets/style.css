@@ -153,6 +153,9 @@ h1, h2, h3 { margin: 0; line-height: 1.1; }
 .chart .tgt-line { stroke: var(--stage-target); stroke-width: 1.5; stroke-dasharray: 6 5; }
 .chart text.tgt-label { fill: var(--stage-target); font-weight: 600; }
 .chart text.now-label { fill: var(--stage-record); font-weight: 600; }
+.chart text.rec-label { fill: var(--stage-record); font-size: 11.5px; }
+.chart text.claim-label { fill: var(--stage-claim); font-size: 11.5px; }
+.chart .tgt-zone { fill: var(--stage-target); opacity: 0.08; }
 .chart .pt-baseline, .chart .pt-promoted { fill: var(--stage-record); stroke: var(--stage); stroke-width: 2; }
 .chart .pt-valid_claim_better { fill: var(--stage); stroke: var(--stage-claim); stroke-width: 2; }
 .chart .pt-valid_not_promoted { fill: var(--stage); stroke: var(--stage-plain); stroke-width: 2; }
@@ -170,6 +173,7 @@ h1, h2, h3 { margin: 0; line-height: 1.1; }
 .key-claim { border: 2px solid var(--stage-claim); }
 .key-plain { border: 2px solid var(--stage-plain); }
 .key-bad { background: var(--stage-bad); border-radius: 2px; transform: rotate(45deg); width: 8px; height: 8px; }
+.key-zone { background: var(--stage-target); opacity: 0.35; border-radius: 2px; }
 .key-tgt { width: 16px; height: 0; border-radius: 0; border-top: 2px dashed var(--stage-target); }
 .chart.chart-pending { height: 96px; }
 .chart-empty { display: grid; place-items: center; text-align: center; height: 100%; color: var(--stage-muted); border: 1px dashed var(--stage-line); border-radius: var(--radius); padding: 20px; }
@@ -187,13 +191,6 @@ h1, h2, h3 { margin: 0; line-height: 1.1; }
 .empty { color: var(--muted); margin: 6px 0; }
 .empty strong { color: var(--ink); font-weight: 600; }
 .callout { background: var(--warn-soft); color: var(--ink); border-radius: 8px; padding: 10px 14px; margin: 0 0 12px; }
-
-.list { list-style: none; margin: 0; padding: 0; }
-.list li { padding: 10px 0; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
-.list li:first-child { border-top: 0; }
-.item-title { font-weight: 600; overflow-wrap: anywhere; }
-.item-meta { color: var(--muted); font-size: 13.5px; width: 100%; }
-.tag { font-size: 12px; border: 1px solid var(--line); border-radius: 999px; padding: 0 8px; color: var(--muted); white-space: nowrap; }
 
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -4px; }
 table { border-collapse: collapse; width: 100%; font-size: 14.5px; }

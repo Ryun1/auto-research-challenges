@@ -23,6 +23,9 @@
     rejected: ["Rejected", "bad"],
     infra_failed: ["Infra failure", "warn"]
   };
+  // What the chart and the record history show: the baseline, each promotion,
+  // and each PR that claimed a record. Rejections and failed runs stay in the data.
+  var HISTORY = { baseline: 1, promoted: 1, valid_claim_better: 1 };
   var STAGES = { pr: "PR check", promotion: "Promotion on main", baseline: "Baseline on main" };
 
   // ---------- helpers ----------
@@ -63,7 +66,11 @@
     return a;
   }
   var DEC = 0; // decimals for the challenge being rendered: 4 when its values aren't whole
+  var TIMES = false; // the challenge being rendered scores a speedup: values read as "1.024×"
+  // A maximised speedup is a multiple of the baseline's speed, so it reads as "1.024× faster".
+  function isSpeedup(c) { return c.direction === "maximise" && /speedup/i.test(str(c.metric)); }
   function decimalsFor(c) {
+    if (isSpeedup(c)) return 3;
     var vals = [c.baseline && c.baseline.value, c.record && c.record.value, c.to_beat];
     (c.attempts || []).forEach(function (a) { vals.push(a.value); });
     return vals.some(function (v) { return num(v) !== null && !Number.isInteger(v); }) ? 4 : 0;
@@ -77,6 +84,15 @@
     if (Number.isInteger(v)) return v.toLocaleString("en-US");
     if (a >= 1000) return Math.round(v).toLocaleString("en-US");
     return String(Number(v.toPrecision(5)));
+  }
+  // A score with its unit: "1.024×" for a speedup, the bare number otherwise.
+  function val(v, dec, times) {
+    var t = fmt(v, dec);
+    return t !== "–" && (times === undefined ? TIMES : times) ? t + "×" : t;
+  }
+  // A score as a phrase: "1.024× faster", or "41 length".
+  function scoreText(c, v, dec) {
+    return isSpeedup(c) ? val(v, dec, true) + " faster" : fmt(v, dec) + " " + c.metric;
   }
   function pct(v) {
     v = num(v);
@@ -161,10 +177,13 @@
       return Array.isArray(p.challenges) && p.challenges.indexOf(c.slug) >= 0;
     }) : [];
   }
+  // The bar, rounded away from the record so the shown number is never short of it.
   function targetText(c) {
-    if (num(c.to_beat) === null) return "–";
+    var t = num(c.to_beat);
+    if (t === null) return "–";
     var maxi = c.direction === "maximise";
-    return (maxi ? (c.min_improvement_bips ? "≥ " : "> ") : (c.min_improvement_bips ? "≤ " : "< ")) + fmt(c.to_beat);
+    if (DEC) { var k = Math.pow(10, DEC); t = (maxi ? Math.ceil(t * k - 1e-9) : Math.floor(t * k + 1e-9)) / k; }
+    return (maxi ? (c.min_improvement_bips ? "≥ " : "> ") : (c.min_improvement_bips ? "≤ " : "< ")) + val(t);
   }
 
   // ---------- ordering & routing ----------
@@ -192,15 +211,17 @@
         el("p", "goal-unit", c.state === "draft" ? "Set when the challenge opens." : "Set by the first run on main. Submissions are scored against it."));
     } else {
       add(box, el("p", "goal-label", "Your submission needs"), el("p", "goal-value", targetText(c)),
-        el("p", "goal-unit", c.metric + ", " + better(c)));
+        el("p", "goal-unit", TIMES ? "faster than the original code" : c.metric + ", " + better(c)));
       var rows = el("dl", "goal-rows");
       var rec = c.record ? num(c.record.value) : null;
       var maxi = c.direction === "maximise";
       function row(k, v, cls) { add(rows, add(el("div", cls), el("dt", null, k), add(el("dd"), v))); }
-      row("Current record", rec !== null ? fmt(rec) : fmt(base), "rec");
+      row("Current record", val(rec !== null ? rec : base), "rec");
       row("Held by", c.record ? str(c.record.by) || "unknown" : "the baseline");
       row("Margin", c.min_improvement_bips ? (c.min_improvement_bips / 100).toFixed(c.min_improvement_bips % 100 ? 2 : 0) + "% past the record" : "any improvement");
-      if (rec !== null && base) row("Improvement", pct((maxi ? rec - base : base - rec) / Math.abs(base) * 100));
+      if (rec !== null && base) row(TIMES ? "Record vs original" : "Improvement", TIMES
+        ? (rec >= base ? pct((rec - base) / base * 100).slice(1) + " faster" : pct((rec - base) / base * 100).slice(1) + " slower")
+        : pct((maxi ? rec - base : base - rec) / Math.abs(base) * 100));
       add(box, rows);
     }
     var go = el("button", "cta", c.state === "open" || c.state === "pending" ? "How to enter" : "How submissions work");
@@ -232,8 +253,10 @@
     var ch = el("div", "chart" + (c.baseline && num(c.baseline.value) !== null ? "" : " chart-pending"));
     ch.setAttribute("data-slug", c.slug);
     var legend = el("ul", "legend");
-    [["key-rec", "Record"], ["key-claim", "PR claiming a record"], ["key-plain", "Valid, not a record"], ["key-bad", "Rejected"], ["key-tgt", "Bar to beat"]]
-      .forEach(function (k) { add(legend, add(el("li"), el("span", "key " + k[0]), k[1])); });
+    var claims = (c.attempts || []).some(function (a) { return a.status === "valid_claim_better" && num(a.value) !== null; });
+    [["key-rec", "Record (baseline, then each promotion)"], claims ? ["key-claim", "PR claiming a record, before promotion"] : null,
+      ["key-tgt", "Bar the next record must reach"], ["key-zone", "New-record zone"]]
+      .forEach(function (k) { if (k) add(legend, add(el("li"), el("span", "key " + k[0]), k[1])); });
     return add(box, ch, ch.className === "chart" ? legend : null);
   }
 
@@ -252,7 +275,7 @@
     }
     var maxi = c.direction === "maximise";
     var now = Date.parse(DATA.generated_at) || Date.now();
-    var pts = (c.attempts || []).filter(function (a) { return num(a.value) !== null && !isNaN(Date.parse(a.at)); })
+    var pts = (c.attempts || []).filter(function (a) { return HISTORY[a.status] && num(a.value) !== null && !isNaN(Date.parse(a.at)); })
       .map(function (a) { return { t: Date.parse(a.at), v: a.value, s: str(a.status), by: str(a.by), stage: str(a.stage) }; })
       .sort(function (a, b) { return a.t - b.t; });
     var steps = pts.filter(function (p) { return p.s === "baseline" || p.s === "promoted"; });
@@ -278,22 +301,28 @@
 
     var s = svg("svg", { width: W, height: H, viewBox: "0 0 " + W + " " + H, role: "img" });
     var rec = c.record ? num(c.record.value) : null;
-    s.setAttribute("aria-label", "Record progression for " + c.slug + ": baseline " + fmt(base) + ", record " + fmt(rec !== null ? rec : base) +
-      (target !== null ? ", the next record needs " + targetText(c) : "") + " " + c.metric + ", " + better(c) + ". " + pts.length + " scored runs.");
+    s.setAttribute("aria-label", "Record progression for " + c.slug + ": baseline " + val(base) + ", record " + val(rec !== null ? rec : base) +
+      (target !== null ? ", the next record needs " + targetText(c) : "") + " " + (TIMES ? "faster" : c.metric + ", " + better(c)) + ". " + pts.length + " scored runs.");
 
     // grid and y labels
     for (var v = lo; v <= hi + step / 2; v += step) {
       var yy = y(v);
       add(s, svg("line", { x1: L, x2: W - R, y1: yy, y2: yy, "class": "grid" }));
       var lab = svg("text", { x: L - 10, y: yy + 4, "text-anchor": "end" });
-      lab.textContent = v.toFixed(tickDec);
+      lab.textContent = v.toFixed(tickDec) + (TIMES ? "×" : "");
       add(s, lab);
     }
     // x labels: the first point's date and now
     function dateText(t) { return new Date(t).toISOString().slice(5, 10).replace("-", "/"); }
-    var xl = svg("text", { x: L, y: H - 6, "text-anchor": "start" }); xl.textContent = dateText(t0);
     var xr = svg("text", { x: W - R, y: H - 6, "text-anchor": "end" }); xr.textContent = "now";
-    add(s, xl, xr);
+    add(s, xr);
+    var DAY = 86400000, every = Math.max(1, Math.ceil(70 / ((W - L - R) * DAY / (t1 - t0))));
+    for (var dt = Math.ceil(t0 / DAY) * DAY, i = 0; dt < t1; dt += DAY, i++) {
+      if (i % every || x(dt) > W - R - 50) continue;
+      add(s, svg("line", { x1: x(dt), x2: x(dt), y1: H - B, y2: H - B + 4, "class": "grid" }));
+      var xt = svg("text", { x: x(dt), y: H - 6, "text-anchor": "middle" }); xt.textContent = dateText(dt);
+      add(s, xt);
+    }
 
     // record step path, extended to now
     var d = "", prev = null;
@@ -310,13 +339,45 @@
     // the bar to beat
     if (target !== null) {
       var ty = y(target);
+      var zy = maxi ? T : ty, zh = maxi ? ty - T : H - B - ty;
+      if (zh > 0) add(s, svg("rect", { x: L, y: zy, width: W - L - R, height: zh, "class": "tgt-zone" }));
       add(s, svg("line", { x1: L, x2: W - R, y1: ty, y2: ty, "class": "tgt-line" }));
       var tl = svg("text", { x: W - R, y: ty - 8, "text-anchor": "end", "class": "tgt-label" });
-      tl.textContent = "Beat this: " + targetText(c);
+      tl.textContent = "Beat this: " + targetText(c) + (TIMES ? " faster" : "");
       add(s, tl);
     }
     var line = svg("path", { d: d, "class": "rec-line" });
     add(s, line);
+
+    // value labels: records always, claims when there is room
+    var boxes = [];
+    function room(bx) {
+      return !boxes.some(function (o) { return bx.x < o.x + o.w && o.x < bx.x + bx.w && bx.y < o.y + o.h && o.y < bx.y + bx.h; });
+    }
+    function label(p, text, cls, below) {
+      var px = x(p.t), py = y(p.v), w = text.length * 6.6 + 4, h = 14;
+      var anchor = px + w / 2 > W - R ? "end" : px - w / 2 < L ? "start" : "middle";
+      var lx = anchor === "end" ? px - w : anchor === "start" ? px : px - w / 2;
+      var tries = below ? [py + 8, py - 10 - h] : [py - 10 - h, py + 8];
+      for (var k = 0; k < tries.length; k++) {
+        var bx = { x: lx, y: tries[k], w: w, h: h };
+        if (bx.y < 0 || bx.y + h > H - B) continue;
+        if (!room(bx)) continue;
+        boxes.push(bx);
+        var t = svg("text", { x: anchor === "end" ? px : anchor === "start" ? px : px, y: bx.y + 11, "text-anchor": anchor, "class": cls });
+        t.textContent = text;
+        add(s, t);
+        return;
+      }
+    }
+    // reserve the fixed labels first
+    if (target !== null) boxes.push({ x: W - R - 200, y: y(target) - 22, w: 200, h: 16 }, { x: L, y: y(target) - 2, w: W - L - R, h: 4 });
+    boxes.push({ x: endX - 130, y: endY + 6, w: 130, h: 16 });
+    pts.forEach(function (p) { boxes.push({ x: x(p.t) - 6, y: y(p.v) - 6, w: 12, h: 12 }); });
+    // the standing record is labelled at the right edge already
+    steps.slice(0, -1).forEach(function (p) { label(p, (p.s === "baseline" ? "Baseline " : "") + val(p.v), "rec-label", true); });
+    pts.filter(function (p) { return p.s === "valid_claim_better"; }).reverse()
+      .forEach(function (p) { label(p, val(p.v) + (p.by ? " " + p.by : ""), "claim-label", false); });
 
     // attempts
     pts.forEach(function (p) {
@@ -327,7 +388,7 @@
         mark = svg("circle", { cx: px, cy: py, r: p.s === "baseline" || p.s === "promoted" ? 5.5 : 4.5, "class": "pt-" + (OUTCOMES[p.s] ? p.s : "valid_not_promoted") });
       }
       var tt = svg("title", {});
-      tt.textContent = (OUTCOMES[p.s] ? OUTCOMES[p.s][0] : p.s) + ": " + fmt(p.v) + " " + c.metric + (p.by ? ", " + p.by : "") + ", " + (STAGES[p.stage] || p.stage) + ", " + new Date(p.t).toISOString().slice(0, 16).replace("T", " ") + " UTC";
+      tt.textContent = (OUTCOMES[p.s] ? OUTCOMES[p.s][0] : p.s) + ": " + scoreText(c, p.v) + (p.by ? ", " + p.by : "") + ", " + (STAGES[p.stage] || p.stage) + ", " + new Date(p.t).toISOString().slice(0, 16).replace("T", " ") + " UTC";
       add(mark, tt);
       add(s, mark);
     });
@@ -335,7 +396,7 @@
     // the standing record, at the right edge
     add(s, svg("circle", { cx: endX, cy: endY, r: 5, "class": "halo" }), svg("circle", { cx: endX, cy: endY, r: 4, "class": "pt-promoted" }));
     var nl = svg("text", { x: endX - 10, y: endY + 18, "text-anchor": "end", "class": "now-label" });
-    nl.textContent = "Record " + fmt(steps[steps.length - 1].v);
+    nl.textContent = "Record " + val(steps[steps.length - 1].v);
     add(s, nl);
 
     add(host, s);
@@ -493,28 +554,32 @@
     var s = section("Leaderboard", el("span", "block-note", "Promoted results: two agreeing sandboxed runs on main"));
     if (!(c.board || []).length) {
       var p = el("p", "empty");
-      if (c.baseline) add(p, el("strong", null, "No one is on the board yet."), " The first submission that reaches " + targetText(c) + " " + c.metric + " and passes promotion takes first place.");
+      if (c.baseline) add(p, el("strong", null, "No one is on the board yet."), " The first submission that reaches " + targetText(c) + " " + (TIMES ? "faster" : c.metric) + " and passes promotion takes first place.");
       else add(p, "Empty until the baseline is recorded.");
       add(s, p);
       return s;
     }
-    add(s, table([["#", "n"], ["Solver"], [c.metric, "n"], ["vs baseline", "n"], ["When"], ["Commit"]],
+    add(s, table([["#", "n"], ["Solver"], [TIMES ? "Speedup" : c.metric, "n"], ["vs baseline", "n"], ["When"], ["Commit"]],
       c.board.map(function (r) {
         var who = el("span", null, str(r.solver) || "unknown");
         if (str(r.model)) add(who, el("span", "sub", " " + r.model));
-        return [el("span", "rank", String(r.rank)), who, fmt(r.value), pct(r.delta_pct), time(r.at), el("code", null, short(r.commit))];
+        return [el("span", "rank", String(r.rank)), who, val(r.value), pct(r.delta_pct), time(r.at), el("code", null, short(r.commit))];
       }), "board"));
     return s;
   }
 
+  // The history of the record: the baseline, each promotion, and each PR that
+  // claimed a record. Rejections and failed runs stay in the data, not here.
+  // Long measured floats in a reason ("1.0963363298988489") read as "1.0963".
+  function tidy(t) { return t.replace(/\d+\.\d{5,}/g, function (m) { return Number(m).toFixed(4); }); }
   function attempts(c) {
-    var list = c.attempts || [];
+    var list = (c.attempts || []).filter(function (a) { return HISTORY[a.status]; });
     var counts = {};
     list.forEach(function (a) { counts[a.status] = (counts[a.status] || 0) + 1; });
-    var note = el("span", "block-note", list.length ? list.length + (list.length === 1 ? " entry" : " entries") + ", newest first" : "");
-    var s = section("Attempt history", note);
+    var note = el("span", "block-note", list.length ? "Baseline, records and claims, newest first" : "");
+    var s = section("Record history", note);
     if (!list.length) {
-      add(s, empty(c.state === "draft" ? "No attempts: the challenge isn't open yet." : "No attempts yet. Every PR check and promotion run is recorded here, including rejections."));
+      add(s, empty(c.state === "draft" ? "Nothing yet: the challenge isn't open." : "Nothing yet. The baseline, every new record and every PR claiming one are listed here."));
       return s;
     }
     var sum = el("p", "tally");
@@ -522,56 +587,12 @@
       if (counts[k]) add(sum, el("span", "outcome o-" + OUTCOMES[k][1], OUTCOMES[k][0] + " " + counts[k]));
     });
     add(s, sum);
-    add(s, table([["When"], ["Stage"], ["Outcome"], [c.metric, "n"], ["By"], ["Commit"], ["Detail", "detail"]],
+    add(s, table([["When"], ["Outcome"], [TIMES ? "Speedup" : c.metric, "n"], ["By"], ["Commit"], ["Detail", "detail"]],
       list.map(function (a) {
         var o = OUTCOMES[a.status] || [str(a.status) || "unknown", "plain"];
-        return [time(a.at), STAGES[a.stage] || str(a.stage), el("span", "outcome o-" + o[1], o[0]), fmt(a.value),
-          str(a.by), el("code", null, short(a.commit)), el("span", "reason", str(a.reason))];
+        return [time(a.at), el("span", "outcome o-" + o[1], o[0]), val(a.value),
+          str(a.by), el("code", null, short(a.commit)), el("span", "reason", tidy(str(a.reason)))];
       }), "attempts"));
-    return s;
-  }
-
-  function activity(c) {
-    var s = section("Pipeline activity", STATE && STATE.generated_at ? add(el("span", "block-note"), "as of ", time(STATE.generated_at)) : null);
-    if (!STATE) {
-      add(s, empty("Live pipeline state isn't published with this build. Results above are complete as of the generation time."));
-      return s;
-    }
-    var pulls = pullsFor(c);
-    add(s, el("h3", null, pulls.length ? "Open pull requests (" + pulls.length + ")" : "Open pull requests"));
-    if (!pulls.length) add(s, empty("No open pull requests touch " + c.slug + ". Yours could be the first."));
-    else {
-      var ul = el("ul", "list");
-      pulls.slice(0, 20).forEach(function (p) {
-        var li = el("li");
-        var title = link((num(p.number) !== null ? "#" + p.number + " " : "") + str(p.title), p.url, "item-title");
-        add(li, title, p.draft === true ? el("span", "tag", "draft") : null,
-          add(el("span", "item-meta"), str(p.author) ? str(p.author) + ", opened " : "opened ", time(p.created_at)));
-        ul.appendChild(li);
-      });
-      add(s, ul);
-    }
-    // Runs that name their challenges are filtered; the rest are shown as repo-wide.
-    var allRuns = Array.isArray(STATE.runs) ? STATE.runs : [];
-    var tagged = allRuns.some(function (r) { return Array.isArray(r.challenges); });
-    var runs = allRuns.filter(function (r) {
-      return !Array.isArray(r.challenges) || r.challenges.indexOf(c.slug) >= 0;
-    }).slice(0, 8);
-    add(s, el("h3", null, tagged ? "Recent workflow runs" : "Recent workflow runs, all challenges"));
-    if (!runs.length) add(s, empty("No recent runs."));
-    else {
-      var ul2 = el("ul", "list");
-      runs.forEach(function (r) {
-        var li = el("li");
-        var st = str(r.status) === "completed" ? str(r.conclusion) || "completed" : str(r.status) || "unknown";
-        var cls = { success: "good", failure: "bad", cancelled: "plain", skipped: "plain", timed_out: "bad", action_required: "warn" }[st] || "run";
-        add(li, el("span", "outcome o-" + cls, st.replace(/_/g, " ")), " ",
-          link(str(r.workflow) || "workflow", r.url, "item-title"),
-          add(el("span", "item-meta"), [str(r.title), str(r.branch), str(r.event).replace(/_/g, " ")].filter(Boolean).join(", ") + ", ", time(r.updated_at || r.created_at)));
-        ul2.appendChild(li);
-      });
-      add(s, ul2);
-    }
     return s;
   }
 
@@ -585,9 +606,9 @@
       a.setAttribute("href", "#" + encodeURIComponent(c.slug));
       if (c === sel) a.setAttribute("aria-current", "page");
       var d = decimalsFor(c);
-      var val = c.record ? fmt(c.record.value, d) : c.baseline ? fmt(c.baseline.value, d) : null;
+      var v = c.record ? c.record.value : c.baseline ? c.baseline.value : null;
       var prs = pullsFor(c).length;
-      var meta = (val !== null ? "Record " + val + " " + c.metric : STATES[c.state] ? STATES[c.state].short : "Draft") + (prs ? ", " + prs + " open PR" + (prs > 1 ? "s" : "") : "");
+      var meta = (v !== null ? "Record " + scoreText(c, v, d) : STATES[c.state] ? STATES[c.state].short : "Draft") + (prs ? ", " + prs + " open PR" + (prs > 1 ? "s" : "") : "");
       add(a, el("span", "pick-slug", c.slug), el("span", "pick-meta", meta));
       n.appendChild(a);
     });
@@ -625,9 +646,10 @@
       return;
     }
     DEC = decimalsFor(c);
+    TIMES = isSpeedup(c);
     var main = el("main");
     main.setAttribute("id", "main");
-    var content = add(el("div", "content"), board(c), attempts(c), activity(c));
+    var content = add(el("div", "content"), board(c), attempts(c));
     var aside = add(el("div", "aside"), enter(c), facts(c));
     add(main, stage(c), add(el("div", "wrap body"), content, aside));
     add(app, main);
