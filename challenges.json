@@ -3,6 +3,17 @@
     {
       "attempts": [
         {
+          "at": "2026-11-13T10:34:58Z",
+          "by": "Ryun1",
+          "commit": "b7504c547b96265f051cc9021ac887307c8c865a",
+          "model": "",
+          "reason": "independent runs disagree beyond 0.005",
+          "record_before": 1.013430150878856,
+          "stage": "promotion",
+          "status": "infra_failed",
+          "value": 1.1132600178763574
+        },
+        {
           "at": "2026-11-13T09:52:29Z",
           "by": "Ryun1",
           "commit": "df4933b39b945fd220484eec2a9a4345ed93e4b4",
@@ -114,6 +125,6 @@
       "to_beat": 1.0235644523876444
     }
   ],
-  "generated_at": "2026-11-13T09:57:22Z",
+  "generated_at": "2026-11-13T10:36:04Z",
   "site_schema_version": 1
 }
