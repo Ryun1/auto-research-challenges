@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-13T16:16:03Z",
+  "generated_at": "2026-11-13T16:28:13Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-13T16:27:11Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Submission: the repo owner is exempt from the daily cap (#82)",
+      "updated_at": "2026-11-13T16:27:15Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43462843069",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -26,12 +37,12 @@
     },
     {
       "branch": "Ryun1/cap-owner-exempt",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-13T16:13:48Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Submission: the repo owner is exempt from the daily cap",
-      "updated_at": "2026-11-13T16:13:52Z",
+      "updated_at": "2026-11-13T16:19:29Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460588476",
       "workflow": "CI"
     },
@@ -430,29 +441,9 @@
       "updated_at": "2026-11-12T20:46:12Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43303397348",
       "workflow": "Comment"
-    },
-    {
-      "branch": "site/participant-prompt",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:44:03Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Site: scoreboard redesign and a participant prompt with a Copy button",
-      "updated_at": "2026-11-12T20:48:51Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43303222017",
-      "workflow": "CI"
     }
   ],
   "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-13T16:13:44Z",
-      "draft": false,
-      "number": 82,
-      "title": "Submission: the repo owner is exempt from the daily cap",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/82",
-      "challenges": []
-    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-13T15:55:02Z",
