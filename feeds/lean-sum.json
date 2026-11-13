@@ -6,15 +6,15 @@
     "direction": "minimise",
     "metric": "proof_chars",
     "min_improvement_bips": 0,
-    "pairing": "two independent runs on main must agree within half the bar",
+    "pairing": "two independent runs on main must both clear the bar, or both miss it",
     "statistic": "the challenge's score command"
   },
   "benchmark": "lean-sum",
   "board": [],
   "challenge": "lean-sum",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-13T10:54:13Z",
-  "generated_at": "2026-11-13T10:54:13Z",
+  "fetched_at": "2026-11-13T11:10:35Z",
+  "generated_at": "2026-11-13T11:10:35Z",
   "policy": {
     "allowed_paths": [
       "challenges/lean-sum/candidate/**"

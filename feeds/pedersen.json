@@ -10,7 +10,7 @@
     "direction": "maximise",
     "metric": "speedup",
     "min_improvement_bips": 100,
-    "pairing": "two independent runs on main must agree within half the bar",
+    "pairing": "two independent runs on main must both clear the bar, or both miss it",
     "statistic": "callgrind instruction ratio vs frozen reference; paired wall-time guard (mirrored blocks, rel-MAD)"
   },
   "benchmark": "pedersen",
@@ -28,8 +28,8 @@
   ],
   "challenge": "pedersen",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-13T10:54:13Z",
-  "generated_at": "2026-11-13T10:54:13Z",
+  "fetched_at": "2026-11-13T11:10:35Z",
+  "generated_at": "2026-11-13T11:10:35Z",
   "policy": {
     "allowed_paths": [
       "challenges/pedersen/candidate/src/**"

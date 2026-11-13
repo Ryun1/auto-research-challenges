@@ -11,7 +11,7 @@
     "direction": "minimise",
     "metric": "length",
     "min_improvement_bips": 0,
-    "pairing": "two independent runs on main must agree within half the bar",
+    "pairing": "two independent runs on main must both clear the bar, or both miss it",
     "statistic": "exact: certificate checked as data"
   },
   "benchmark": "golomb-14",
@@ -29,8 +29,8 @@
   ],
   "challenge": "golomb-14",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-13T10:54:13Z",
-  "generated_at": "2026-11-13T10:54:13Z",
+  "fetched_at": "2026-11-13T11:10:35Z",
+  "generated_at": "2026-11-13T11:10:35Z",
   "policy": {
     "allowed_paths": [
       "challenges/golomb-14/candidate/**"
