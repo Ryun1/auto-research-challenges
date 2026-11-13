@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-13T15:58:11Z",
+  "generated_at": "2026-11-13T16:16:03Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-13T16:14:04Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-13T16:15:13Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460634718",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/cap-owner-exempt",
+      "conclusion": "success",
+      "created_at": "2026-11-13T16:13:48Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Submission: the repo owner is exempt from the daily cap",
+      "updated_at": "2026-11-13T16:13:59Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460588488",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "Ryun1/cap-owner-exempt",
+      "conclusion": null,
+      "created_at": "2026-11-13T16:13:48Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Submission: the repo owner is exempt from the daily cap",
+      "updated_at": "2026-11-13T16:13:52Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460588476",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "skipped",
@@ -15,12 +48,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-13T15:56:23Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Site: a diff view for each submission; the chart shows records only (…",
-      "updated_at": "2026-11-13T15:56:27Z",
+      "updated_at": "2026-11-13T16:02:16Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457617053",
       "workflow": "CI"
     },
@@ -37,12 +70,12 @@
     },
     {
       "branch": "site-diffs-and-record-chart",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-13T15:56:14Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Site: a diff view for each submission; the chart shows records only",
-      "updated_at": "2026-11-13T15:56:18Z",
+      "updated_at": "2026-11-13T16:02:32Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592026",
       "workflow": "CI"
     },
@@ -408,42 +441,18 @@
       "updated_at": "2026-11-12T20:48:51Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43303222017",
       "workflow": "CI"
-    },
-    {
-      "branch": "site/participant-prompt",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:44:03Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Site: scoreboard redesign and a participant prompt with a Copy button",
-      "updated_at": "2026-11-12T20:45:04Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43303221998",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:19:48Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
-      "updated_at": "2026-11-12T20:27:20Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43299205502",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T20:19:48Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: decode the PV<12 MaryValue pair without the Coders inter…",
-      "updated_at": "2026-11-12T20:41:32Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43299205399",
-      "workflow": "Promote"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-13T16:13:44Z",
+      "draft": false,
+      "number": 82,
+      "title": "Submission: the repo owner is exempt from the daily cap",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/82",
+      "challenges": []
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-13T15:55:02Z",
