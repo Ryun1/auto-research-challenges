@@ -3,6 +3,18 @@
     {
       "attempts": [
         {
+          "at": "2026-11-13T18:35:29Z",
+          "by": "Ryun1",
+          "commit": "92e5bfd507f8895bfcf2c74360f99e16405adba6",
+          "diff": null,
+          "model": "",
+          "reason": "verify failed",
+          "record_before": 1.1326747640764825,
+          "stage": "promotion",
+          "status": "rejected",
+          "value": null
+        },
+        {
           "at": "2026-11-13T17:16:03Z",
           "by": "Ryun1",
           "commit": "93ef03b59087ef088f47eb7812da8210acc681e0",
@@ -177,6 +189,6 @@
       "to_beat": 1.1440015117172473
     }
   ],
-  "generated_at": "2026-11-13T17:18:26Z",
+  "generated_at": "2026-11-13T18:36:24Z",
   "site_schema_version": 1
 }
