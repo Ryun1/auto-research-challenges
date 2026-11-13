@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-13T10:36:06Z",
+  "generated_at": "2026-11-13T10:54:18Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-13T10:52:33Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-13T10:53:32Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412486722",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "submit/ledger-cbor-multiasset-path-2",
+      "conclusion": null,
+      "created_at": "2026-11-13T10:51:34Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asset decode path (resubmission of #76)",
+      "updated_at": "2026-11-13T10:52:28Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412355763",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "judge/promotion-verdict-agreement",
+      "conclusion": null,
+      "created_at": "2026-11-13T10:51:31Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Promotion: runs agree when they reach the same verdict",
+      "updated_at": "2026-11-13T10:51:35Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412349882",
+      "workflow": "CI"
+    },
+    {
+      "branch": "judge/promotion-verdict-agreement",
+      "conclusion": "success",
+      "created_at": "2026-11-13T10:51:31Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Promotion: runs agree when they reach the same verdict",
+      "updated_at": "2026-11-13T10:52:31Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412349797",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -397,51 +441,30 @@
       "updated_at": "2026-11-12T11:39:42Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43135597462",
       "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T00:57:33Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build the upstream suites' dependencies in setup, so the…",
-      "updated_at": "2026-11-12T00:58:19Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43131084508",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T00:57:33Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build the upstream suites' dependencies in setup, so the…",
-      "updated_at": "2026-11-12T01:02:11Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43131084500",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T00:57:33Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build the upstream suites' dependencies in setup, so the…",
-      "updated_at": "2026-11-12T01:35:22Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43131084490",
-      "workflow": "Warm"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T00:12:39Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-12T00:13:29Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43125599801",
-      "workflow": "Comment"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-13T10:51:30Z",
+      "draft": false,
+      "number": 78,
+      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asset decode path (resubmission of #76)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/78",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-13T10:51:27Z",
+      "draft": false,
+      "number": 77,
+      "title": "Promotion: runs agree when they reach the same verdict",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/77",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    }
+  ]
 }
