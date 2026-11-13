@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-13T11:12:41Z",
+  "generated_at": "2026-11-13T11:14:32Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-13T11:13:44Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
+      "updated_at": "2026-11-13T11:13:48Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43415364184",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-13T11:13:43Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
+      "updated_at": "2026-11-13T11:14:04Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43415363890",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +37,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "cancelled",
       "created_at": "2026-11-13T11:09:38Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Promotion: runs agree when they reach the same verdict (#77)",
-      "updated_at": "2026-11-13T11:09:42Z",
+      "updated_at": "2026-11-13T11:14:01Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43414797031",
       "workflow": "CI"
     },
@@ -419,41 +441,7 @@
       "updated_at": "2026-11-12T19:24:08Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43289615585",
       "workflow": "Submission"
-    },
-    {
-      "branch": "fix/ledger-cbor-wall-guard-retry",
-      "conclusion": "success",
-      "created_at": "2026-11-12T19:23:07Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor: repeat an unstable wall-time measurement (up to 3 attempts)",
-      "updated_at": "2026-11-12T19:27:59Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43289608420",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix/ledger-cbor-wall-guard-retry",
-      "conclusion": "success",
-      "created_at": "2026-11-12T19:23:07Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: repeat an unstable wall-time measurement (up to 3 attempts)",
-      "updated_at": "2026-11-12T19:24:07Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43289608209",
-      "workflow": "Submission"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-13T10:51:30Z",
-      "draft": false,
-      "number": 78,
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asset decode path (resubmission of #76)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/78",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }
