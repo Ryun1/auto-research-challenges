@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-14T18:20:49Z",
+  "generated_at": "2026-11-14T18:21:54Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
@@ -9,7 +9,7 @@
       "event": "pull_request_target",
       "status": "in_progress",
       "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
-      "updated_at": "2026-11-14T18:20:32Z",
+      "updated_at": "2026-11-14T18:21:22Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43626048765",
       "workflow": "Submission"
     },
@@ -26,12 +26,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-14T18:19:49Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor judge: hold the candidate's laziness to the reference's p…",
-      "updated_at": "2026-11-14T18:19:53Z",
+      "updated_at": "2026-11-14T18:20:46Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43625983045",
       "workflow": "Promote"
     },
