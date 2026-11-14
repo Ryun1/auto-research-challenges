@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-14T18:29:36Z",
+  "generated_at": "2026-11-14T19:49:12Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-14T19:47:11Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-14T19:48:17Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43633963681",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-direct-bundle-2",
+      "conclusion": "success",
+      "created_at": "2026-11-14T19:36:58Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
+      "updated_at": "2026-11-14T19:47:07Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43633056750",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -419,28 +441,6 @@
       "updated_at": "2026-11-13T10:35:05Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43405276348",
       "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T09:51:29Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T09:52:39Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43404685084",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "Ryun1/ledger-cbor-multiasset-path",
-      "conclusion": "success",
-      "created_at": "2026-11-13T09:33:56Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asset decode path",
-      "updated_at": "2026-11-13T09:51:27Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43402369260",
-      "workflow": "Submission"
     }
   ],
   "pulls": [
