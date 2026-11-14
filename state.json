@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-14T18:00:32Z",
+  "generated_at": "2026-11-14T18:10:05Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-14T18:07:53Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-14T18:08:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43624858367",
+      "workflow": "Comment"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,23 +26,23 @@
     },
     {
       "branch": "Ryun1/ledger-cbor-direct-bundle-2",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-14T17:57:54Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
-      "updated_at": "2026-11-14T17:58:47Z",
+      "updated_at": "2026-11-14T18:07:49Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623930621",
       "workflow": "Submission"
     },
     {
       "branch": "Ryun1/judge-infra-retry",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-14T17:57:40Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor judge: hold the candidate's laziness to the reference's per tx; infra failures don't reject",
-      "updated_at": "2026-11-14T17:57:44Z",
+      "updated_at": "2026-11-14T18:02:27Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623910400",
       "workflow": "CI"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-12T22:56:45Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43323431883",
       "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-12T22:40:35Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-12T22:41:40Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43322086622",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
