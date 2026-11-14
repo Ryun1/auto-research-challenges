@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-14T12:29:46Z",
+  "generated_at": "2026-11-14T18:00:32Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-14T17:58:34Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-14T17:59:37Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623989046",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-direct-bundle-2",
+      "conclusion": null,
+      "created_at": "2026-11-14T17:57:54Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
+      "updated_at": "2026-11-14T17:58:47Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623930621",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "Ryun1/judge-infra-retry",
+      "conclusion": null,
+      "created_at": "2026-11-14T17:57:40Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor judge: hold the candidate's laziness to the reference's per tx; infra failures don't reject",
+      "updated_at": "2026-11-14T17:57:44Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623910400",
+      "workflow": "CI"
+    },
+    {
+      "branch": "Ryun1/judge-infra-retry",
+      "conclusion": "success",
+      "created_at": "2026-11-14T17:57:39Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor judge: hold the candidate's laziness to the reference's per tx; infra failures don't reject",
+      "updated_at": "2026-11-14T17:58:32Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43623910240",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -397,51 +441,30 @@
       "updated_at": "2026-11-12T22:41:40Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43322086622",
       "workflow": "Comment"
-    },
-    {
-      "branch": "launch/pre-invite-fixes",
-      "conclusion": "success",
-      "created_at": "2026-11-12T22:39:31Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Pre-invite fixes: main-only pipeline, daily cap, malicious-PR suite on ledger-cbor",
-      "updated_at": "2026-11-12T22:40:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321921517",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "launch/pre-invite-fixes",
-      "conclusion": "success",
-      "created_at": "2026-11-12T22:39:31Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Pre-invite fixes: main-only pipeline, daily cap, malicious-PR suite on ledger-cbor",
-      "updated_at": "2026-11-12T22:47:20Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321920861",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "skipped",
-      "created_at": "2026-11-12T22:37:45Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-12T22:37:56Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321654954",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "malicious/non-main-base-1794523030",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-12T22:37:20Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "malicious: non-main-base",
-      "updated_at": "2026-11-12T22:37:39Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43321588859",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-14T17:57:50Z",
+      "draft": false,
+      "number": 84,
+      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/84",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-14T17:57:36Z",
+      "draft": false,
+      "number": 83,
+      "title": "ledger-cbor judge: hold the candidate's laziness to the reference's per tx; infra failures don't reject",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/83",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    }
+  ]
 }
