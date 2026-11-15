@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-15T23:39:05Z",
+  "generated_at": "2026-11-15T23:41:16Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:39:01Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T23:40:04Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775950340",
+      "workflow": "Comment"
+    },
     {
       "branch": "skill-judging-fixes",
       "conclusion": "success",
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-13T16:02:16Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457617053",
       "workflow": "CI"
-    },
-    {
-      "branch": "site-diffs-and-record-chart",
-      "conclusion": "success",
-      "created_at": "2026-11-13T15:56:14Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Site: a diff view for each submission; the chart shows records only",
-      "updated_at": "2026-11-13T15:56:27Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592159",
-      "workflow": "Submission"
     }
   ],
   "pulls": [
