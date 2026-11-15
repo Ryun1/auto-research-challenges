@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-15T23:44:17Z",
+  "generated_at": "2026-11-15T23:47:12Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:45:28Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T23:46:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776522411",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "docs/submission-discussions",
+      "conclusion": null,
+      "created_at": "2026-11-15T23:44:39Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Docs: design and plan for per-submission discussion threads",
+      "updated_at": "2026-11-15T23:44:43Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776445144",
+      "workflow": "CI"
+    },
+    {
+      "branch": "docs/submission-discussions",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:44:37Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Docs: design and plan for per-submission discussion threads",
+      "updated_at": "2026-11-15T23:45:26Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776441722",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": null,
@@ -407,39 +440,6 @@
       "title": "Comment",
       "updated_at": "2026-11-13T16:15:13Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460634718",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "Ryun1/cap-owner-exempt",
-      "conclusion": "success",
-      "created_at": "2026-11-13T16:13:48Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Submission: the repo owner is exempt from the daily cap",
-      "updated_at": "2026-11-13T16:13:59Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460588488",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "Ryun1/cap-owner-exempt",
-      "conclusion": "success",
-      "created_at": "2026-11-13T16:13:48Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Submission: the repo owner is exempt from the daily cap",
-      "updated_at": "2026-11-13T16:19:29Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460588476",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "skipped",
-      "created_at": "2026-11-13T15:56:30Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T15:56:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457636824",
       "workflow": "Comment"
     }
   ],
