@@ -1,15 +1,70 @@
 {
-  "generated_at": "2026-11-15T23:20:06Z",
+  "generated_at": "2026-11-15T23:39:05Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "main",
+      "branch": "skill-judging-fixes",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:38:11Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "judging-challenge-candidates: fixes from re-testing",
+      "updated_at": "2026-11-15T23:38:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775879660",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "skill-judging-fixes",
       "conclusion": null,
+      "created_at": "2026-11-15T23:38:11Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "judging-challenge-candidates: fixes from re-testing",
+      "updated_at": "2026-11-15T23:38:15Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775879645",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:37:04Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T23:37:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775782384",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "docs/submission-discussions",
+      "conclusion": null,
+      "created_at": "2026-11-15T23:36:19Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Docs: design and plan for per-submission discussion threads",
+      "updated_at": "2026-11-15T23:36:23Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775717269",
+      "workflow": "CI"
+    },
+    {
+      "branch": "docs/submission-discussions",
+      "conclusion": "success",
+      "created_at": "2026-11-15T23:36:19Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Docs: design and plan for per-submission discussion threads",
+      "updated_at": "2026-11-15T23:37:02Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775717183",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-15T23:18:13Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs…",
-      "updated_at": "2026-11-15T23:18:22Z",
+      "updated_at": "2026-11-15T23:25:46Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43774073290",
       "workflow": "CI"
     },
@@ -386,62 +441,26 @@
       "updated_at": "2026-11-13T15:56:27Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592159",
       "workflow": "Submission"
-    },
-    {
-      "branch": "site-diffs-and-record-chart",
-      "conclusion": "success",
-      "created_at": "2026-11-13T15:56:14Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Site: a diff view for each submission; the chart shows records only",
-      "updated_at": "2026-11-13T16:02:32Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457592026",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T15:55:22Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T15:56:25Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457450788",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "Ryun1/ledger-cbor-direct-bundle",
-      "conclusion": "success",
-      "created_at": "2026-11-13T15:55:06Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
-      "updated_at": "2026-11-13T15:55:19Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457403319",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:47:29Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Site: show speedups as \"1.024× faster\", trim history and chart to rec…",
-      "updated_at": "2026-11-13T11:54:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43419853696",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:46:45Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T11:47:44Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43419759852",
-      "workflow": "Comment"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-15T23:38:09Z",
+      "draft": false,
+      "number": 88,
+      "title": "judging-challenge-candidates: fixes from re-testing",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/88",
+      "challenges": []
+    },
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-15T23:36:16Z",
+      "draft": false,
+      "number": 87,
+      "title": "Docs: design and plan for per-submission discussion threads",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/87",
+      "challenges": []
+    }
+  ]
 }
