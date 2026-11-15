@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-14T19:49:12Z",
+  "generated_at": "2026-11-15T21:46:23Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T21:44:25Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T21:45:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43765342278",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/pool-koios-backoff",
+      "conclusion": null,
+      "created_at": "2026-11-15T21:43:22Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call",
+      "updated_at": "2026-11-15T21:43:27Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43765248932",
+      "workflow": "CI"
+    },
+    {
+      "branch": "Ryun1/pool-koios-backoff",
+      "conclusion": "success",
+      "created_at": "2026-11-15T21:43:22Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call",
+      "updated_at": "2026-11-15T21:44:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43765248919",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -408,42 +441,20 @@
       "updated_at": "2026-11-13T10:56:45Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412349882",
       "workflow": "CI"
-    },
-    {
-      "branch": "judge/promotion-verdict-agreement",
-      "conclusion": "success",
-      "created_at": "2026-11-13T10:51:31Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Promotion: runs agree when they reach the same verdict",
-      "updated_at": "2026-11-13T10:52:31Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43412349797",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T09:56:32Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
-      "updated_at": "2026-11-13T10:01:50Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43405276504",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T09:56:32Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
-      "updated_at": "2026-11-13T10:35:05Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43405276348",
-      "workflow": "Promote"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-15T21:43:19Z",
+      "draft": false,
+      "number": 85,
+      "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/85",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-14T17:57:50Z",
