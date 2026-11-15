@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-15T23:02:34Z",
+  "generated_at": "2026-11-15T23:19:03Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-15T23:18:13Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs…",
+      "updated_at": "2026-11-15T23:18:22Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43774073290",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-15T23:18:13Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs…",
+      "updated_at": "2026-11-15T23:18:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43774073159",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "cancelled",
+      "created_at": "2026-11-15T23:18:02Z",
+      "event": "push",
+      "status": "completed",
+      "title": "Skill: judge challenge candidates as simple or research (#86)",
+      "updated_at": "2026-11-15T23:18:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43774055952",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -26,12 +59,12 @@
     },
     {
       "branch": "skill-judging-candidates",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T22:58:38Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Skill: judge challenge candidates as simple or research",
-      "updated_at": "2026-11-15T22:58:41Z",
+      "updated_at": "2026-11-15T23:05:49Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43772229786",
       "workflow": "CI"
     },
@@ -408,61 +441,7 @@
       "updated_at": "2026-11-13T11:47:44Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43419759852",
       "workflow": "Comment"
-    },
-    {
-      "branch": "site-scoring-clarity",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:46:28Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Site: show speedups as \"1.024× faster\", trim history and chart to records",
-      "updated_at": "2026-11-13T11:53:46Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43419723735",
-      "workflow": "CI"
-    },
-    {
-      "branch": "site-scoring-clarity",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:46:28Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Site: show speedups as \"1.024× faster\", trim history and chart to records",
-      "updated_at": "2026-11-13T11:46:42Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43419723650",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:13:44Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
-      "updated_at": "2026-11-13T11:56:44Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43415364184",
-      "workflow": "Promote"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-15T22:58:34Z",
-      "draft": false,
-      "number": 86,
-      "title": "Skill: judge challenge candidates as simple or research",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/86",
-      "challenges": []
-    },
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-14T17:57:50Z",
-      "draft": false,
-      "number": 84,
-      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/84",
-      "challenges": [
-        "ledger-cbor"
-      ]
-    }
-  ]
+  "pulls": []
 }
