@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-15T23:41:16Z",
+  "generated_at": "2026-11-15T23:44:17Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-15T23:43:26Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "judging-challenge-candidates: fixes from a re-test on a non-proof can…",
+      "updated_at": "2026-11-15T23:43:30Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776341172",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -26,12 +37,12 @@
     },
     {
       "branch": "skill-judging-fixes",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T23:38:11Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "judging-challenge-candidates: fixes from re-testing",
-      "updated_at": "2026-11-15T23:38:15Z",
+      "updated_at": "2026-11-15T23:43:15Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775879645",
       "workflow": "CI"
     },
@@ -48,12 +59,12 @@
     },
     {
       "branch": "docs/submission-discussions",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T23:36:19Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Docs: design and plan for per-submission discussion threads",
-      "updated_at": "2026-11-15T23:36:23Z",
+      "updated_at": "2026-11-15T23:42:30Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775717269",
       "workflow": "CI"
     },
@@ -430,29 +441,9 @@
       "updated_at": "2026-11-13T15:56:31Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457636824",
       "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T15:56:23Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Site: a diff view for each submission; the chart shows records only (…",
-      "updated_at": "2026-11-13T16:02:16Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43457617053",
-      "workflow": "CI"
     }
   ],
   "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-15T23:38:09Z",
-      "draft": false,
-      "number": 88,
-      "title": "judging-challenge-candidates: fixes from re-testing",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/88",
-      "challenges": []
-    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-15T23:36:16Z",
