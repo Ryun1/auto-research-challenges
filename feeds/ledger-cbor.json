@@ -1,12 +1,12 @@
 {
   "attempts_by_status": {
     "pr:infra_failed": 3,
-    "pr:valid_claim_better": 5,
+    "pr:valid_claim_better": 6,
     "promotion:infra_failed": 2,
     "promotion:promoted": 2,
     "promotion:rejected": 1
   },
-  "attempts_count": 13,
+  "attempts_count": 14,
   "bar": {
     "baseline": 1.000012450031894,
     "direction": "maximise",
@@ -40,8 +40,8 @@
   ],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-15T22:27:54Z",
-  "generated_at": "2026-11-15T22:27:54Z",
+  "fetched_at": "2026-11-15T23:01:24Z",
+  "generated_at": "2026-11-15T23:01:24Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"

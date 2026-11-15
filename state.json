@@ -1,26 +1,70 @@
 {
-  "generated_at": "2026-11-15T22:27:57Z",
+  "generated_at": "2026-11-15T23:01:29Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "Ryun1/ledger-cbor-direct-bundle-2",
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T22:59:36Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T23:00:42Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43772315122",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-15T22:59:33Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-15T23:00:31Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43772309802",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "skill-judging-candidates",
       "conclusion": null,
+      "created_at": "2026-11-15T22:58:38Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Skill: judge challenge candidates as simple or research",
+      "updated_at": "2026-11-15T22:58:41Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43772229786",
+      "workflow": "CI"
+    },
+    {
+      "branch": "skill-judging-candidates",
+      "conclusion": "success",
+      "created_at": "2026-11-15T22:58:38Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Skill: judge challenge candidates as simple or research",
+      "updated_at": "2026-11-15T22:59:34Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43772229782",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-direct-bundle-2",
+      "conclusion": "success",
       "created_at": "2026-11-15T22:27:01Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs/witness decoders; one-pass CompactValue (resubmission of #80)",
-      "updated_at": "2026-11-15T22:27:43Z",
+      "updated_at": "2026-11-15T22:59:30Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43769349888",
       "workflow": "Submission"
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T22:26:09Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call…",
-      "updated_at": "2026-11-15T22:26:13Z",
+      "updated_at": "2026-11-15T22:32:37Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43769274242",
       "workflow": "CI"
     },
@@ -397,53 +441,18 @@
       "updated_at": "2026-11-13T11:56:44Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43415364184",
       "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:13:43Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: build CompactValue in one pass and inline the multi-asse…",
-      "updated_at": "2026-11-13T11:20:07Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43415363890",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:10:00Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T11:10:59Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43414847790",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-13T11:09:38Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Promotion: runs agree when they reach the same verdict (#77)",
-      "updated_at": "2026-11-13T11:14:01Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43414797031",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T11:09:38Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Promotion: runs agree when they reach the same verdict (#77)",
-      "updated_at": "2026-11-13T11:10:22Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43414796909",
-      "workflow": "Promote"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-15T22:58:34Z",
+      "draft": false,
+      "number": 86,
+      "title": "Skill: judge challenge candidates as simple or research",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/86",
+      "challenges": []
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-14T17:57:50Z",
