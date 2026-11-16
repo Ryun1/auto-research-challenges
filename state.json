@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-15T23:47:12Z",
+  "generated_at": "2026-11-16T00:10:00Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-16T00:09:01Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Docs: design and plan for per-submission discussion threads (#87)",
+      "updated_at": "2026-11-16T00:09:06Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43778645473",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +26,12 @@
     },
     {
       "branch": "docs/submission-discussions",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T23:44:39Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Docs: design and plan for per-submission discussion threads",
-      "updated_at": "2026-11-15T23:44:43Z",
+      "updated_at": "2026-11-15T23:51:59Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776445144",
       "workflow": "CI"
     },
@@ -37,12 +48,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-15T23:43:26Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "judging-challenge-candidates: fixes from a re-test on a non-proof can…",
-      "updated_at": "2026-11-15T23:43:30Z",
+      "updated_at": "2026-11-15T23:49:58Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776341172",
       "workflow": "CI"
     },
@@ -430,28 +441,7 @@
       "updated_at": "2026-11-13T16:34:17Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43462843069",
       "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T16:14:04Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T16:15:13Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43460634718",
-      "workflow": "Comment"
     }
   ],
-  "pulls": [
-    {
-      "author": "Ryun1",
-      "created_at": "2026-11-15T23:36:16Z",
-      "draft": false,
-      "number": 87,
-      "title": "Docs: design and plan for per-submission discussion threads",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/87",
-      "challenges": []
-    }
-  ]
+  "pulls": []
 }
