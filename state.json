@@ -1,15 +1,48 @@
 {
-  "generated_at": "2026-11-16T00:10:00Z",
+  "generated_at": "2026-11-16T00:16:56Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-16T00:15:08Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-16T00:15:59Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43779248135",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "skill-judging-consistency",
       "conclusion": null,
+      "created_at": "2026-11-16T00:14:07Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "judging-challenge-candidates: consistency fixes",
+      "updated_at": "2026-11-16T00:14:11Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43779150104",
+      "workflow": "CI"
+    },
+    {
+      "branch": "skill-judging-consistency",
+      "conclusion": "success",
+      "created_at": "2026-11-16T00:14:07Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "judging-challenge-candidates: consistency fixes",
+      "updated_at": "2026-11-16T00:15:05Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43779150073",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-16T00:09:01Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Docs: design and plan for per-submission discussion threads (#87)",
-      "updated_at": "2026-11-16T00:09:06Z",
+      "updated_at": "2026-11-16T00:16:21Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43778645473",
       "workflow": "CI"
     },
@@ -408,40 +441,17 @@
       "updated_at": "2026-11-13T18:35:34Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43471245947",
       "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T17:15:00Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-13T17:16:15Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43470904001",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "Ryun1/ledger-cbor-direct-bundle",
-      "conclusion": "success",
-      "created_at": "2026-11-13T16:43:02Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "ledger-cbor: read single-chunk input directly instead of through cborg; decode the tx body, outputs and witness set without the Coders interpreter; one-pass CompactValue",
-      "updated_at": "2026-11-13T17:14:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43465502388",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-13T16:27:11Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Submission: the repo owner is exempt from the daily cap (#82)",
-      "updated_at": "2026-11-13T16:34:17Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43462843069",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-16T00:14:04Z",
+      "draft": false,
+      "number": 89,
+      "title": "judging-challenge-candidates: consistency fixes",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/89",
+      "challenges": []
+    }
+  ]
 }
