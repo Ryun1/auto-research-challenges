@@ -1,7 +1,18 @@
 {
-  "generated_at": "2026-11-19T17:08:01Z",
+  "generated_at": "2026-11-19T17:19:19Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T17:17:31Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T17:18:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44575574071",
+      "workflow": "Comment"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +26,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T17:06:06Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "External reference points ([[targets]]) on the site (#111)",
-      "updated_at": "2026-11-19T17:06:09Z",
+      "updated_at": "2026-11-19T17:10:19Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44573468151",
       "workflow": "CI"
     },
@@ -59,12 +70,12 @@
     },
     {
       "branch": "Ryun1/ledger-cbor-decoder-loops",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T16:43:24Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: run the tx body, witness set and map-form output loops as one direct loop each, instead of rebuilding a Decoder per key",
-      "updated_at": "2026-11-19T16:44:11Z",
+      "updated_at": "2026-11-19T17:17:26Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44569290854",
       "workflow": "Submission"
     },
@@ -429,17 +440,6 @@
       "title": "Comment",
       "updated_at": "2026-11-19T13:33:34Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44534508324",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:32:32Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:33:18Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44534475307",
       "workflow": "Comment"
     }
   ],

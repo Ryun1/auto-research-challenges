@@ -571,6 +571,18 @@
     {
       "attempts": [
         {
+          "at": "2026-11-19T17:18:15Z",
+          "by": "Ryun1",
+          "commit": "08a7da0d4a13b814df8e03dbd111c4ee447ec43b",
+          "diff": "diffs/ledger-cbor/08a7da0d4a13b814df8e03dbd111c4ee447ec43b.patch",
+          "model": "",
+          "reason": "claims 1.3925818193275807 vs record 1.3507871794243989; promotion decides",
+          "record_before": 1.3507871794243989,
+          "stage": "pr",
+          "status": "valid_claim_better",
+          "value": 1.3925818193275807
+        },
+        {
           "at": "2026-11-16T00:24:32Z",
           "by": "Ryun1",
           "commit": "80a6f2c69bdd84397003927100aab7135bbd8d1f",
@@ -905,6 +917,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T17:07:55Z",
+  "generated_at": "2026-11-19T17:19:12Z",
   "site_schema_version": 1
 }
