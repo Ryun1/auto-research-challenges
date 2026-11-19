@@ -1,7 +1,95 @@
 {
-  "generated_at": "2026-11-19T15:58:47Z",
+  "generated_at": "2026-11-19T16:09:41Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:08:53Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion…",
+      "updated_at": "2026-11-19T16:08:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786222",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:08:53Z",
+      "event": "push",
+      "status": "completed",
+      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion…",
+      "updated_at": "2026-11-19T16:09:38Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786062",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:08:45Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-19T16:08:52Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562761466",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:08:43Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T16:09:21Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562756227",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "feat/context-toml",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:07:59Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
+      "updated_at": "2026-11-19T16:08:04Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562614893",
+      "workflow": "CI"
+    },
+    {
+      "branch": "feat/context-toml",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:07:58Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
+      "updated_at": "2026-11-19T16:08:40Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562613691",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "docs/ledger-cbor-wall-guard-wording",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:07:58Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion",
+      "updated_at": "2026-11-19T16:08:02Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562613042",
+      "workflow": "CI"
+    },
+    {
+      "branch": "docs/ledger-cbor-wall-guard-wording",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:07:58Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion",
+      "updated_at": "2026-11-19T16:08:40Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562612980",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +103,12 @@
     },
     {
       "branch": "feat/context-toml",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T15:56:16Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
-      "updated_at": "2026-11-19T15:56:20Z",
+      "updated_at": "2026-11-19T16:00:18Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44560409513",
       "workflow": "CI"
     },
@@ -353,94 +441,6 @@
       "updated_at": "2026-11-19T13:13:38Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531022273",
       "workflow": "CI"
-    },
-    {
-      "branch": "malicious/edit-judge-1795093890",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:11:38Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "malicious: edit-judge",
-      "updated_at": "2026-11-19T13:12:24Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531022197",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "submit/random-improve",
-      "conclusion": "failure",
-      "created_at": "2026-11-19T13:11:14Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "coin-select: random-improve (new direction)",
-      "updated_at": "2026-11-19T13:12:16Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530958238",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:11:05Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Haskell action: cache key for a challenge without baseline/ (#94)",
-      "updated_at": "2026-11-19T13:22:05Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530934651",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:11:05Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Haskell action: cache key for a challenge without baseline/ (#94)",
-      "updated_at": "2026-11-19T13:19:07Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530934284",
-      "workflow": "Warm"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:54:52Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T12:55:42Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528314282",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "fix-haskell-detect",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:54:15Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Haskell action: don't fail detect when a challenge has no baseline/",
-      "updated_at": "2026-11-19T12:54:49Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528217731",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "fix-haskell-detect",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:54:15Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Haskell action: don't fail detect when a challenge has no baseline/",
-      "updated_at": "2026-11-19T12:57:51Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528217691",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:53:05Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T12:53:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528035424",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
@@ -452,7 +452,8 @@
       "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/107",
       "challenges": [
-        "coin-select"
+        "coin-select",
+        "ledger-cbor"
       ]
     }
   ]
