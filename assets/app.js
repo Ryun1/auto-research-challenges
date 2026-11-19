@@ -1063,6 +1063,64 @@
     }
     return s;
   }
+  // context.toml (#101): why the problem matters. Every string is text; the
+  // sources stay plain text because safeUrl only links to github.com.
+  function contextSection(c) {
+    var x = c.context;
+    if (!x || typeof x !== "object" || !str(x.one_line)) return null;
+    function list(v) { return Array.isArray(v) ? v : []; }
+    var s = section("Why it matters");
+    add(s, el("p", "ctx-lead", x.one_line));
+    if (str(x.stakes)) add(s, el("p", "ctx-p", x.stakes));
+    var flow = list(x.flow).filter(function (f) { return f && str(f.label); });
+    if (flow.length) {
+      add(s, el("h3", null, "Where it sits"));
+      var ol = el("ol", "ctx-flow");
+      flow.forEach(function (f) {
+        var li = add(el("li", f.this_challenge === true ? "ctx-here" : null), el("span", "ctx-step", f.label));
+        if (f.this_challenge === true) add(li, " ", el("span", "outcome o-claim", "this challenge"));
+        if (str(f.detail)) add(li, el("span", "ctx-detail", f.detail));
+        add(ol, li);
+      });
+      add(s, ol);
+    }
+    var k = x.calls;
+    if (k && typeof k === "object" && str(k.value)) {
+      add(s, el("h3", null, "How often it runs"));
+      add(s, el("p", "ctx-p", k.value));
+      if (str(k.basis)) add(s, el("p", "ctx-detail", k.basis));
+      if (str(k.source)) add(s, el("p", "ctx-source", "Source: " + k.source));
+    }
+    var levers = list(x.value_levers).filter(function (l) { return l && str(l.quantity); });
+    if (levers.length) {
+      add(s, el("h3", null, "What an improvement is worth"));
+      var ul = el("ul", "ctx-levers");
+      levers.forEach(function (l) {
+        var li = add(el("li"), el("strong", "ctx-qty", l.quantity));
+        if (l.is_estimate === true) add(li, " ", el("span", "outcome", "estimate"));
+        if (str(l.statement)) add(li, el("span", "ctx-detail", l.statement));
+        if (str(l.source)) add(li, el("span", "ctx-source", (l.is_estimate === true ? "Method: " : "Source: ") + l.source));
+        add(ul, li);
+      });
+      add(s, ul);
+    }
+    if (str(x.why_this_instance)) add(s, el("h3", null, "Why these inputs"), el("p", "ctx-p", x.why_this_instance));
+    var cautions = list(x.cautions).filter(str);
+    if (cautions.length) {
+      add(s, el("h3", null, "What the score leaves out"));
+      var cl = el("ul", "ctx-list");
+      cautions.forEach(function (t) { add(cl, el("li", null, t)); });
+      add(s, cl);
+    }
+    var sources = list(x.sources).filter(str);
+    if (sources.length) {
+      add(s, el("h3", null, "Sources"));
+      var sl = el("ul", "ctx-list ctx-sources");
+      sources.forEach(function (t) { add(sl, el("li", null, t)); });
+      add(s, sl);
+    }
+    return s;
+  }
   function deferredSection(c) {
     var d = (c.contracts || []).filter(function (k) { return k.status === "deferred"; });
     if (!d.length) return null;
@@ -1154,10 +1212,10 @@
     var content, aside;
     if (c.type === "research") {
       if (R.slug !== c.slug) R = { slug: c.slug, id: null, x: 0, y: 1, nd: false };
-      content = add(el("div", "content"), mapSection(c), treeSection(c), subPanel(c), taxSection(c), deferredSection(c));
+      content = add(el("div", "content"), mapSection(c), treeSection(c), subPanel(c), contextSection(c), taxSection(c), deferredSection(c));
       aside = add(el("div", "aside"), enter(c), researchAside(c));
     } else {
-      content = add(el("div", "content"), board(c), attempts(c));
+      content = add(el("div", "content"), board(c), contextSection(c), attempts(c));
       aside = add(el("div", "aside"), enter(c), facts(c));
     }
     add(main, stage(c), add(el("div", "wrap body" + (c.type === "research" ? " body-research" : "")), content, aside));

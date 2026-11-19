@@ -50,8 +50,8 @@
   ],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-19T16:10:22Z",
-  "generated_at": "2026-11-19T16:10:22Z",
+  "fetched_at": "2026-11-19T16:34:22Z",
+  "generated_at": "2026-11-19T16:34:22Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
@@ -68,6 +68,7 @@
       "challenges/ledger-cbor/bench/**",
       "challenges/ledger-cbor/build.sh",
       "challenges/ledger-cbor/challenge.toml",
+      "challenges/ledger-cbor/context.toml",
       "challenges/ledger-cbor/corpus/**",
       "challenges/ledger-cbor/harness/**",
       "challenges/ledger-cbor/packages.txt",

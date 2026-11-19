@@ -381,6 +381,16 @@ td.detail { overflow-wrap: anywhere; }
 .tax-count { color: var(--muted); font-size: 13.5px; }
 .tax-vdef { display: block; color: var(--muted); font-size: 13.5px; }
 .deferred { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.ctx-lead { font-size: 17px; font-weight: 600; margin: 0 0 8px; }
+.ctx-p { margin: 0 0 8px; }
+.ctx-detail { display: block; color: var(--muted); font-size: 13.5px; }
+.ctx-source { display: block; color: var(--muted); font-size: 12.5px; font-style: italic; overflow-wrap: anywhere; }
+.ctx-flow { margin: 0; padding-left: 22px; display: grid; gap: 6px; }
+.ctx-flow .ctx-step { font-weight: 600; }
+.ctx-here { background: var(--claim-soft); border-radius: 8px; padding: 4px 8px; margin-left: -8px; }
+.ctx-levers { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.ctx-list { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.ctx-sources { font-size: 13.5px; color: var(--muted); overflow-wrap: anywhere; }
 @media (max-width: 640px) {
   .pick-axis { flex-direction: column; align-items: stretch; width: 100%; gap: 4px; }
   .facts div { grid-template-columns: 80px minmax(0, 1fr); }

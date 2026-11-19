@@ -55,6 +55,76 @@
           "unit": "MiB"
         }
       ],
+      "context": {
+        "calls": {
+          "basis": "A transaction cannot be built until its inputs are chosen, so selection runs every time a wallet pays.",
+          "source": "CIP-2 (coin selection is the step that chooses a transaction's inputs and change)",
+          "value": "Once per payment, in every wallet"
+        },
+        "cautions": [
+          "Transaction size comes from a fixed model (60 bytes, plus 140 per input and 65 per output), not real CBOR with witnesses and metadata, so fees are close to but not exactly what the ledger would charge.",
+          "ADA only: multi-asset selection waits for a separate contract (wallet-multiasset@0) with a min-ada model checked against cardano-ledger.",
+          "Dust here means a UTxO under 2 ADA at the end of a run. The threshold is this challenge's choice, not a protocol constant.",
+          "Latency is the judge's clock around each reply on a GitHub-hosted runner, including the pipe; differences below the axis tolerance are noise.",
+          "Protocol parameters change through on-chain governance; these use the documented mainnet values.",
+          "change-privacy is declared by submitters, never checked."
+        ],
+        "flow": [
+          {
+            "detail": "Payments to the wallet, and withdrawn staking rewards, become UTxOs, some of them small.",
+            "label": "Funds arrive",
+            "this_challenge": false
+          },
+          {
+            "detail": "One payment can have several outputs.",
+            "label": "The user asks to pay",
+            "this_challenge": false
+          },
+          {
+            "detail": "Choose the inputs, the change outputs and the fee. The choice decides the transaction's size, and so its fee, and which UTxOs the wallet keeps.",
+            "label": "Coin selection",
+            "this_challenge": true
+          },
+          {
+            "detail": "The fee is 44 lovelace per byte plus 155,381 lovelace; each input adds about 140 bytes.",
+            "label": "Build, sign and submit",
+            "this_challenge": false
+          },
+          {
+            "detail": "Change outputs become the UTxOs the next selection chooses from.",
+            "label": "Change returns to the wallet",
+            "this_challenge": false
+          }
+        ],
+        "one_line": "Choose which coins a Cardano wallet spends for each payment, and what change it keeps.",
+        "sources": [
+          "CIP-2, Coin Selection Algorithms for Cardano: https://cips.cardano.org/cip/CIP-0002",
+          "Cardano protocol parameters reference guide (txFeePerByte 44, txFeeFixed 155381, utxoCostPerByte 4310, maxTxSize 16384): https://docs.cardano.org/about-cardano/explore-more/parameter-guide",
+          "Accepted results: feeds/coin-select.json on this site"
+        ],
+        "stakes": "Every Cardano wallet runs coin selection for every payment it makes. The choice sets the fee paid now and the shape of the wallet left behind. Among the goals of CIP-2, the Cardano standard for it: limit the dust that builds up in the UTxO set, and keep outputs that let future payments be made with few inputs. It also notes that putting all change into one output is widely considered bad for privacy. These pull against each other, so there is no single best answer, only trade-offs worth mapping.",
+        "value_levers": [
+          {
+            "is_estimate": false,
+            "quantity": "−91% dust for +7% fees",
+            "source": "Accept-stage medians of baseline and random-improve (feeds/coin-select.json)",
+            "statement": "random-improve leaves about 91% fewer dust UTxOs than largest-first (3.9 against 43.3 per wallet) for about 7% more fees (39.9 against 37.3 ADA over about 210 payments)."
+          },
+          {
+            "is_estimate": true,
+            "quantity": "+1 input → +6,160 lovelace (≈ +3.5% of a fee)",
+            "source": "Fee formula with the mainnet parameters; average fee = 37.25 ADA / 209.7 payments, the mean payment count over 40 generated scenarios (our calculation)",
+            "statement": "Each extra input adds 140 bytes, 6,160 lovelace at 44 lovelace per byte: about 3.5% of the average fee per payment under largest-first (about 0.178 ADA)."
+          },
+          {
+            "is_estimate": true,
+            "quantity": "sweep 43 dust UTxOs ≈ 0.43 ADA",
+            "source": "Size model: 60 + 140 × 43 + 65 = 6,145 bytes; fee 155,381 + 44 × 6,145 = 425,761 lovelace (our calculation)",
+            "statement": "On fees alone, dust is cheap to clear: sweeping largest-first's 43 dust UTxOs in one 43-input transaction costs about 0.43 ADA, against the 2.6 ADA more that random-improve pays to avoid it. Dust matters for CIP-2's other goal, keeping UTxOs that let later payments use few inputs, more than for fees."
+          }
+        ],
+        "why_this_instance": "Each run replays 8 wallets through 300 events: deposits (some small and reward-like, 1 to 3 ADA) and about 210 payments of one to three outputs. Wallets start with 60 to 120 UTxOs. Fees use the mainnet fee parameters with a fixed transaction-size model. Every run draws fresh wallets from a new seed, so nothing can be tuned to the inputs. The results say nothing about wallets holding native tokens, script outputs or exchange-sized UTxO sets."
+      },
       "contracts": [
         {
           "admits_when": null,
@@ -718,6 +788,72 @@
           "value": 1.013430150878856
         }
       ],
+      "context": {
+        "calls": {
+          "basis": "About 4,320 blocks a day (86,400 one-second slots × activeSlotsCoeff 0.05) × about 10.9 transactions per block (1,633 in 150 uniformly sampled mainnet blocks) ≈ 47,000 transactions a day (our estimate).",
+          "source": "Ouroboros Consensus data-flow docs (mempool and block paths); mainnet Shelley genesis; this challenge's corpus",
+          "value": "Every transaction, at every node whose mempool it enters; its fields again on every node that applies its block"
+        },
+        "cautions": [
+          "The score counts CPU instructions under Callgrind, not wall time. A paired wall-time check only rejects a candidate whose wall-time speedup is below 0.92.",
+          "Only the mempool path is timed. A transaction in a block has a different serialization; the block decoder reuses the same field decoders (transaction bodies, outputs, values, witnesses), but its own framing is not measured.",
+          "Decoding is one part of what a node does per transaction and per block; its share of a node's CPU is not known here, so no node-level saving is claimed.",
+          "Upstream's test suites for the alonzo, babbage and conway packages are not run on promotion yet (they do not fit the runner's time limits).",
+          "pallas decodes into different structures in a different language: its instruction count shows headroom, not a target."
+        ],
+        "flow": [
+          {
+            "detail": "A wallet submits the transaction to a node (local tx-submission), and nodes pass it to their peers (node-to-node TxSubmission).",
+            "label": "Submitted",
+            "this_challenge": false
+          },
+          {
+            "detail": "Each node decodes the transaction's CBOR into a MempoolTx with cardano-ledger. This is the decoder this challenge makes faster.",
+            "label": "Decoded",
+            "this_challenge": true
+          },
+          {
+            "detail": "The mempool validates the transaction against the current ledger state and rejects it if it is invalid.",
+            "label": "Validated and held",
+            "this_challenge": false
+          },
+          {
+            "detail": "A slot leader takes transactions from its mempool into a new block.",
+            "label": "Forged into a block",
+            "this_challenge": false
+          },
+          {
+            "detail": "Peers fetch the block, decode it (reusing the same field decoders for each transaction's body and witnesses) and apply it to the ledger; the mempool is then revalidated.",
+            "label": "Block applied on every node",
+            "this_challenge": false
+          }
+        ],
+        "one_line": "Make cardano-ledger decode Cardano transactions in fewer CPU instructions, without changing what it accepts.",
+        "sources": [
+          "cardano-ledger @ 7827506, libs/cardano-ledger-core/src/Cardano/Ledger/MempoolTx/Internal.hs: MempoolTx is 'a top-level transaction as it is received by the mempool'; mempool and block transactions do not share a serialization",
+          "cardano-ledger @ 7827506, eras/alonzo/impl/src/Cardano/Ledger/Alonzo/BlockBody/Internal.hs and eras/conway/impl/src/Cardano/Ledger/Conway/BlockBody.hs (BlockBody ConwayEra = AlonzoBlockBody ConwayEra): block bodies decode transaction bodies and witnesses with the same decoders",
+          "Ouroboros Consensus, Components' Data Flow: https://ouroboros-consensus.cardano.intersectmbo.org/docs/explanations/data_flow",
+          "Mainnet Shelley genesis (activeSlotsCoeff 0.05, slotLength 1): https://book.world.dev.cardano.org/environments/mainnet/shelley-genesis.json",
+          "This challenge's corpus: 1,633 transactions from 150 uniformly sampled mainnet blocks, epochs 645 to 666 (corpus/pool.json)",
+          "This challenge's measure run 42721883592 (reference profile and pallas comparison)"
+        ],
+        "stakes": "Every Conway transaction that reaches a Cardano node arrives as CBOR bytes and is decoded by cardano-ledger before the node can validate it, and its fields are decoded again when the node applies the block that contains it. That decoder sits on consensus-critical code, so a faster decoder is only worth having if it accepts and rejects exactly the same bytes as today's. A Rust decoder decodes the same transactions in about 4.5x fewer instructions, which suggests there is room.",
+        "value_levers": [
+          {
+            "is_estimate": false,
+            "quantity": "pallas: ≈ 4.5x fewer instructions",
+            "source": "This challenge's measure run 42721883592 (Callgrind, same transactions)",
+            "statement": "On the same mainnet transactions, pallas (Rust) needs about 4.5x fewer instructions than cardano-ledger's decoder, so the Haskell decoder is far from a floor. In the reference profile the editable packages run about a quarter of the instructions directly and the GHC runtime another 38%, much of it closure application and allocation that the decoders' shape decides."
+          },
+          {
+            "is_estimate": false,
+            "quantity": "same decoders on the block path",
+            "source": "cardano-ledger @ 7827506: AlonzoBlockBody's decoder (used by Conway) decodes bodies and witnesses with the same decCBOR instances",
+            "statement": "A faster field decoder (transaction bodies, outputs, values) also speeds up decoding blocks, because the block body decoder calls the same instances, though only the mempool path is measured here."
+          }
+        ],
+        "why_this_instance": "Each CI run decodes 800 transactions sampled from recent mainnet blocks fetched for that run (protocol version 11, Conway era) as mempool transactions: decodeFullAnnotator into MempoolTx ConwayEra, then fully evaluated. Correctness is checked against the pinned reference on every input, including truncated, bit-flipped, extended and re-tagged mutants. The results say nothing about older eras, ledger-state decoding, the block's own framing or wall time on a running node."
+      },
       "direction": "maximise",
       "editable": [
         "candidate/"
@@ -748,6 +884,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T16:10:22Z",
+  "generated_at": "2026-11-19T16:34:22Z",
   "site_schema_version": 1
 }

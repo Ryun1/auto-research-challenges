@@ -1,15 +1,59 @@
 {
-  "generated_at": "2026-11-19T16:10:27Z",
+  "generated_at": "2026-11-19T16:34:28Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
+      "branch": "feat/submission-hypothesis",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:34:07Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Research submissions: optional hypothesis and expected axis effects (#104)",
+      "updated_at": "2026-11-19T16:34:11Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567552448",
+      "workflow": "CI"
+    },
+    {
+      "branch": "feat/submission-hypothesis",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:34:07Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "Research submissions: optional hypothesis and expected axis effects (#104)",
+      "updated_at": "2026-11-19T16:34:12Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567552156",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:33:39Z",
+      "event": "push",
+      "status": "completed",
+      "title": "context.toml: why a challenge matters, on the public site (#107)",
+      "updated_at": "2026-11-19T16:34:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567464387",
+      "workflow": "Promote"
+    },
+    {
       "branch": "main",
       "conclusion": null,
-      "created_at": "2026-11-19T16:08:53Z",
+      "created_at": "2026-11-19T16:33:39Z",
       "event": "push",
       "status": "in_progress",
+      "title": "context.toml: why a challenge matters, on the public site (#107)",
+      "updated_at": "2026-11-19T16:33:44Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567464269",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:08:53Z",
+      "event": "push",
+      "status": "completed",
       "title": "ledger-cbor README: explain both wall-time limits from max_dispersion…",
-      "updated_at": "2026-11-19T16:08:57Z",
+      "updated_at": "2026-11-19T16:13:47Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786222",
       "workflow": "CI"
     },
@@ -48,12 +92,12 @@
     },
     {
       "branch": "feat/context-toml",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T16:07:59Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
-      "updated_at": "2026-11-19T16:08:04Z",
+      "updated_at": "2026-11-19T16:17:49Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562614893",
       "workflow": "CI"
     },
@@ -70,12 +114,12 @@
     },
     {
       "branch": "docs/ledger-cbor-wall-guard-wording",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T16:07:58Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor README: explain both wall-time limits from max_dispersion",
-      "updated_at": "2026-11-19T16:08:02Z",
+      "updated_at": "2026-11-19T16:12:21Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562613042",
       "workflow": "CI"
     },
@@ -397,63 +441,18 @@
       "updated_at": "2026-11-19T13:14:57Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531336653",
       "workflow": "Submission"
-    },
-    {
-      "branch": "submit/random-improve",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:12:55Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "coin-select: random-improve (new direction)",
-      "updated_at": "2026-11-19T13:14:22Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531234007",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:12:27Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:13:13Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531160045",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:12:21Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:13:10Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531142121",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "malicious/edit-judge-1795093890",
-      "conclusion": "cancelled",
-      "created_at": "2026-11-19T13:11:38Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "malicious: edit-judge",
-      "updated_at": "2026-11-19T13:13:38Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531022273",
-      "workflow": "CI"
     }
   ],
   "pulls": [
     {
       "author": "Ryun1",
-      "created_at": "2026-11-19T15:56:11Z",
+      "created_at": "2026-11-19T16:34:02Z",
       "draft": false,
-      "number": 107,
-      "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/107",
+      "number": 109,
+      "title": "Research submissions: optional hypothesis and expected axis effects (#104)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/109",
       "challenges": [
-        "coin-select",
-        "ledger-cbor"
+        "coin-select"
       ]
     }
   ]
