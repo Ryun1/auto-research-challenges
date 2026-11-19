@@ -1,0 +1,315 @@
+{
+  "attempts": {
+    "accepted": 1,
+    "infra_failed": 0,
+    "rejected": 0,
+    "total": 0,
+    "valid": 0
+  },
+  "axes": [
+    {
+      "contracts": [],
+      "direction": "minimise",
+      "id": "fees",
+      "repeats": 1,
+      "tolerance": 0.12,
+      "tolerance_abs": 1.0,
+      "unit": "ADA"
+    },
+    {
+      "contracts": [],
+      "direction": "minimise",
+      "id": "dust",
+      "repeats": 1,
+      "tolerance": 0.3,
+      "tolerance_abs": 2.0,
+      "unit": "UTxOs"
+    },
+    {
+      "contracts": [],
+      "direction": "minimise",
+      "id": "inputs_per_tx",
+      "repeats": 1,
+      "tolerance": 0.3,
+      "tolerance_abs": 0.2,
+      "unit": "inputs"
+    },
+    {
+      "contracts": [],
+      "direction": "minimise",
+      "id": "latency_ms",
+      "repeats": 3,
+      "tolerance": 0.9,
+      "tolerance_abs": 0.05,
+      "unit": "ms"
+    },
+    {
+      "contracts": [],
+      "direction": "minimise",
+      "id": "peak_rss_mib",
+      "repeats": 3,
+      "tolerance": 0.3,
+      "tolerance_abs": 4.0,
+      "unit": "MiB"
+    }
+  ],
+  "contracts": [
+    {
+      "admits_when": null,
+      "choice_space": "contracts/wallet/CHOICES.md",
+      "id": "wallet@1",
+      "interface": "contracts/wallet/INTERFACE.md",
+      "status": "open"
+    },
+    {
+      "admits_when": "a multi-asset size and min-ada model, checked against cardano-ledger",
+      "choice_space": null,
+      "id": "wallet-multiasset@0",
+      "interface": null,
+      "status": "deferred"
+    }
+  ],
+  "directions": [
+    {
+      "name": "largest-first",
+      "root": "baseline",
+      "submissions": [
+        "baseline"
+      ]
+    }
+  ],
+  "feed_schema_version": 2,
+  "generated_at": "2026-11-19T12:54:17Z",
+  "properties": [
+    {
+      "check": "mechanical",
+      "contract": "wallet@1",
+      "id": "valid-txs"
+    },
+    {
+      "check": "mechanical",
+      "contract": "wallet@1",
+      "id": "serves-feasible"
+    },
+    {
+      "check": "declared",
+      "contract": "wallet@1",
+      "id": "change-privacy"
+    }
+  ],
+  "runner": "ubuntu-24.04",
+  "slug": "coin-select",
+  "status": "open",
+  "submissions": [
+    {
+      "at": "2026-11-19T12:53:17Z",
+      "axes": {
+        "dust": {
+          "max": 45.625,
+          "median": 43.3125,
+          "min": 41.0,
+          "n": 2
+        },
+        "fees": {
+          "max": 37.662107375,
+          "median": 37.2520403125,
+          "min": 36.84197325,
+          "n": 2
+        },
+        "inputs_per_tx": {
+          "max": 1.32688927943761,
+          "median": 1.3081498142073729,
+          "min": 1.289410348977136,
+          "n": 2
+        },
+        "latency_ms": {
+          "max": 0.10919399994691048,
+          "median": 0.0853629999753025,
+          "min": 0.06461699999960047,
+          "n": 6
+        },
+        "peak_rss_mib": {
+          "max": 5.90625,
+          "median": 5.716796875,
+          "min": 5.65625,
+          "n": 6
+        }
+      },
+      "baseline": true,
+      "by": "Ryun1",
+      "checks": [
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "valid-txs"
+        },
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "serves-feasible"
+        }
+      ],
+      "claims": [],
+      "commit": "d49f758858362199b890073d2fde3a54fe73cf87",
+      "contract": "wallet@1",
+      "direction": "largest-first",
+      "id": "baseline",
+      "model": "",
+      "novelty": "new",
+      "parent": "",
+      "proposed": [],
+      "summary": "CIP-2 largest-first: take the biggest UTxOs until the payment and fee are covered, one change output.",
+      "taxonomy": {
+        "change": "single",
+        "consolidation": "none",
+        "language": "python",
+        "strategy": "largest-first"
+      }
+    }
+  ],
+  "taxonomy": {
+    "axes": [
+      {
+        "definition": "How inputs are chosen for a payment",
+        "id": "strategy",
+        "values": [
+          {
+            "count": 1,
+            "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
+            "id": "largest-first",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "CIP-2 random-improve: pick UTxOs at random, then improve towards an ideal change size",
+            "id": "random-improve",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Depth-first search with pruning for a selection with no or minimal change",
+            "id": "branch-and-bound",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Dynamic-programming or heuristic subset-sum over the UTxO values",
+            "id": "knapsack",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Tries every subset (only practical for small wallets or with a cut-off)",
+            "id": "exhaustive",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Anything else; name it in the summary",
+            "id": "other",
+            "proposed": false
+          }
+        ]
+      },
+      {
+        "definition": "What happens to the leftover value after paying",
+        "id": "change",
+        "values": [
+          {
+            "count": 1,
+            "definition": "One change output",
+            "id": "single",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Several change outputs, to keep the wallet granular",
+            "id": "split",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Change sized like the payment, so it is hard to tell from it",
+            "id": "payment-shaped",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Searches for an input set that needs no change, else falls back",
+            "id": "none-when-possible",
+            "proposed": false
+          }
+        ]
+      },
+      {
+        "definition": "Whether the wallet merges small UTxOs while paying",
+        "id": "consolidation",
+        "values": [
+          {
+            "count": 1,
+            "definition": "Never adds inputs only to merge dust",
+            "id": "none",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Adds small inputs when they are cheap to carry",
+            "id": "opportunistic",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Consolidates once the wallet holds more than a chosen number of UTxOs",
+            "id": "threshold",
+            "proposed": false
+          }
+        ]
+      },
+      {
+        "definition": "What the submission is written in",
+        "id": "language",
+        "values": [
+          {
+            "count": 1,
+            "definition": "Python 3",
+            "id": "python",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Rust",
+            "id": "rust",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "C or C++",
+            "id": "c",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Go",
+            "id": "go",
+            "proposed": false
+          },
+          {
+            "count": 0,
+            "definition": "Anything else",
+            "id": "other",
+            "proposed": false
+          }
+        ]
+      }
+    ],
+    "rules": [
+      "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first",
+      "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+    ],
+    "version": 1
+  },
+  "type": "research",
+  "url": "https://ryun1.github.io/auto-research-challenges/feeds/coin-select.json"
+}

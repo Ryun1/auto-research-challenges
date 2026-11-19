@@ -2,7 +2,7 @@
   "challenges": [
     {
       "attempts": {
-        "accepted": 0,
+        "accepted": 1,
         "infra_failed": 0,
         "rejected": 0,
         "total": 0,
@@ -71,8 +71,16 @@
           "status": "deferred"
         }
       ],
-      "directions": [],
-      "feed": null,
+      "directions": [
+        {
+          "name": "largest-first",
+          "root": "baseline",
+          "submissions": [
+            "baseline"
+          ]
+        }
+      ],
+      "feed": "feeds/coin-select.json",
       "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\nlook at `submissions/` and `taxonomy.toml` to see what has been tried. The baseline\nis a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, a faster language, ...) or copy an\naccepted submission's directory and build on it. Declare novelty honestly. You choose\nwhich axes in `challenge.toml` to push (fees, dust, inputs per transaction, latency,\nmemory): they are measured, recorded and never ranked or combined, so a trade-off is\na fine result. Run the judge locally (see `README.md`) before opening a PR.",
       "properties": [
         {
@@ -93,9 +101,84 @@
       ],
       "runner": "ubuntu-24.04",
       "slug": "coin-select",
-      "state": "pending",
+      "state": "open",
       "status": "open",
-      "submissions": [],
+      "submissions": [
+        {
+          "at": "2026-11-19T12:53:17Z",
+          "axes": {
+            "dust": {
+              "max": 45.625,
+              "median": 43.3125,
+              "min": 41.0,
+              "n": 2
+            },
+            "fees": {
+              "max": 37.662107375,
+              "median": 37.2520403125,
+              "min": 36.84197325,
+              "n": 2
+            },
+            "inputs_per_tx": {
+              "max": 1.32688927943761,
+              "median": 1.3081498142073729,
+              "min": 1.289410348977136,
+              "n": 2
+            },
+            "latency_ms": {
+              "max": 0.10919399994691048,
+              "median": 0.0853629999753025,
+              "min": 0.06461699999960047,
+              "n": 6
+            },
+            "peak_rss_mib": {
+              "max": 5.90625,
+              "median": 5.716796875,
+              "min": 5.65625,
+              "n": 6
+            }
+          },
+          "baseline": true,
+          "by": "Ryun1",
+          "checks": [
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "valid-txs"
+            },
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "serves-feasible"
+            }
+          ],
+          "claims": [],
+          "commit": "d49f758858362199b890073d2fde3a54fe73cf87",
+          "contract": "wallet@1",
+          "direction": "largest-first",
+          "files": [
+            "README.md",
+            "build.sh",
+            "select",
+            "submission.toml"
+          ],
+          "id": "baseline",
+          "model": "",
+          "novelty": "new",
+          "parent": "",
+          "proposed": [],
+          "readme": "The reference submission for wallet@1: Python largest-first. It sorts the wallet by value, adds inputs until they cover the outputs and the fee (priced with one change output), makes a single change output when the leftover is at least min-ada, and otherwise folds the leftover into the fee. It refuses only when the whole wallet cannot pay. It is the root of the lineage tree and the yardstick for preflight.",
+          "summary": "CIP-2 largest-first: take the biggest UTxOs until the payment and fee are covered, one change output.",
+          "taxonomy": {
+            "change": "single",
+            "consolidation": "none",
+            "language": "python",
+            "strategy": "largest-first"
+          }
+        }
+      ],
       "submit_steps": [
         "Pick an <id> (lowercase a-z, 0-9, -). Put submission.toml and an executable build.sh in the directory, plus whatever your code needs. A whole codebase is fine, under max_bytes (4 MiB) in challenge.toml. build.sh runs offline in a sandbox, must leave an executable ./select in the directory (see contracts/wallet/INTERFACE.md), and must vendor any dependencies.",
         "submission.toml declares: id (the dir name), contract = \"wallet@1\", novelty, direction, parent, taxonomy (keys strategy, change, consolidation, language; see taxonomy.toml), summary, optional claims (for the declared property change-privacy only) and model.",
@@ -111,7 +194,7 @@
             "id": "strategy",
             "values": [
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
                 "id": "largest-first",
                 "proposed": false
@@ -153,7 +236,7 @@
             "id": "change",
             "values": [
               {
-                "count": 0,
+                "count": 1,
                 "definition": "One change output",
                 "id": "single",
                 "proposed": false
@@ -183,7 +266,7 @@
             "id": "consolidation",
             "values": [
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Never adds inputs only to merge dust",
                 "id": "none",
                 "proposed": false
@@ -207,7 +290,7 @@
             "id": "language",
             "values": [
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Python 3",
                 "id": "python",
                 "proposed": false
@@ -506,6 +589,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T12:53:06Z",
+  "generated_at": "2026-11-19T12:54:17Z",
   "site_schema_version": 1
 }
