@@ -3,8 +3,8 @@
     "accepted": 2,
     "infra_failed": 0,
     "rejected": 3,
-    "total": 4,
-    "valid": 1
+    "total": 5,
+    "valid": 2
   },
   "axes": [
     {
@@ -86,7 +86,7 @@
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-19T13:36:31Z",
+  "generated_at": "2026-11-19T13:39:44Z",
   "properties": [
     {
       "check": "mechanical",

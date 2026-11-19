@@ -5,8 +5,8 @@
         "accepted": 2,
         "infra_failed": 0,
         "rejected": 3,
-        "total": 4,
-        "valid": 1
+        "total": 5,
+        "valid": 2
       },
       "axes": [
         {
@@ -673,6 +673,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T13:36:31Z",
+  "generated_at": "2026-11-19T13:39:44Z",
   "site_schema_version": 1
 }
