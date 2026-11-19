@@ -2,7 +2,7 @@
   "challenges": [
     {
       "attempts": {
-        "accepted": 1,
+        "accepted": 2,
         "infra_failed": 0,
         "rejected": 3,
         "total": 4,
@@ -77,6 +77,13 @@
           "root": "baseline",
           "submissions": [
             "baseline"
+          ]
+        },
+        {
+          "name": "random-improve",
+          "root": "random-improve",
+          "submissions": [
+            "random-improve"
           ]
         }
       ],
@@ -177,6 +184,83 @@
             "language": "python",
             "strategy": "largest-first"
           }
+        },
+        {
+          "at": "2026-11-19T13:35:39Z",
+          "axes": {
+            "dust": {
+              "max": 4.25,
+              "median": 3.9375,
+              "min": 3.625,
+              "n": 2
+            },
+            "fees": {
+              "max": 40.264087625,
+              "median": 39.890596625,
+              "min": 39.517105625,
+              "n": 2
+            },
+            "inputs_per_tx": {
+              "max": 3.320720720720721,
+              "median": 3.288226321559655,
+              "min": 3.255731922398589,
+              "n": 2
+            },
+            "latency_ms": {
+              "max": 0.026121999979977772,
+              "median": 0.014729499994814432,
+              "min": 0.013121999984377908,
+              "n": 6
+            },
+            "peak_rss_mib": {
+              "max": 3.6796875,
+              "median": 3.201171875,
+              "min": 2.99609375,
+              "n": 6
+            }
+          },
+          "baseline": false,
+          "by": "Ryun1",
+          "checks": [
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "valid-txs"
+            },
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "serves-feasible"
+            }
+          ],
+          "claims": [],
+          "commit": "ad303927fb83f21c553fef5f930075d4e72857c3",
+          "contract": "wallet@1",
+          "direction": "random-improve",
+          "files": [
+            ".gitignore",
+            "Cargo.lock",
+            "Cargo.toml",
+            "README.md",
+            "build.sh",
+            "src/main.rs",
+            "submission.toml"
+          ],
+          "id": "random-improve",
+          "model": "claude-sonnet-5-5",
+          "novelty": "new",
+          "parent": "",
+          "proposed": [],
+          "readme": "CIP-2 Random-Improve in std-only Rust. UTxOs are picked at random (fixed-seed xorshift, so runs are deterministic) until the payment and fee are covered, then random extras are added while they move the selected total closer to 2x the payment (never past 3x). Change is shaped like the payment: up to one change output per payment output, sized like it, with the remainder in the last. If random selection cannot cover the payment (or the transaction would be too large) it falls back to largest-first; it refuses only when the whole wallet cannot pay. JSON is parsed and written by hand for exactly the protocol's messages.",
+          "summary": "CIP-2 random-improve in Rust: random selection until covered, improvement towards 2x the payment, change shaped like the payment outputs, largest-first fallback.",
+          "taxonomy": {
+            "change": "payment-shaped",
+            "consolidation": "none",
+            "language": "rust",
+            "strategy": "random-improve"
+          }
         }
       ],
       "submit_steps": [
@@ -200,7 +284,7 @@
                 "proposed": false
               },
               {
-                "count": 0,
+                "count": 1,
                 "definition": "CIP-2 random-improve: pick UTxOs at random, then improve towards an ideal change size",
                 "id": "random-improve",
                 "proposed": false
@@ -248,7 +332,7 @@
                 "proposed": false
               },
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Change sized like the payment, so it is hard to tell from it",
                 "id": "payment-shaped",
                 "proposed": false
@@ -266,7 +350,7 @@
             "id": "consolidation",
             "values": [
               {
-                "count": 1,
+                "count": 2,
                 "definition": "Never adds inputs only to merge dust",
                 "id": "none",
                 "proposed": false
@@ -296,7 +380,7 @@
                 "proposed": false
               },
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Rust",
                 "id": "rust",
                 "proposed": false
@@ -589,6 +673,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T13:34:50Z",
+  "generated_at": "2026-11-19T13:36:31Z",
   "site_schema_version": 1
 }
