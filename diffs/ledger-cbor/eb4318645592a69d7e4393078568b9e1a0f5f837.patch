@@ -1,0 +1,339 @@
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-alonzo/src/Cardano/Ledger/Alonzo/TxWits.hs b/challenges/ledger-cbor/candidate/cardano-ledger-alonzo/src/Cardano/Ledger/Alonzo/TxWits.hs
+index d6f38a7..e27d60d 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-alonzo/src/Cardano/Ledger/Alonzo/TxWits.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-alonzo/src/Cardano/Ledger/Alonzo/TxWits.hs
+@@ -78,7 +78,8 @@ import Cardano.Ledger.Binary (
+   TokenType (..),
+   allowTag,
+   decodeAccA,
+-  decodeBreakOr,
++  decodeFoldStateIndef,
++  decodeFoldStateN,
+   decodeList,
+   decodeListLenOrIndef,
+   decodeListLikeWithCount,
+@@ -635,6 +636,13 @@ instance AlonzoEraScript era => DecCBOR (Annotator (RedeemersRaw era)) where
+ -- | Encodes memoized bytes created upon construction.
+ instance AlonzoEraScript era => EncCBOR (Redeemers era)
+ 
++-- | The witness-set map loop's state before PV 12: keys seen (a bit mask) and the
++-- accumulated witnesses.
++data TxWitsAccPreV12 era = TxWitsAccPreV12 !Word !(Annotator (AlonzoTxWitsRaw era))
++
++txWitsAccPreV12Value :: TxWitsAccPreV12 era -> Annotator (AlonzoTxWitsRaw era)
++txWitsAccPreV12Value (TxWitsAccPreV12 _ wacc) = wacc
++
+ instance
+   (AlonzoEraScript era, DecCBOR (Annotator (NativeScript era))) =>
+   DecCBOR (Annotator (AlonzoTxWitsRaw era))
+@@ -695,32 +703,22 @@ instance
+       decodeTxWitsPreV12 :: Decoder s (Annotator (AlonzoTxWitsRaw era))
+       decodeTxWitsPreV12 =
+         decodeMapLenOrIndef >>= \case
+-          Just wlen -> decodeTxWitsLenPreV12 wlen 0 (pure emptyTxWitsRaw)
+-          Nothing -> decodeTxWitsIndefPreV12 0 (pure emptyTxWitsRaw)
++          Just wlen ->
++            txWitsAccPreV12Value
++              <$> decodeFoldStateN wlen decodeTxWitsStepPreV12 (TxWitsAccPreV12 0 (pure emptyTxWitsRaw))
++          Nothing ->
++            txWitsAccPreV12Value
++              <$> decodeFoldStateIndef decodeTxWitsStepPreV12 (TxWitsAccPreV12 0 (pure emptyTxWitsRaw))
+       {-# INLINE decodeTxWitsPreV12 #-}
+ 
+-      decodeTxWitsLenPreV12 ::
+-        Int ->
+-        Word ->
+-        Annotator (AlonzoTxWitsRaw era) ->
+-        Decoder s (Annotator (AlonzoTxWitsRaw era))
+-      decodeTxWitsLenPreV12 0 !_ !wacc = pure wacc
+-      decodeTxWitsLenPreV12 remaining !wseen !wacc = do
++      -- One key and its value. The keys seen and the accumulator are forced before
++      -- the next key is read, as the bang patterns of the recursive loop did.
++      decodeTxWitsStepPreV12 :: TxWitsAccPreV12 era -> Decoder s (TxWitsAccPreV12 era)
++      decodeTxWitsStepPreV12 (TxWitsAccPreV12 wseen wacc) = do
+         wkey <- decodeWord
+         wacc' <- decodeTxWitsFieldPreV12 wseen wacc wkey
+-        decodeTxWitsLenPreV12 (remaining - 1) (setBit wseen (fromIntegral wkey)) wacc'
+-
+-      decodeTxWitsIndefPreV12 ::
+-        Word ->
+-        Annotator (AlonzoTxWitsRaw era) ->
+-        Decoder s (Annotator (AlonzoTxWitsRaw era))
+-      decodeTxWitsIndefPreV12 !wseen !wacc =
+-        decodeBreakOr >>= \case
+-          True -> pure wacc
+-          False -> do
+-            wkey <- decodeWord
+-            wacc' <- decodeTxWitsFieldPreV12 wseen wacc wkey
+-            decodeTxWitsIndefPreV12 (setBit wseen (fromIntegral wkey)) wacc'
++        pure (TxWitsAccPreV12 (setBit wseen (fromIntegral wkey)) wacc')
++      {-# INLINE decodeTxWitsStepPreV12 #-}
+ 
+       decodeTxWitsFieldPreV12 ::
+         Word ->
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-babbage/src/Cardano/Ledger/Babbage/TxOut.hs b/challenges/ledger-cbor/candidate/cardano-ledger-babbage/src/Cardano/Ledger/Babbage/TxOut.hs
+index 39f20e9..386c97a 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-babbage/src/Cardano/Ledger/Babbage/TxOut.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-babbage/src/Cardano/Ledger/Babbage/TxOut.hs
+@@ -86,6 +86,8 @@ import Cardano.Ledger.Binary (
+   TokenType (..),
+   cborError,
+   decodeBreakOr,
++  decodeFoldStateIndef,
++  decodeFoldStateN,
+   decodeFullAnnotator,
+   decodeListLenOrIndef,
+   decodeMapLenOrIndef,
+@@ -619,6 +621,16 @@ data DecodingTxOut era = DecodingTxOut
+   , decodingTxOutScript :: !(StrictMaybe (Script era))
+   }
+ 
++-- | The state of the map-form output loop before PV 12: keys seen and the fields
++-- decoded so far (lazy, as the recursive loop passed them on).
++data TxOutFieldsAcc era
++  = TxOutFieldsAcc
++      !Word
++      (StrictMaybe (Addr, CompactAddr))
++      (Value era)
++      (Datum era)
++      (StrictMaybe (Script era))
++
+ decodeTxOut ::
+   forall s era.
+   (EraScript era, Val (Value era)) =>
+@@ -676,34 +688,23 @@ decodeTxOut decAddr = do
+     decodeFieldsPreV12 :: Decoder s (DecodingTxOut era)
+     decodeFieldsPreV12 =
+       decodeMapLenOrIndef >>= \case
+-        Just mapLen -> fieldsDef mapLen 0 SNothing mempty NoDatum SNothing
+-        Nothing -> fieldsIndef 0 SNothing mempty NoDatum SNothing
++        Just mapLen -> decodeFoldStateN mapLen fieldStep fieldsStart >>= fieldsFinish
++        Nothing -> decodeFoldStateIndef fieldStep fieldsStart >>= fieldsFinish
+     {-# INLINE decodeFieldsPreV12 #-}
+-    fieldsDef ::
+-      Int ->
+-      Word ->
+-      StrictMaybe (Addr, CompactAddr) ->
+-      Value era ->
+-      Datum era ->
+-      StrictMaybe (Script era) ->
+-      Decoder s (DecodingTxOut era)
+-    fieldsDef 0 !keysSeen addrF valF datumF scriptF =
++    -- The map loop's state: keys seen (forced before the next key is read, as the
++    -- bang pattern of the recursive loop did) and the values as they came.
++    fieldsStart :: TxOutFieldsAcc era
++    fieldsStart = TxOutFieldsAcc 0 SNothing mempty NoDatum SNothing
++    fieldsFinish :: TxOutFieldsAcc era -> Decoder s (DecodingTxOut era)
++    fieldsFinish (TxOutFieldsAcc keysSeen addrF valF datumF scriptF) =
+       fieldsDone keysSeen addrF valF datumF scriptF
+-    fieldsDef pairsLeft !keysSeen addrF valF datumF scriptF =
+-      let !pairsLeft' = pairsLeft - 1
+-       in decodeField keysSeen addrF valF datumF scriptF (fieldsDef pairsLeft')
+-    fieldsIndef ::
+-      Word ->
+-      StrictMaybe (Addr, CompactAddr) ->
+-      Value era ->
+-      Datum era ->
+-      StrictMaybe (Script era) ->
+-      Decoder s (DecodingTxOut era)
+-    fieldsIndef !keysSeen addrF valF datumF scriptF =
+-      decodeBreakOr >>= \case
+-        True -> fieldsDone keysSeen addrF valF datumF scriptF
+-        False -> decodeField keysSeen addrF valF datumF scriptF fieldsIndef
++    fieldStep :: TxOutFieldsAcc era -> Decoder s (TxOutFieldsAcc era)
++    fieldStep (TxOutFieldsAcc keysSeen addrF valF datumF scriptF) =
++      decodeField keysSeen addrF valF datumF scriptF $ \keysSeen' addrF' valF' datumF' scriptF' ->
++        pure (TxOutFieldsAcc keysSeen' addrF' valF' datumF' scriptF')
++    {-# INLINE fieldStep #-}
+     decodeField ::
++      forall r.
+       Word ->
+       StrictMaybe (Addr, CompactAddr) ->
+       Value era ->
+@@ -714,9 +715,9 @@ decodeTxOut decAddr = do
+         Value era ->
+         Datum era ->
+         StrictMaybe (Script era) ->
+-        Decoder s (DecodingTxOut era)
++        Decoder s r
+       ) ->
+-      Decoder s (DecodingTxOut era)
++      Decoder s r
+     decodeField keysSeen addrF valF datumF scriptF kont = do
+       fieldKey <- decodeWord
+       case fieldKey of
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+index d79c4e9..2f0a92a 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+@@ -77,6 +77,8 @@ module Cardano.Ledger.Binary.Decoding.Decoder (
+   decodeStrictSeq,
+   decodeSetTag,
+   decodeListLikeWithCount,
++  decodeFoldStateN,
++  decodeFoldStateIndef,
+   decodeListLikeWithCountT,
+   decodeSetLikeEnforceNoDuplicates,
+   decodeNonEmptySetLikeEnforceNoDuplicates,
+@@ -1192,6 +1194,64 @@ decodeListLikeWithCount decodeLenOrIndef insert decodeElement =
+                 DOk off'' element -> goIndef (count + 1) (insert element acc) off''
+ {-# INLINE decodeListLikeWithCount #-}
+ 
++-- | @decodeFoldStateN n step z@ runs @step@ @n@ times, each time on the state the
++-- previous run produced, starting from @z@: the same as
++--
++-- > go 0 st = pure st
++-- > go k st = step st >>= go (k - 1)
++--
++-- The state is passed on as it is (not forced). The direct form is one loop over
++-- the offset, so a `step` that is inlined here is not rebuilt as a `Decoder` per
++-- iteration.
++decodeFoldStateN :: forall s st. Int -> (st -> Decoder s st) -> st -> Decoder s st
++decodeFoldStateN n0 step z0 =
++  Decoder
++    ( \bsl v ->
++        let goC :: Int -> st -> C.Decoder s st
++            goC 0 st = pure st
++            goC k st = runDecoder (step st) bsl v >>= goC (k - 1)
++         in goC n0 z0
++    )
++    ( \v bs off0 ->
++        let goD :: Int -> st -> Int -> ST s (DRes st)
++            goD 0 st !off = pure (DOk off st)
++            goD k st !off =
++              runDirect (step st) v bs off >>= \case
++                DBail -> pure DBail
++                DOk off' st' -> goD (k - 1) st' off'
++         in goD n0 z0 off0
++    )
++{-# INLINE decodeFoldStateN #-}
++
++-- | @decodeFoldStateIndef step z@ is `decodeFoldStateN` for an indefinite-length
++-- container: before each run of @step@ it reads `decodeBreakOr`, and stops at the
++-- break. The same as
++--
++-- > go st = decodeBreakOr >>= \stop -> if stop then pure st else step st >>= go
++decodeFoldStateIndef :: forall s st. (st -> Decoder s st) -> st -> Decoder s st
++decodeFoldStateIndef step z0 =
++  Decoder
++    ( \bsl v ->
++        let goC :: st -> C.Decoder s st
++            goC st =
++              runDecoder decodeBreakOr bsl v >>= \stop ->
++                if stop then pure st else runDecoder (step st) bsl v >>= goC
++         in goC z0
++    )
++    ( \v bs off0 ->
++        let goD :: st -> Int -> ST s (DRes st)
++            goD st !off =
++              runDirect decodeBreakOr v bs off >>= \case
++                DBail -> pure DBail
++                DOk off1 True -> pure (DOk off1 st)
++                DOk off1 False ->
++                  runDirect (step st) v bs off1 >>= \case
++                    DBail -> pure DBail
++                    DOk off2 st' -> goD st' off2
++         in goD z0 off0
++    )
++{-# INLINE decodeFoldStateIndef #-}
++
+ decodeListLikeWithCountT ::
+   forall t s a b.
+   (MonadTrans t, Monad (t (Decoder s)), Monoid b) =>
+@@ -1754,25 +1814,37 @@ decodeSequenceLenIndef :: (r -> a -> r) -> r -> (r -> b) -> Decoder s a -> Decod
+ decodeSequenceLenIndef f z g dec =
+   Decoder
+     (\bsl v -> C.decodeSequenceLenIndef f z g (runDecoder dec bsl v))
+-    -- cborg's decodeSequenceLenIndef, step for step, through this module's primitives
+-    (runDirect (go z))
++    -- cborg's decodeSequenceLenIndef, step for step (break test, element forced,
++    -- accumulator forced on entry, result forced), written as a loop over the
++    -- offset so that no `Decoder` is built per element
++    (\v bs off0 -> go v bs z off0)
+   where
+-    go !acc =
+-      decodeBreakOr >>= \stop ->
+-        if stop
+-          then pure $! g acc
+-          else dec >>= \ !x -> go (f acc x)
++    go v bs = loop
++      where
++        loop !acc !off =
++          runDirect decodeBreakOr v bs off >>= \case
++            DBail -> pure DBail
++            DOk off1 True -> let !r = g acc in pure (DOk off1 r)
++            DOk off1 False ->
++              runDirect dec v bs off1 >>= \case
++                DBail -> pure DBail
++                DOk off2 x -> x `seq` loop (f acc x) off2
+ {-# INLINE decodeSequenceLenIndef #-}
+ 
+ decodeSequenceLenN :: (r -> a -> r) -> r -> (r -> b) -> Int -> Decoder s a -> Decoder s b
+ decodeSequenceLenN f z g c dec =
+   Decoder
+     (\bsl v -> C.decodeSequenceLenN f z g c (runDecoder dec bsl v))
+-    -- cborg's decodeSequenceLenN, step for step
+-    (runDirect (go z c))
++    -- cborg's decodeSequenceLenN, step for step, written as a loop over the offset
++    (\v bs off0 -> go v bs z c off0)
+   where
+-    go !acc 0 = pure $! g acc
+-    go !acc n = dec >>= \ !x -> go (f acc x) (n - 1 :: Int)
++    go v bs = loop
++      where
++        loop !acc 0 !off = let !r = g acc in pure (DOk off r)
++        loop !acc n !off =
++          runDirect dec v bs off >>= \case
++            DBail -> pure DBail
++            DOk off1 x -> x `seq` loop (f acc x) (n - 1 :: Int) off1
+ {-# INLINE decodeSequenceLenN #-}
+ 
+ decodeSimple :: Decoder s Word8
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-conway/src/Cardano/Ledger/Conway/TxBody.hs b/challenges/ledger-cbor/candidate/cardano-ledger-conway/src/Cardano/Ledger/Conway/TxBody.hs
+index 2037000..d509647 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-conway/src/Cardano/Ledger/Conway/TxBody.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-conway/src/Cardano/Ledger/Conway/TxBody.hs
+@@ -66,7 +66,8 @@ import Cardano.Ledger.Binary (
+   EncCBOR (..),
+   Sized (..),
+   ToCBOR (..),
+-  decodeBreakOr,
++  decodeFoldStateIndef,
++  decodeFoldStateN,
+   decodeMapLenOrIndef,
+   decodeWord,
+   mkSized,
+@@ -197,21 +198,20 @@ instance Typeable l => DecCBOR (ConwayTxBodyRaw l ConwayEra) where
+ decodeConwayTxBodyRaw :: Decoder s (ConwayTxBodyRaw TopTx ConwayEra)
+ decodeConwayTxBodyRaw =
+   decodeMapLenOrIndef >>= \case
+-    Just len -> decodeConwayTxBodyRawDefinite len basicConwayTxBodyRaw 0
+-    Nothing -> decodeConwayTxBodyRawIndefinite basicConwayTxBodyRaw 0
++    Just len -> decodeFoldStateN len decodeConwayTxBodyRawStep accStart >>= accFinish
++    Nothing -> decodeFoldStateIndef decodeConwayTxBodyRawStep accStart >>= accFinish
++  where
++    accStart = ConwayTxBodyRawAcc basicConwayTxBodyRaw 0
++    accFinish (ConwayTxBodyRawAcc tx seenKeys) = finishConwayTxBodyRaw tx seenKeys
+ 
+-decodeConwayTxBodyRawDefinite ::
+-  Int -> ConwayTxBodyRaw TopTx ConwayEra -> Word64 -> Decoder s (ConwayTxBodyRaw TopTx ConwayEra)
+-decodeConwayTxBodyRawDefinite 0 tx seenKeys = finishConwayTxBodyRaw tx seenKeys
+-decodeConwayTxBodyRawDefinite remaining tx seenKeys =
+-  decodeConwayTxBodyRawField tx seenKeys (decodeConwayTxBodyRawDefinite (remaining - 1))
++-- | The body decoded so far (rebuilt lazily, one update per key) and the keys seen.
++data ConwayTxBodyRawAcc = ConwayTxBodyRawAcc (ConwayTxBodyRaw TopTx ConwayEra) !Word64
+ 
+-decodeConwayTxBodyRawIndefinite ::
+-  ConwayTxBodyRaw TopTx ConwayEra -> Word64 -> Decoder s (ConwayTxBodyRaw TopTx ConwayEra)
+-decodeConwayTxBodyRawIndefinite tx seenKeys =
+-  decodeBreakOr >>= \case
+-    True -> finishConwayTxBodyRaw tx seenKeys
+-    False -> decodeConwayTxBodyRawField tx seenKeys decodeConwayTxBodyRawIndefinite
++-- | One key and its value: a step of the map loop.
++decodeConwayTxBodyRawStep :: ConwayTxBodyRawAcc -> Decoder s ConwayTxBodyRawAcc
++decodeConwayTxBodyRawStep (ConwayTxBodyRawAcc tx seenKeys) =
++  decodeConwayTxBodyRawField tx seenKeys (\tx' seenKeys' -> pure (ConwayTxBodyRawAcc tx' seenKeys'))
++{-# INLINE decodeConwayTxBodyRawStep #-}
+ 
+ -- | Force the record (as @(!v, used) <- ...@ does in 'decodeSparse') and then check that
+ -- the required keys 0 (inputs), 1 (outputs) and 2 (fee) were all present.
