@@ -1050,6 +1050,17 @@
       });
       add(s, ul);
     });
+    var rules = (t.rules || []).filter(function (r) { return r && str(r.text); });
+    if (rules.length) {
+      add(s, el("h3", null, "Rules"));
+      var rl = el("ul", "tax-values");
+      rules.forEach(function (r) {
+        var li = add(el("li"), el("span", null, r.text));
+        if (str(r.reason)) add(li, el("span", "tax-vdef", r.reason));
+        add(rl, li);
+      });
+      add(s, rl);
+    }
     return s;
   }
   function deferredSection(c) {

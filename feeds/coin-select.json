@@ -87,7 +87,7 @@
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-19T15:05:57Z",
+  "generated_at": "2026-11-19T15:16:28Z",
   "properties": [
     {
       "check": "mechanical",
@@ -447,8 +447,14 @@
       }
     ],
     "rules": [
-      "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first",
-      "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+      {
+        "reason": "Largest-first stops at the first coins that cover the payment, so it seldom lands on an amount that needs no change; finding one means searching subsets",
+        "text": "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first"
+      },
+      {
+        "reason": "Each extra input adds 140 bytes to the transaction, 6,160 lovelace of fee at min_fee_a = 44",
+        "text": "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+      }
     ],
     "version": 1
   },

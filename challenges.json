@@ -89,7 +89,7 @@
         }
       ],
       "feed": "feeds/coin-select.json",
-      "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\nlook at `submissions/` and `taxonomy.toml` to see what has been tried. The baseline\nis a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, a faster language, ...) or copy an\naccepted submission's directory and build on it. Declare novelty honestly. You choose\nwhich axes in `challenge.toml` to push (fees, dust, inputs per transaction, latency,\nmemory): they are measured, recorded and never ranked or combined, so a trade-off is\na fine result. Run the judge locally (see `README.md`) before opening a PR.",
+      "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\n`DIRECTIONS.md` (what has been tried, what is open and the cheapest test for each\nopen idea), `submissions/` and `taxonomy.toml`. The baseline is a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, ...) or copy an accepted\nsubmission's directory and build on it. Declare novelty honestly: porting an accepted\nsubmission to another language, or retuning its constants or seed, is `builds-on`,\nnot a new direction. You choose which axes in `challenge.toml` to push (fees, dust,\ninputs per transaction, latency, memory): they are measured, recorded and never\nranked or combined, so a trade-off is a fine result. Run the judge locally (see\n`README.md`) before opening a PR.",
       "properties": [
         {
           "check": "mechanical",
@@ -335,7 +335,7 @@
       "submit_steps": [
         "Pick an <id> (lowercase a-z, 0-9, -). Put submission.toml and an executable build.sh in the directory, plus whatever your code needs. A whole codebase is fine, under max_bytes (4 MiB) in challenge.toml. build.sh runs offline in a sandbox, must leave an executable ./select in the directory (see contracts/wallet/INTERFACE.md), and must vendor any dependencies.",
         "submission.toml declares: id (the dir name), contract = \"wallet@1\", novelty, direction, parent, taxonomy (keys strategy, change, consolidation, language; see taxonomy.toml), summary, optional claims (for the declared property change-privacy only) and model.",
-        "Novelty is your own declaration and is never judged. new starts a direction <name> that no accepted submission uses. builds-on names an accepted parent; copy its directory and edit it. The direction is inherited.",
+        "Novelty is your own declaration and is never judged. new starts a direction <name> that no accepted submission uses. builds-on names an accepted parent; copy its directory and edit it. The direction is inherited. A port to another language, or a new name, seed or constant on an accepted approach, is builds-on, not new.",
         "Run the judge locally first (see README.md). CI then builds your submission and runs the same judge, which checks the properties and measures every axis. Those numbers are a claim from the PR run.",
         "There is no record to beat and no minimum improvement. If the checks pass, the PR is landed on main automatically, two clean runs there record it on the map, and the PR is closed. Failing and noisy attempts are recorded too."
       ],
@@ -476,8 +476,14 @@
           }
         ],
         "rules": [
-          "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first",
-          "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+          {
+            "reason": "Largest-first stops at the first coins that cover the payment, so it seldom lands on an amount that needs no change; finding one means searching subsets",
+            "text": "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first"
+          },
+          {
+            "reason": "Each extra input adds 140 bytes to the transaction, 6,160 lovelace of fee at min_fee_a = 44",
+            "text": "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+          }
         ],
         "version": 1
       },
@@ -742,6 +748,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T15:05:57Z",
+  "generated_at": "2026-11-19T15:16:28Z",
   "site_schema_version": 1
 }
