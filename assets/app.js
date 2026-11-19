@@ -769,7 +769,7 @@
     var ye = extent(pts.reduce(function (a, p) { return a.concat([p.yr.min, p.yr.max]); }, []));
     function X(v) { return m.l + (v - xe[0]) / (xe[1] - xe[0]) * (W - m.l - m.r); }
     function Y(v) { return H - m.b - (v - ye[0]) / (ye[1] - ye[0]) * (H - m.t - m.b); }
-    var root = svg("svg", { width: "100%", height: "auto", viewBox: "0 0 " + W + " " + H, role: "group", "aria-label": "Trade-off map: " + ax.id + " against " + ay.id, "class": "map-svg" });
+    var root = svg("svg", { width: "100%", viewBox: "0 0 " + W + " " + H, role: "group", "aria-label": "Trade-off map: " + ax.id + " against " + ay.id, "class": "map-svg" });
     // grid and ticks
     niceTicks(ye[0], ye[1], H < 360 ? 4 : 5).forEach(function (t) {
       add(root, svg("line", { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), "class": "grid" }));
