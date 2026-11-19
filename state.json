@@ -1,7 +1,62 @@
 {
-  "generated_at": "2026-11-19T12:57:22Z",
+  "generated_at": "2026-11-19T13:11:59Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "malicious/edit-judge-1795093890",
+      "conclusion": null,
+      "created_at": "2026-11-19T13:11:38Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "malicious: edit-judge",
+      "updated_at": "2026-11-19T13:11:41Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531022273",
+      "workflow": "CI"
+    },
+    {
+      "branch": "malicious/edit-judge-1795093890",
+      "conclusion": null,
+      "created_at": "2026-11-19T13:11:38Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "malicious: edit-judge",
+      "updated_at": "2026-11-19T13:11:43Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531022197",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "submit/random-improve",
+      "conclusion": null,
+      "created_at": "2026-11-19T13:11:14Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "coin-select: random-improve (new direction)",
+      "updated_at": "2026-11-19T13:11:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530958238",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T13:11:05Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Haskell action: cache key for a challenge without baseline/ (#94)",
+      "updated_at": "2026-11-19T13:11:10Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530934651",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T13:11:05Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "Haskell action: cache key for a challenge without baseline/ (#94)",
+      "updated_at": "2026-11-19T13:11:23Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44530934284",
+      "workflow": "Warm"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -26,12 +81,12 @@
     },
     {
       "branch": "fix-haskell-detect",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T12:54:15Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Haskell action: don't fail detect when a challenge has no baseline/",
-      "updated_at": "2026-11-19T12:54:19Z",
+      "updated_at": "2026-11-19T12:57:51Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528217691",
       "workflow": "CI"
     },
@@ -386,72 +441,19 @@
       "updated_at": "2026-11-15T23:51:59Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776445144",
       "workflow": "CI"
-    },
-    {
-      "branch": "docs/submission-discussions",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:44:37Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Docs: design and plan for per-submission discussion threads",
-      "updated_at": "2026-11-15T23:45:26Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776441722",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:43:26Z",
-      "event": "push",
-      "status": "completed",
-      "title": "judging-challenge-candidates: fixes from a re-test on a non-proof can…",
-      "updated_at": "2026-11-15T23:49:58Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43776341172",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:39:01Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-15T23:40:04Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775950340",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "skill-judging-fixes",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:38:11Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "judging-challenge-candidates: fixes from re-testing",
-      "updated_at": "2026-11-15T23:38:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775879660",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "skill-judging-fixes",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:38:11Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "judging-challenge-candidates: fixes from re-testing",
-      "updated_at": "2026-11-15T23:43:15Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775879645",
-      "workflow": "CI"
     }
   ],
   "pulls": [
     {
       "author": "Ryun1",
-      "created_at": "2026-11-19T12:54:10Z",
+      "created_at": "2026-11-19T13:11:34Z",
       "draft": false,
-      "number": 94,
-      "title": "Haskell action: don't fail detect when a challenge has no baseline/",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/94",
-      "challenges": []
+      "number": 95,
+      "title": "malicious: edit-judge",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/95",
+      "challenges": [
+        "coin-select"
+      ]
     },
     {
       "author": "Ryun1",
