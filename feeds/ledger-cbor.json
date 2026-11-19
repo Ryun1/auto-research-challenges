@@ -50,8 +50,8 @@
   ],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-19T11:25:47Z",
-  "generated_at": "2026-11-19T11:25:47Z",
+  "fetched_at": "2026-11-19T12:05:40Z",
+  "generated_at": "2026-11-19T12:05:40Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
