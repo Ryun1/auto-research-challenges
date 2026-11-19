@@ -1,0 +1,43 @@
+diff --git a/challenges/coin-select/submissions/random-improve/README.md b/challenges/coin-select/submissions/random-improve-consolidate/README.md
+index 7bbcf4d..a64c0fe 100644
+--- a/challenges/coin-select/submissions/random-improve/README.md
++++ b/challenges/coin-select/submissions/random-improve-consolidate/README.md
+@@ -6,3 +6,7 @@ payment output, sized like it, with the remainder in the last. If random selecti
+ cannot cover the payment (or the transaction would be too large) it falls back to
+ largest-first; it refuses only when the whole wallet cannot pay. JSON is parsed and
+ written by hand for exactly the protocol's messages.
++
++Variant: after the improve phase it also adds up to 3 of the smallest UTxOs under
++2 ADA as extra inputs when each is worth more than the 140-byte input fee, which
++spends dust now at a small fee cost.
+diff --git a/challenges/coin-select/submissions/random-improve/src/main.rs b/challenges/coin-select/submissions/random-improve-consolidate/src/main.rs
+index 0cc27bb..a43a996 100644
+--- a/challenges/coin-select/submissions/random-improve/src/main.rs
++++ b/challenges/coin-select/submissions/random-improve-consolidate/src/main.rs
+@@ -209,7 +209,7 @@ impl Rng {
+ }
+ 
+ // ---------------------------------------------------------------- selection
+-const CONSOLIDATE: bool = false;
++const CONSOLIDATE: bool = true;
+ const DUST: u64 = 2_000_000;
+ const MAX_EXTRA: usize = 3;
+ 
+diff --git a/challenges/coin-select/submissions/random-improve/submission.toml b/challenges/coin-select/submissions/random-improve-consolidate/submission.toml
+index 8408a0c..69cac53 100644
+--- a/challenges/coin-select/submissions/random-improve/submission.toml
++++ b/challenges/coin-select/submissions/random-improve-consolidate/submission.toml
+@@ -1,7 +1,8 @@
+-id        = "random-improve"
++id        = "random-improve-consolidate"
+ contract  = "wallet@1"
+-novelty   = "new"
+-direction = "random-improve"
+-taxonomy  = { strategy = "random-improve", change = "payment-shaped", consolidation = "none", language = "rust" }
+-summary   = "CIP-2 random-improve in Rust: random selection until covered, improvement towards 2x the payment, change shaped like the payment outputs, largest-first fallback."
++novelty   = "builds-on"
++direction = ""
++parent    = "random-improve"
++taxonomy  = { strategy = "random-improve", change = "payment-shaped", consolidation = "opportunistic", language = "rust" }
++summary   = "random-improve plus opportunistic consolidation: also spends up to 3 of the smallest UTxOs under 2 ADA when the extra fee is below their value, to reduce dust."
+ model     = "claude-sonnet-5-5"

@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "accepted": 2,
+    "accepted": 3,
     "infra_failed": 0,
     "rejected": 3,
     "total": 5,
@@ -81,12 +81,13 @@
       "name": "random-improve",
       "root": "random-improve",
       "submissions": [
-        "random-improve"
+        "random-improve",
+        "random-improve-consolidate"
       ]
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-19T13:39:44Z",
+  "generated_at": "2026-11-19T13:42:03Z",
   "properties": [
     {
       "check": "mechanical",
@@ -241,6 +242,73 @@
         "language": "rust",
         "strategy": "random-improve"
       }
+    },
+    {
+      "at": "2026-11-19T13:41:22Z",
+      "axes": {
+        "dust": {
+          "max": 0.125,
+          "median": 0.0625,
+          "min": 0.0,
+          "n": 2
+        },
+        "fees": {
+          "max": 40.15026675,
+          "median": 40.090013562500005,
+          "min": 40.029760375,
+          "n": 2
+        },
+        "inputs_per_tx": {
+          "max": 3.379679144385027,
+          "median": 3.338599902771026,
+          "min": 3.2975206611570247,
+          "n": 2
+        },
+        "latency_ms": {
+          "max": 0.0459260000127415,
+          "median": 0.03409950001298512,
+          "min": 0.02239750000398999,
+          "n": 6
+        },
+        "peak_rss_mib": {
+          "max": 3.3828125,
+          "median": 2.953125,
+          "min": 2.51171875,
+          "n": 6
+        }
+      },
+      "baseline": false,
+      "by": "Ryun1",
+      "checks": [
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "valid-txs"
+        },
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "serves-feasible"
+        }
+      ],
+      "claims": [],
+      "commit": "63f4230fdb7dbe2f42e13a32ec0aafaaf483668b",
+      "contract": "wallet@1",
+      "direction": "random-improve",
+      "id": "random-improve-consolidate",
+      "model": "claude-sonnet-5-5",
+      "novelty": "builds-on",
+      "parent": "random-improve",
+      "proposed": [],
+      "summary": "random-improve plus opportunistic consolidation: also spends up to 3 of the smallest UTxOs under 2 ADA when the extra fee is below their value, to reduce dust.",
+      "taxonomy": {
+        "change": "payment-shaped",
+        "consolidation": "opportunistic",
+        "language": "rust",
+        "strategy": "random-improve"
+      }
     }
   ],
   "taxonomy": {
@@ -256,7 +324,7 @@
             "proposed": false
           },
           {
-            "count": 1,
+            "count": 2,
             "definition": "CIP-2 random-improve: pick UTxOs at random, then improve towards an ideal change size",
             "id": "random-improve",
             "proposed": false
@@ -304,7 +372,7 @@
             "proposed": false
           },
           {
-            "count": 1,
+            "count": 2,
             "definition": "Change sized like the payment, so it is hard to tell from it",
             "id": "payment-shaped",
             "proposed": false
@@ -328,7 +396,7 @@
             "proposed": false
           },
           {
-            "count": 0,
+            "count": 1,
             "definition": "Adds small inputs when they are cheap to carry",
             "id": "opportunistic",
             "proposed": false
@@ -352,7 +420,7 @@
             "proposed": false
           },
           {
-            "count": 1,
+            "count": 2,
             "definition": "Rust",
             "id": "rust",
             "proposed": false
