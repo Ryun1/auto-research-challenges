@@ -1,6 +1,254 @@
 {
   "challenges": [
     {
+      "attempts": {
+        "accepted": 0,
+        "infra_failed": 0,
+        "rejected": 0,
+        "total": 0,
+        "valid": 0
+      },
+      "axes": [
+        {
+          "contracts": [],
+          "direction": "minimise",
+          "id": "fees",
+          "repeats": 1,
+          "tolerance": 0.12,
+          "tolerance_abs": 1.0,
+          "unit": "ADA"
+        },
+        {
+          "contracts": [],
+          "direction": "minimise",
+          "id": "dust",
+          "repeats": 1,
+          "tolerance": 0.3,
+          "tolerance_abs": 2.0,
+          "unit": "UTxOs"
+        },
+        {
+          "contracts": [],
+          "direction": "minimise",
+          "id": "inputs_per_tx",
+          "repeats": 1,
+          "tolerance": 0.3,
+          "tolerance_abs": 0.2,
+          "unit": "inputs"
+        },
+        {
+          "contracts": [],
+          "direction": "minimise",
+          "id": "latency_ms",
+          "repeats": 3,
+          "tolerance": 0.9,
+          "tolerance_abs": 0.05,
+          "unit": "ms"
+        },
+        {
+          "contracts": [],
+          "direction": "minimise",
+          "id": "peak_rss_mib",
+          "repeats": 3,
+          "tolerance": 0.3,
+          "tolerance_abs": 4.0,
+          "unit": "MiB"
+        }
+      ],
+      "contracts": [
+        {
+          "admits_when": null,
+          "choice_space": "contracts/wallet/CHOICES.md",
+          "id": "wallet@1",
+          "interface": "contracts/wallet/INTERFACE.md",
+          "status": "open"
+        },
+        {
+          "admits_when": "a multi-asset size and min-ada model, checked against cardano-ledger",
+          "choice_space": null,
+          "id": "wallet-multiasset@0",
+          "interface": null,
+          "status": "deferred"
+        }
+      ],
+      "directions": [],
+      "feed": null,
+      "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\nlook at `submissions/` and `taxonomy.toml` to see what has been tried. The baseline\nis a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, a faster language, ...) or copy an\naccepted submission's directory and build on it. Declare novelty honestly. You choose\nwhich axes in `challenge.toml` to push (fees, dust, inputs per transaction, latency,\nmemory): they are measured, recorded and never ranked or combined, so a trade-off is\na fine result. Run the judge locally (see `README.md`) before opening a PR.",
+      "properties": [
+        {
+          "check": "mechanical",
+          "contract": "wallet@1",
+          "id": "valid-txs"
+        },
+        {
+          "check": "mechanical",
+          "contract": "wallet@1",
+          "id": "serves-feasible"
+        },
+        {
+          "check": "declared",
+          "contract": "wallet@1",
+          "id": "change-privacy"
+        }
+      ],
+      "runner": "ubuntu-24.04",
+      "slug": "coin-select",
+      "state": "pending",
+      "status": "open",
+      "submissions": [],
+      "submit_steps": [
+        "Pick an <id> (lowercase a-z, 0-9, -). Put submission.toml and an executable build.sh in the directory, plus whatever your code needs. A whole codebase is fine, under max_bytes (4 MiB) in challenge.toml. build.sh runs offline in a sandbox, must leave an executable ./select in the directory (see contracts/wallet/INTERFACE.md), and must vendor any dependencies.",
+        "submission.toml declares: id (the dir name), contract = \"wallet@1\", novelty, direction, parent, taxonomy (keys strategy, change, consolidation, language; see taxonomy.toml), summary, optional claims (for the declared property change-privacy only) and model.",
+        "Novelty is your own declaration and is never judged. new starts a direction <name> that no accepted submission uses. builds-on names an accepted parent; copy its directory and edit it. The direction is inherited.",
+        "Run the judge locally first (see README.md). CI then builds your submission and runs the same judge, which checks the properties and measures every axis. Those numbers are a claim from the PR run.",
+        "There is no record to beat and no minimum improvement. If the checks pass, the PR is landed on main automatically, two clean runs there record it on the map, and the PR is closed. Failing and noisy attempts are recorded too."
+      ],
+      "summary": "Cardano wallets must choose which UTxOs to spend for each payment (CIP-2). The transaction pays a fee that grows with its size, so fewer inputs is cheaper now. But always spending the biggest coins leaves a wallet full of small leftovers (dust) that cost more to spend later, and spending many small ones now costs fees today. Cheap online heuristics answer fast; exact searches find tidier selections but take longer. There is no single winner, which is what the map on the site is for.",
+      "taxonomy": {
+        "axes": [
+          {
+            "definition": "How inputs are chosen for a payment",
+            "id": "strategy",
+            "values": [
+              {
+                "count": 0,
+                "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
+                "id": "largest-first",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "CIP-2 random-improve: pick UTxOs at random, then improve towards an ideal change size",
+                "id": "random-improve",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Depth-first search with pruning for a selection with no or minimal change",
+                "id": "branch-and-bound",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Dynamic-programming or heuristic subset-sum over the UTxO values",
+                "id": "knapsack",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Tries every subset (only practical for small wallets or with a cut-off)",
+                "id": "exhaustive",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Anything else; name it in the summary",
+                "id": "other",
+                "proposed": false
+              }
+            ]
+          },
+          {
+            "definition": "What happens to the leftover value after paying",
+            "id": "change",
+            "values": [
+              {
+                "count": 0,
+                "definition": "One change output",
+                "id": "single",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Several change outputs, to keep the wallet granular",
+                "id": "split",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Change sized like the payment, so it is hard to tell from it",
+                "id": "payment-shaped",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Searches for an input set that needs no change, else falls back",
+                "id": "none-when-possible",
+                "proposed": false
+              }
+            ]
+          },
+          {
+            "definition": "Whether the wallet merges small UTxOs while paying",
+            "id": "consolidation",
+            "values": [
+              {
+                "count": 0,
+                "definition": "Never adds inputs only to merge dust",
+                "id": "none",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Adds small inputs when they are cheap to carry",
+                "id": "opportunistic",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Consolidates once the wallet holds more than a chosen number of UTxOs",
+                "id": "threshold",
+                "proposed": false
+              }
+            ]
+          },
+          {
+            "definition": "What the submission is written in",
+            "id": "language",
+            "values": [
+              {
+                "count": 0,
+                "definition": "Python 3",
+                "id": "python",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Rust",
+                "id": "rust",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "C or C++",
+                "id": "c",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Go",
+                "id": "go",
+                "proposed": false
+              },
+              {
+                "count": 0,
+                "definition": "Anything else",
+                "id": "other",
+                "proposed": false
+              }
+            ]
+          }
+        ],
+        "rules": [
+          "change = none-when-possible needs an exact-match search (branch-and-bound or exhaustive), not largest-first",
+          "consolidation other than none costs extra inputs per transaction: expect it to trade fees now for dust later"
+        ],
+        "version": 1
+      },
+      "title": "Cardano UTxO coin selection, mapped not raced",
+      "type": "research"
+    },
+    {
       "attempts": [
         {
           "at": "2026-11-16T00:24:32Z",
@@ -258,6 +506,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T12:41:37Z",
+  "generated_at": "2026-11-19T12:51:19Z",
   "site_schema_version": 1
 }

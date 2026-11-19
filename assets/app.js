@@ -74,7 +74,7 @@
   function decimalsFor(c) {
     if (isSpeedup(c)) return 3;
     var vals = [c.baseline && c.baseline.value, c.record && c.record.value, c.to_beat];
-    (c.attempts || []).forEach(function (a) { vals.push(a.value); });
+    if (Array.isArray(c.attempts)) c.attempts.forEach(function (a) { vals.push(a.value); });
     return vals.some(function (v) { return num(v) !== null && !Number.isInteger(v); }) ? 4 : 0;
   }
   function fmt(v, dec) {
@@ -131,7 +131,8 @@
   function better(c) { return c.direction === "maximise" ? "higher is better" : "lower is better"; }
   function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
   function lastActivity(c) {
-    var a = c.attempts && c.attempts[0];
+    var a = Array.isArray(c.attempts) ? c.attempts[0] : null;
+    if (c.type === "research") a = subs(c).slice().sort(function (x, y) { return str(y.at) < str(x.at) ? -1 : 1; })[0];
     var t = a ? Date.parse(a.at) : NaN;
     return isNaN(t) ? 0 : t;
   }
@@ -406,7 +407,8 @@
     var w = el("div", "wrap");
     var left = el("div", "hero-text");
     var kicker = add(el("div", "kicker"), badge(c.state, true));
-    if (str(c.family)) add(kicker, el("span", null, cap(c.family) + " challenge"));
+    if (c.type === "research") add(kicker, el("span", null, "Research challenge"));
+    else if (str(c.family)) add(kicker, el("span", null, cap(c.family) + " challenge"));
     add(left, kicker, el("h1", "slug", c.slug));
     if (str(c.title)) add(left, el("p", "title", c.title));
     if (str(c.summary)) {
@@ -423,6 +425,7 @@
       });
       add(left, sum, more);
     }
+    if (c.type === "research") return add(band, add(w, add(el("div", "hero hero-solo"), left), researchStats(c), el("div", "chart-gap")));
     add(w, add(el("div", "hero"), left, goal(c)), stats(c), chartBox(c));
     return add(band, w);
   }
@@ -495,12 +498,17 @@
     add(s, el("h2", null, "How to enter"));
     if (c.state === "draft" || c.state === "closed") add(s, el("p", "callout", c.state === "draft" ? "This challenge is a draft: submissions aren't scored yet." : "This challenge is closed to new submissions."));
     var lead = el("p", "enter-lead");
-    add(lead, "Open a pull request that changes only ");
-    (c.editable || []).forEach(function (e, i) {
-      if (i) add(lead, ", ");
-      add(lead, el("code", null, "challenges/" + c.slug + "/" + e));
-    });
-    add(lead, ". CI scores it and comments the result on the PR.");
+    if (c.type === "research") {
+      add(lead, "Open a pull request that adds one directory under ", el("code", null, "challenges/" + c.slug + "/submissions/"),
+        ". CI judges it and comments the result on the PR.");
+    } else {
+      add(lead, "Open a pull request that changes only ");
+      (c.editable || []).forEach(function (e, i) {
+        if (i) add(lead, ", ");
+        add(lead, el("code", null, "challenges/" + c.slug + "/" + e));
+      });
+      add(lead, ". CI scores it and comments the result on the PR.");
+    }
     add(s, lead);
     if (str(c.prompt) && (c.state === "open" || c.state === "pending")) add(s, promptBox(c));
     var steps = c.submit_steps || [];
@@ -681,6 +689,404 @@
     });
   }
 
+  // ---------- research challenges ----------
+  // The view the status page gives a research challenge: a trade-off map over
+  // its declared axes, the direction tree, one submission's panel, the
+  // taxonomy and the deferred contracts. State of the view (selected
+  // submission, chosen axes) lives in R and is reset when the slug changes.
+  var R = { slug: null, id: null, x: 0, y: 1, nd: false };
+  var PALETTE = 8; // --d0 .. --d7 in style.css
+
+  function axisLabel(a) {
+    return a.id + " (" + (str(a.unit) || "no unit") + ", " + (a.direction === "maximise" ? "higher" : "lower") + " is better)";
+  }
+  function subs(c) { return Array.isArray(c.submissions) ? c.submissions : []; }
+  function subById(c, id) {
+    var l = subs(c);
+    for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i];
+    return null;
+  }
+  // Colour slot per direction; the baseline's own direction has none (it is a ring).
+  function dirSlots(c) {
+    var slots = {}, n = 0;
+    subs(c).forEach(function (s) {
+      var d = str(s.direction);
+      if (s.baseline || d in slots) return;
+      slots[d] = n++ % PALETTE;
+    });
+    return slots;
+  }
+  function stat3(s, axis) {
+    var a = s.axes && s.axes[axis];
+    if (!a || num(a.median) === null) return null;
+    var med = a.median;
+    return { med: med, min: num(a.min) === null ? med : a.min, max: num(a.max) === null ? med : a.max, n: a.n };
+  }
+  // Not dominated: nothing else is at least as good on both axes and better on one.
+  function nonDominated(c, pts, ax, ay) {
+    var sx = ax.direction === "maximise" ? 1 : -1, sy = ay.direction === "maximise" ? 1 : -1;
+    var out = {};
+    pts.forEach(function (p) {
+      out[p.s.id] = !pts.some(function (q) {
+        if (q === p) return false;
+        var dx = (q.x - p.x) * sx, dy = (q.y - p.y) * sy;
+        return dx >= 0 && dy >= 0 && (dx > 0 || dy > 0);
+      });
+    });
+    return out;
+  }
+  function niceTicks(lo, hi, n) {
+    var span = hi - lo;
+    var raw = span / n, mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
+    var step = [1, 2, 5, 10].map(function (m) { return m * mag; }).filter(function (s) { return s >= raw; })[0];
+    var out = [];
+    for (var t = Math.ceil(lo / step - 1e-9) * step; t <= hi + step * 1e-9; t += step) out.push(Math.abs(t) < step * 1e-9 ? 0 : t);
+    return out;
+  }
+  function extent(vals) {
+    var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+    if (hi === lo) { var d = Math.abs(lo) * 0.1 || 1; return [lo - d, hi + d]; }
+    var pad = (hi - lo) * 0.08;
+    return [lo - pad, hi + pad];
+  }
+
+  function drawMap(c, host) {
+    host.textContent = "";
+    var axes = c.axes || [];
+    if (axes.length < 2) { add(host, empty("This challenge declares fewer than two axes, so there is nothing to plot.")); return; }
+    var ax = axes[R.x], ay = axes[R.y];
+    var slots = dirSlots(c);
+    var pts = [];
+    subs(c).forEach(function (s) {
+      var px = stat3(s, ax.id), py = stat3(s, ay.id);
+      if (px && py) pts.push({ s: s, x: px.med, y: py.med, xr: px, yr: py });
+    });
+    if (!pts.length) { add(host, empty("No accepted submissions have measurements on these axes yet.")); return; }
+    var W = Math.max(280, Math.round(host.clientWidth || 600));
+    var H = Math.round(Math.min(420, Math.max(300, W * 0.6)));
+    var m = { l: W < 520 ? 60 : 66, r: 16, t: 14, b: 50 };
+    var xe = extent(pts.reduce(function (a, p) { return a.concat([p.xr.min, p.xr.max]); }, []));
+    var ye = extent(pts.reduce(function (a, p) { return a.concat([p.yr.min, p.yr.max]); }, []));
+    function X(v) { return m.l + (v - xe[0]) / (xe[1] - xe[0]) * (W - m.l - m.r); }
+    function Y(v) { return H - m.b - (v - ye[0]) / (ye[1] - ye[0]) * (H - m.t - m.b); }
+    var root = svg("svg", { width: "100%", height: "auto", viewBox: "0 0 " + W + " " + H, role: "group", "aria-label": "Trade-off map: " + ax.id + " against " + ay.id, "class": "map-svg" });
+    // grid and ticks
+    niceTicks(ye[0], ye[1], H < 360 ? 4 : 5).forEach(function (t) {
+      add(root, svg("line", { x1: m.l, x2: W - m.r, y1: Y(t), y2: Y(t), "class": "grid" }));
+      var l = svg("text", { x: m.l - 8, y: Y(t) + 4, "text-anchor": "end" });
+      l.textContent = fmt(t, 0 + (Math.abs(t) < 10 && !Number.isInteger(t) ? 2 : 0));
+      add(root, l);
+    });
+    niceTicks(xe[0], xe[1], W < 520 ? 4 : 6).forEach(function (t) {
+      add(root, svg("line", { x1: X(t), x2: X(t), y1: m.t, y2: H - m.b, "class": "grid" }));
+      var l = svg("text", { x: X(t), y: H - m.b + 17, "text-anchor": "middle" });
+      l.textContent = fmt(t, 0 + (Math.abs(t) < 10 && !Number.isInteger(t) ? 2 : 0));
+      add(root, l);
+    });
+    var xt = svg("text", { x: m.l + (W - m.l - m.r) / 2, y: H - 8, "text-anchor": "middle", "class": "axis-title" });
+    xt.textContent = axisLabel(ax);
+    var yt = svg("text", { x: 0, y: 0, "text-anchor": "middle", "class": "axis-title", transform: "translate(13," + (m.t + (H - m.t - m.b) / 2) + ") rotate(-90)" });
+    yt.textContent = axisLabel(ay);
+    add(root, xt, yt);
+    var nd = R.nd ? nonDominated(c, pts, ax, ay) : null;
+    var label = svg("text", { "class": "pt-label", x: 0, y: 0, visibility: "hidden" });
+    function showLabel(p) {
+      var t = p.s.id + (p.s.baseline ? " (baseline)" : " · " + str(p.s.direction));
+      label.textContent = t;
+      var px = X(p.x), py = Y(p.y);
+      var right = px > W * 0.6;
+      label.setAttribute("text-anchor", right ? "end" : "start");
+      label.setAttribute("x", px + (right ? -12 : 12));
+      label.setAttribute("y", Math.max(m.t + 10, py - 12));
+      label.setAttribute("visibility", "visible");
+    }
+    function hideLabel() { label.setAttribute("visibility", "hidden"); }
+    // Selected last so it draws on top; others in data order.
+    pts.slice().sort(function (a, b) { return (a.s.id === R.id) - (b.s.id === R.id); }).forEach(function (p) {
+      var g = svg("g", { "class": "pt" + (p.s.id === R.id ? " sel" : ""), tabindex: 0, role: "button", "data-id": p.s.id,
+        "aria-label": "Submission " + p.s.id + ", direction " + str(p.s.direction) + ", " + ax.id + " " + fmt(p.x) + ", " + ay.id + " " + fmt(p.y) + (nd && nd[p.s.id] ? ", not dominated" : "") });
+      var cx = X(p.x), cy = Y(p.y);
+      if (p.xr.min !== p.xr.max) add(g, svg("line", { x1: X(p.xr.min), x2: X(p.xr.max), y1: cy, y2: cy, "class": "bar" }));
+      if (p.yr.min !== p.yr.max) add(g, svg("line", { x1: cx, x2: cx, y1: Y(p.yr.min), y2: Y(p.yr.max), "class": "bar" }));
+      add(g, svg("circle", { cx: cx, cy: cy, r: 16, "class": "hit" }));
+      if (nd && nd[p.s.id]) add(g, svg("circle", { cx: cx, cy: cy, r: 11, "class": "nd" }));
+      if (p.s.baseline) add(g, svg("circle", { cx: cx, cy: cy, r: 8, "class": "base" }));
+      else add(g, svg("circle", { cx: cx, cy: cy, r: 6, "class": "dot", style: "fill: var(--d" + (slots[str(p.s.direction)] || 0) + ")" }));
+      add(g, svg("circle", { cx: cx, cy: cy, r: 13, "class": "focus-ring" }));
+      var title = svg("title", {});
+      title.textContent = p.s.id + " · " + str(p.s.direction);
+      add(g, title);
+      g.addEventListener("mouseenter", function () { showLabel(p); });
+      g.addEventListener("mouseleave", hideLabel);
+      g.addEventListener("focus", function () { showLabel(p); });
+      g.addEventListener("blur", hideLabel);
+      g.addEventListener("click", function () { selectSub(c, p.s.id); });
+      g.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); selectSub(c, p.s.id); }
+      });
+      add(root, g);
+    });
+    add(root, label);
+    add(host, root);
+    if (pts.length === 1) add(host, el("p", "block-note", "One accepted submission so far: the map fills in as more are accepted."));
+  }
+
+  function mapSection(c) {
+    var s = section("Trade-off map", el("span", "block-note", "Each point is a submission's median; bars span min to max."));
+    var axes = c.axes || [];
+    if (!subs(c).length) { add(s, empty("No submissions have been accepted yet.")); return s; }
+    if (axes.length < 2) { add(s, empty("This challenge declares fewer than two axes.")); return s; }
+    var host = el("div", "map");
+    host.setAttribute("data-slug", c.slug);
+    function pick(label, key) {
+      var id = "axis-" + key;
+      var sel = el("select");
+      sel.setAttribute("id", id);
+      axes.forEach(function (a, i) {
+        var o = el("option", null, axisLabel(a));
+        o.setAttribute("value", String(i));
+        if (i === R[key]) o.selected = true;
+        add(sel, o);
+      });
+      sel.addEventListener("change", function () { R[key] = Number(sel.value); drawMap(c, host); });
+      var lab = el("label", "pick-axis", label + " ");
+      lab.setAttribute("for", id);
+      return add(lab, sel);
+    }
+    var nd = el("input");
+    nd.setAttribute("type", "checkbox");
+    nd.setAttribute("id", "map-nd");
+    nd.checked = R.nd;
+    nd.addEventListener("change", function () { R.nd = nd.checked; drawMap(c, host); });
+    var ndl = el("label", "pick-nd");
+    ndl.setAttribute("for", "map-nd");
+    add(ndl, nd, " Highlight non-dominated");
+    add(s, add(el("div", "map-controls"), pick("X", "x"), pick("Y", "y"), ndl));
+    add(s, host);
+    var slots = dirSlots(c);
+    var legend = el("ul", "legend map-legend");
+    var base = subs(c).filter(function (x) { return x.baseline; })[0];
+    if (base) add(legend, add(el("li"), el("span", "key key-base"), "Baseline"));
+    Object.keys(slots).forEach(function (d) {
+      var k = el("span", "key");
+      k.setAttribute("style", "background: var(--d" + slots[d] + ")");
+      add(legend, add(el("li"), k, d));
+    });
+    add(legend, add(el("li"), el("span", "key key-nd"), "Not dominated (when highlighted)"));
+    add(s, legend);
+    drawMap(c, host);
+    return s;
+  }
+
+  // The tree: baseline at the root, each direction's root under it, builds-on chains nested.
+  function treeSection(c) {
+    var s = section("Directions", el("span", "block-note", "Choose a submission to read it."));
+    var list = subs(c);
+    if (!list.length) { add(s, empty("No submissions have been accepted yet.")); return s; }
+    var slots = dirSlots(c);
+    var kids = {}, seen = {};
+    var base = list.filter(function (x) { return x.baseline; })[0];
+    var tops = [];
+    list.forEach(function (x) {
+      if (x.baseline) return;
+      var p = x.novelty === "builds-on" ? subById(c, str(x.parent)) : null;
+      if (p && p !== x) (kids[p.id] = kids[p.id] || []).push(x);
+      else tops.push(x);
+    });
+    function nest(list2) {
+      var u = el("ul");
+      list2.forEach(function (y) { add(u, node(y)); });
+      return u;
+    }
+    function node(x) {
+      seen[x.id] = true;
+      var li = el("li");
+      var b = el("button", "node");
+      b.setAttribute("type", "button");
+      b.setAttribute("data-id", x.id);
+      if (x.id === R.id) b.setAttribute("aria-current", "true");
+      var k = el("span", "key" + (x.baseline ? " key-base" : ""));
+      if (!x.baseline) k.setAttribute("style", "background: var(--d" + (slots[str(x.direction)] || 0) + ")");
+      add(b, k, el("span", "node-id", x.id), el("span", "node-dir", x.baseline ? "baseline" : x.novelty === "new" ? str(x.direction) : "builds on " + str(x.parent)));
+      b.addEventListener("click", function () { selectSub(c, x.id); });
+      add(li, b);
+      var ch = (kids[x.id] || []).filter(function (y) { return !seen[y.id]; });
+      if (ch.length) add(li, nest(ch));
+      return li;
+    }
+    var ul = el("ul", "tree");
+    if (base) add(ul, (function () {
+      var li = node(base);
+      if (tops.length) add(li, nest(tops));
+      return li;
+    })());
+    else tops.forEach(function (x) { add(ul, node(x)); });
+    return add(s, ul);
+  }
+
+  function checksTable(s) {
+    var rows = [];
+    (s.checks || []).forEach(function (k) {
+      var r = el("span", "outcome " + (k.ok ? "o-good" : "o-bad"), k.ok ? "pass" : "fail");
+      rows.push([str(k.property), str(k.check), r, str(k.detail)]);
+    });
+    (s.claims || []).forEach(function (k) {
+      rows.push([str(k.property), "claim", el("span", "outcome o-claim", "declared — unverified"), str(k.argument)]);
+    });
+    if (!rows.length) return empty("No checks recorded.");
+    return table([["Property"], ["Kind"], ["Result"], ["Detail", "detail"]], rows, "checks");
+  }
+  function axesTable(c, s) {
+    var rows = (c.axes || []).map(function (a) {
+      var t = stat3(s, a.id);
+      return [a.id, t ? fmt(t.med) : "–", t ? fmt(t.min) + " – " + fmt(t.max) : "–", t && t.n !== undefined ? String(t.n) : "–", str(a.unit)];
+    });
+    return table([["Axis"], ["Median", "n"], ["Min – max"], ["Runs", "n"], ["Unit"]], rows, "axes");
+  }
+  function taxTuple(s) {
+    var dl = el("dl", "facts tuple");
+    var t = s.taxonomy && typeof s.taxonomy === "object" ? s.taxonomy : {};
+    var proposed = Array.isArray(s.proposed) ? s.proposed : [];
+    Object.keys(t).forEach(function (k) {
+      var v = el("span", null, str(t[k]));
+      if (proposed.indexOf(k) >= 0) add(v, " ", el("span", "outcome o-claim", "(proposed)"));
+      add(dl, add(el("div"), el("dt", null, k), add(el("dd"), v)));
+    });
+    return dl;
+  }
+  function renderSub(c, host) {
+    host.textContent = "";
+    var s = R.id ? subById(c, R.id) : null;
+    if (!s) {
+      add(host, empty("Choose a point on the map or a node in the tree to read that submission."));
+      return;
+    }
+    var head = add(el("div", "sub-head"), el("h3", null, s.id));
+    if (s.baseline) add(head, el("span", "outcome o-base", "Baseline"));
+    add(host, head);
+    var facts = el("dl", "facts");
+    function row(k, v) { if (v !== null && v !== "") add(facts, add(el("div"), el("dt", null, k), add(el("dd"), v))); }
+    row("Direction", str(s.direction));
+    if (s.novelty === "builds-on") {
+      var pb = el("button", "link-btn", str(s.parent));
+      pb.setAttribute("type", "button");
+      pb.addEventListener("click", function () { selectSub(c, str(s.parent)); });
+      row("Novelty", add(el("span"), "builds on ", subById(c, str(s.parent)) ? pb : str(s.parent)));
+    } else row("Novelty", "new");
+    row("By", str(s.by));
+    row("Model", str(s.model));
+    row("When", absTime(s.at));
+    row("Commit", el("code", null, short(s.commit)));
+    row("Contract", str(s.contract));
+    add(host, facts);
+    if (str(s.summary)) add(host, el("p", "sub-summary", s.summary));
+    add(host, el("h3", null, "Taxonomy"), taxTuple(s));
+    add(host, el("h3", null, "Checks"), checksTable(s));
+    add(host, el("h3", null, "Axes"), axesTable(c, s));
+    if (s.novelty === "builds-on") {
+      var p = diffPath2(s.diff);
+      add(host, el("h3", null, "Change"));
+      if (p) {
+        var b = el("button", "copy diff-open", "View diff against " + str(s.parent));
+        b.setAttribute("type", "button");
+        b.addEventListener("click", function () { openDiff(p, s.id, "Against " + str(s.parent)); });
+        add(host, b);
+      } else add(host, empty("No difference from " + str(s.parent) + " was recorded."));
+    } else {
+      add(host, el("h3", null, "Files"));
+      var files = Array.isArray(s.files) ? s.files : [];
+      if (files.length) {
+        var ul = el("ul", "files");
+        files.forEach(function (f) { add(ul, add(el("li"), el("code", null, str(f)))); });
+        add(host, ul);
+        if (files.length >= 200) add(host, el("p", "block-note", "The list stops at 200 files."));
+      } else add(host, empty("No files listed."));
+      if (str(s.readme)) add(host, el("h3", null, "README"), el("p", "readme-excerpt", s.readme));
+    }
+  }
+  function diffPath2(p) {
+    p = str(p);
+    return /^diffs\/[A-Za-z0-9._-]+\/[A-Za-z0-9._-]+\.patch$/.test(p) ? p : null;
+  }
+  function subPanel(c) {
+    var s = section("Submission");
+    s.setAttribute("id", "sub-panel");
+    s.setAttribute("tabindex", "-1");
+    var host = el("div", "sub");
+    host.setAttribute("aria-live", "polite");
+    add(s, host);
+    renderSub(c, host);
+    return s;
+  }
+  // Chosen from a point or a node: redraw the pieces that show the selection.
+  function selectSub(c, id) {
+    if (!subById(c, id)) return;
+    R.id = id;
+    var panel = document.getElementById("sub-panel");
+    var host = panel && panel.querySelector(".sub");
+    if (host) renderSub(c, host);
+    Array.prototype.forEach.call(document.querySelectorAll(".node"), function (n) {
+      if (n.getAttribute("data-id") === id) n.setAttribute("aria-current", "true"); else n.removeAttribute("aria-current");
+    });
+    var map = document.querySelector(".map");
+    if (map) drawMap(c, map);
+    if (panel) panel.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "nearest" });
+  }
+
+  function taxSection(c) {
+    var t = c.taxonomy || {};
+    var s = section("Taxonomy", el("span", "block-note", "Axes of variation, with how many submissions use each value."));
+    var axes = t.axes || [];
+    if (!axes.length) return add(s, empty("No taxonomy is defined."));
+    axes.forEach(function (a) {
+      add(s, el("h3", null, a.id));
+      if (str(a.definition)) add(s, el("p", "tax-def", a.definition));
+      var ul = el("ul", "tax-values");
+      (a.values || []).forEach(function (v) {
+        var li = add(el("li"), el("code", null, str(v.id)), " ", el("span", "tax-count", v.count + (v.count === 1 ? " submission" : " submissions")));
+        if (v.proposed) add(li, " ", el("span", "outcome o-claim", "(proposed)"));
+        if (str(v.definition)) add(li, el("span", "tax-vdef", str(v.definition)));
+        add(ul, li);
+      });
+      add(s, ul);
+    });
+    return s;
+  }
+  function deferredSection(c) {
+    var d = (c.contracts || []).filter(function (k) { return k.status === "deferred"; });
+    if (!d.length) return null;
+    var s = section("Deferred contracts", el("span", "block-note", "Not open yet. Each says when it would be."));
+    var ul = el("ul", "deferred");
+    d.forEach(function (k) { add(ul, add(el("li"), el("code", null, str(k.id)), " — admits when: " + str(k.admits_when))); });
+    return add(s, ul);
+  }
+  function researchStats(c) {
+    var a = c.attempts || {};
+    var dl = el("dl", "stats");
+    function stat(k, v) { add(dl, add(el("div", "stat"), el("dt", null, k), add(el("dd"), v))); }
+    stat("Accepted submissions", String(subs(c).filter(function (x) { return !x.baseline; }).length));
+    stat("Directions", String((c.directions || []).filter(function (d) { return d.name !== "baseline"; }).length));
+    stat("PR attempts", String(a.total || 0));
+    stat("Rejected", String(a.rejected || 0));
+    return dl;
+  }
+  function researchAside(c) {
+    var s = el("section", "panel");
+    add(s, el("h2", null, "Rules at a glance"));
+    var dl = el("dl", "facts");
+    function row(k, v) { add(dl, add(el("div"), el("dt", null, k), add(el("dd"), v))); }
+    row("Axes", (c.axes || []).map(function (a) { return a.id; }).join(", ") || "–");
+    row("Open contracts", (c.contracts || []).filter(function (k) { return k.status !== "deferred"; }).map(function (k) { return k.id; }).join(", ") || "–");
+    row("Runner", str(c.runner) || "–");
+    var data = el("span");
+    if (c.feed) { var f = el("a", null, c.feed); f.setAttribute("href", c.feed); add(data, f, ", "); }
+    var all = el("a", null, "challenges.json");
+    all.setAttribute("href", "challenges.json");
+    add(data, all);
+    row("Data", data);
+    return add(s, dl);
+  }
+
   // ---------- page ----------
   function picker(sel) {
     if (challenges.length < 2) return null;
@@ -734,9 +1140,16 @@
     TIMES = isSpeedup(c);
     var main = el("main");
     main.setAttribute("id", "main");
-    var content = add(el("div", "content"), board(c), attempts(c));
-    var aside = add(el("div", "aside"), enter(c), facts(c));
-    add(main, stage(c), add(el("div", "wrap body"), content, aside));
+    var content, aside;
+    if (c.type === "research") {
+      if (R.slug !== c.slug) R = { slug: c.slug, id: null, x: 0, y: 1, nd: false };
+      content = add(el("div", "content"), mapSection(c), treeSection(c), subPanel(c), taxSection(c), deferredSection(c));
+      aside = add(el("div", "aside"), enter(c), researchAside(c));
+    } else {
+      content = add(el("div", "content"), board(c), attempts(c));
+      aside = add(el("div", "aside"), enter(c), facts(c));
+    }
+    add(main, stage(c), add(el("div", "wrap body" + (c.type === "research" ? " body-research" : "")), content, aside));
     add(app, main);
     document.title = c.slug + ": auto-research challenges";
     drawCharts();
@@ -745,6 +1158,8 @@
     var c = current();
     var host = document.querySelector(".chart");
     if (c && host) drawChart(c, host);
+    var map = document.querySelector(".map");
+    if (c && c.type === "research" && map) drawMap(c, map);
   }
 
   // ---------- theme ----------
