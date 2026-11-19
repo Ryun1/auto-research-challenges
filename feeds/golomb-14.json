@@ -29,8 +29,8 @@
   ],
   "challenge": "golomb-14",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-19T13:13:53Z",
-  "generated_at": "2026-11-19T13:13:53Z",
+  "fetched_at": "2026-11-19T13:14:41Z",
+  "generated_at": "2026-11-19T13:14:41Z",
   "policy": {
     "allowed_paths": [
       "challenges/golomb-14/candidate/**"
