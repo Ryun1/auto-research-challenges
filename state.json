@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-19T12:21:39Z",
+  "generated_at": "2026-11-19T12:29:03Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T12:27:44Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T12:28:26Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44524086161",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "research-challenges",
+      "conclusion": null,
+      "created_at": "2026-11-19T12:27:02Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Research challenge type, and open the coin-select pilot (#90)",
+      "updated_at": "2026-11-19T12:27:05Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44523981906",
+      "workflow": "CI"
+    },
+    {
+      "branch": "research-challenges",
+      "conclusion": "success",
+      "created_at": "2026-11-19T12:27:00Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Research challenge type, and open the coin-select pilot (#90)",
+      "updated_at": "2026-11-19T12:27:41Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44523978808",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +48,12 @@
     },
     {
       "branch": "research-challenges",
-      "conclusion": null,
+      "conclusion": "failure",
       "created_at": "2026-11-19T12:19:49Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Research challenge type, and open the coin-select pilot (#90)",
-      "updated_at": "2026-11-19T12:19:53Z",
+      "updated_at": "2026-11-19T12:24:35Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44522862996",
       "workflow": "CI"
     },
@@ -408,39 +441,6 @@
       "updated_at": "2026-11-15T22:59:30Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43769349888",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T22:26:09Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call…",
-      "updated_at": "2026-11-15T22:32:37Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43769274242",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T22:26:09Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor pool.py: keep retrying Koios for up to 6 minutes per call…",
-      "updated_at": "2026-11-15T22:26:55Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43769274234",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T21:44:25Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-15T21:45:18Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43765342278",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
