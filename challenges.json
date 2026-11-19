@@ -4,9 +4,9 @@
       "attempts": {
         "accepted": 1,
         "infra_failed": 0,
-        "rejected": 2,
-        "total": 2,
-        "valid": 0
+        "rejected": 3,
+        "total": 4,
+        "valid": 1
       },
       "axes": [
         {
@@ -589,6 +589,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T13:31:10Z",
+  "generated_at": "2026-11-19T13:34:03Z",
   "site_schema_version": 1
 }
