@@ -1,15 +1,26 @@
 {
-  "generated_at": "2026-11-19T12:52:17Z",
+  "generated_at": "2026-11-19T12:53:12Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
-      "branch": "submit/random-improve",
+      "branch": "main",
       "conclusion": null,
+      "created_at": "2026-11-19T12:53:05Z",
+      "event": "workflow_run",
+      "status": "queued",
+      "title": "Comment",
+      "updated_at": "2026-11-19T12:53:08Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44528035424",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "submit/random-improve",
+      "conclusion": "failure",
       "created_at": "2026-11-19T12:51:55Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "coin-select: random-improve (new direction)",
-      "updated_at": "2026-11-19T12:52:00Z",
+      "updated_at": "2026-11-19T12:53:02Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44527856008",
       "workflow": "Submission"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-15T23:37:02Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43775717183",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-15T23:18:13Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor: read single-chunk input directly; direct tx body/outputs…",
-      "updated_at": "2026-11-15T23:25:46Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43774073290",
-      "workflow": "CI"
     }
   ],
   "pulls": [
