@@ -1,7 +1,62 @@
 {
-  "generated_at": "2026-11-19T17:19:19Z",
+  "generated_at": "2026-11-19T17:42:38Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T17:41:45Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: run the tx body, witness set and map-form output loops a…",
+      "updated_at": "2026-11-19T17:41:50Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44579932685",
+      "workflow": "CI"
+    },
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-19T17:41:45Z",
+      "event": "push",
+      "status": "in_progress",
+      "title": "ledger-cbor: run the tx body, witness set and map-form output loops a…",
+      "updated_at": "2026-11-19T17:42:30Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44579932675",
+      "workflow": "Promote"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T17:41:35Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T17:42:24Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44579904519",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "fix/review-followups",
+      "conclusion": "success",
+      "created_at": "2026-11-19T17:40:53Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Reference points: compare exact targets with the baseline when nothing is promoted",
+      "updated_at": "2026-11-19T17:41:32Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44579781731",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "fix/review-followups",
+      "conclusion": null,
+      "created_at": "2026-11-19T17:40:53Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Reference points: compare exact targets with the baseline when nothing is promoted",
+      "updated_at": "2026-11-19T17:40:57Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44579781633",
+      "workflow": "CI"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -386,74 +441,17 @@
       "updated_at": "2026-11-19T13:44:06Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44536266660",
       "workflow": "Comment"
-    },
-    {
-      "branch": "fix-suite-status",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:42:31Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Dry-run follow-ups: suite status matcher, map SVG console error",
-      "updated_at": "2026-11-19T13:46:32Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44536134844",
-      "workflow": "CI"
-    },
-    {
-      "branch": "fix-suite-status",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:42:31Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Dry-run follow-ups: suite status matcher, map SVG console error",
-      "updated_at": "2026-11-19T13:43:15Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44536134621",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:37:58Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:38:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44535389052",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "submit/random-improve-consolidate",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:36:14Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "coin-select: random-improve-consolidate (builds on random-improve)",
-      "updated_at": "2026-11-19T13:37:55Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44535101333",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:32:44Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:33:34Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44534508324",
-      "workflow": "Comment"
     }
   ],
   "pulls": [
     {
       "author": "Ryun1",
-      "created_at": "2026-11-19T16:43:19Z",
+      "created_at": "2026-11-19T17:40:49Z",
       "draft": false,
-      "number": 110,
-      "title": "ledger-cbor: run the tx body, witness set and map-form output loops as one direct loop each, instead of rebuilding a Decoder per key",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/110",
-      "challenges": [
-        "ledger-cbor"
-      ]
+      "number": 112,
+      "title": "Reference points: compare exact targets with the baseline when nothing is promoted",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/112",
+      "challenges": []
     }
   ]
 }
