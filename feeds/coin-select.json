@@ -87,7 +87,7 @@
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-19T16:36:38Z",
+  "generated_at": "2026-11-19T16:42:13Z",
   "properties": [
     {
       "check": "mechanical",
@@ -163,10 +163,12 @@
       "commit": "d49f758858362199b890073d2fde3a54fe73cf87",
       "contract": "wallet@1",
       "direction": "largest-first",
+      "hypothesis": "",
       "id": "baseline",
       "model": "",
       "novelty": "new",
       "parent": "",
+      "predictions": [],
       "proposed": [],
       "summary": "CIP-2 largest-first: take the biggest UTxOs until the payment and fee are covered, one change output.",
       "taxonomy": {
@@ -230,10 +232,12 @@
       "commit": "ad303927fb83f21c553fef5f930075d4e72857c3",
       "contract": "wallet@1",
       "direction": "random-improve",
+      "hypothesis": "",
       "id": "random-improve",
       "model": "claude-sonnet-5-5",
       "novelty": "new",
       "parent": "",
+      "predictions": [],
       "proposed": [],
       "summary": "CIP-2 random-improve in Rust: random selection until covered, improvement towards 2x the payment, change shaped like the payment outputs, largest-first fallback.",
       "taxonomy": {
@@ -297,10 +301,12 @@
       "commit": "63f4230fdb7dbe2f42e13a32ec0aafaaf483668b",
       "contract": "wallet@1",
       "direction": "random-improve",
+      "hypothesis": "",
       "id": "random-improve-consolidate",
       "model": "claude-sonnet-5-5",
       "novelty": "builds-on",
       "parent": "random-improve",
+      "predictions": [],
       "proposed": [],
       "summary": "random-improve plus opportunistic consolidation: also spends up to 3 of the smallest UTxOs under 2 ADA when the extra fee is below their value, to reduce dust.",
       "taxonomy": {

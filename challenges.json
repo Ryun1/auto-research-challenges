@@ -159,7 +159,7 @@
         }
       ],
       "feed": "feeds/coin-select.json",
-      "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\n`DIRECTIONS.md` (what has been tried, what is open and the cheapest test for each\nopen idea), `submissions/` and `taxonomy.toml`. The baseline is a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, ...) or copy an accepted\nsubmission's directory and build on it. Declare novelty honestly: porting an accepted\nsubmission to another language, or retuning its constants or seed, is `builds-on`,\nnot a new direction. You choose which axes in `challenge.toml` to push (fees, dust,\ninputs per transaction, latency, memory): they are measured, recorded and never\nranked or combined, so a trade-off is a fine result. Run the judge locally (see\n`README.md`) before opening a PR.",
+      "prompt": "# Prompt for coin-select\n\nYou are working on the research challenge `coin-select`: Cardano UTxO coin selection\n(CIP-2). Read `contracts/wallet/INTERFACE.md` and `contracts/wallet/CHOICES.md`, then\n`DIRECTIONS.md` (what has been tried, what is open and the cheapest test for each\nopen idea), `submissions/` and `taxonomy.toml`. The baseline is a Python largest-first.\n\nCreate ONE new directory `submissions/<id>/` and change nothing else. It needs a\n`submission.toml`, an executable `build.sh` that leaves an executable `./select`, and\nyour code; see `SUBMITTING.md` for the fields. Either start a new direction (random\nimprove, branch and bound, consolidation policies, ...) or copy an accepted\nsubmission's directory and build on it. Declare novelty honestly: porting an accepted\nsubmission to another language, or retuning its constants or seed, is `builds-on`,\nnot a new direction. You choose which axes in `challenge.toml` to push (fees, dust,\ninputs per transaction, latency, memory): they are measured, recorded and never\nranked or combined, so a trade-off is a fine result. Before measuring, write your\nhypothesis and the axes you expect to move in `submission.toml` (`hypothesis`,\n`expected`; see `SUBMITTING.md`). If the measurement refutes it, submit anyway and\nsay so: that is a result. Run the judge locally (see `README.md`) before opening a\nPR.",
       "properties": [
         {
           "check": "mechanical",
@@ -242,10 +242,12 @@
             "select",
             "submission.toml"
           ],
+          "hypothesis": "",
           "id": "baseline",
           "model": "",
           "novelty": "new",
           "parent": "",
+          "predictions": [],
           "proposed": [],
           "readme": "The reference submission for wallet@1: Python largest-first. It sorts the wallet by value, adds inputs until they cover the outputs and the fee (priced with one change output), makes a single change output when the leftover is at least min-ada, and otherwise folds the leftover into the fee. It refuses only when the whole wallet cannot pay. It is the root of the lineage tree and the yardstick for preflight.",
           "summary": "CIP-2 largest-first: take the biggest UTxOs until the payment and fee are covered, one change output.",
@@ -319,10 +321,12 @@
             "src/main.rs",
             "submission.toml"
           ],
+          "hypothesis": "",
           "id": "random-improve",
           "model": "claude-sonnet-5-5",
           "novelty": "new",
           "parent": "",
+          "predictions": [],
           "proposed": [],
           "readme": "CIP-2 Random-Improve in std-only Rust. UTxOs are picked at random (fixed-seed xorshift, so runs are deterministic) until the payment and fee are covered, then random extras are added while they move the selected total closer to 2x the payment (never past 3x). Change is shaped like the payment: up to one change output per payment output, sized like it, with the remainder in the last. If random selection cannot cover the payment (or the transaction would be too large) it falls back to largest-first; it refuses only when the whole wallet cannot pay. JSON is parsed and written by hand for exactly the protocol's messages.",
           "summary": "CIP-2 random-improve in Rust: random selection until covered, improvement towards 2x the payment, change shaped like the payment outputs, largest-first fallback.",
@@ -388,10 +392,12 @@
           "contract": "wallet@1",
           "diff": "diffs/coin-select/random-improve-consolidate.patch",
           "direction": "random-improve",
+          "hypothesis": "",
           "id": "random-improve-consolidate",
           "model": "claude-sonnet-5-5",
           "novelty": "builds-on",
           "parent": "random-improve",
+          "predictions": [],
           "proposed": [],
           "summary": "random-improve plus opportunistic consolidation: also spends up to 3 of the smallest UTxOs under 2 ADA when the extra fee is below their value, to reduce dust.",
           "taxonomy": {
@@ -404,8 +410,9 @@
       ],
       "submit_steps": [
         "Pick an <id> (lowercase a-z, 0-9, -). Put submission.toml and an executable build.sh in the directory, plus whatever your code needs. A whole codebase is fine, under max_bytes (4 MiB) in challenge.toml. build.sh runs offline in a sandbox, must leave an executable ./select in the directory (see contracts/wallet/INTERFACE.md), and must vendor any dependencies.",
-        "submission.toml declares: id (the dir name), contract = \"wallet@1\", novelty, direction, parent, taxonomy (keys strategy, change, consolidation, language; see taxonomy.toml), summary, optional claims (for the declared property change-privacy only) and model.",
+        "submission.toml declares: id (the dir name), contract = \"wallet@1\", novelty, direction, parent, taxonomy (keys strategy, change, consolidation, language; see taxonomy.toml), summary, optional claims (for the declared property change-privacy only), model, and optionally hypothesis and expected (below).",
         "Novelty is your own declaration and is never judged. new starts a direction <name> that no accepted submission uses. builds-on names an accepted parent; copy its directory and edit it. The direction is inherited. A port to another language, or a new name, seed or constant on an accepted approach, is builds-on, not new.",
+        "Say what you expect before it is measured. hypothesis is one sentence (at most 300 chars): what should happen and why. expected maps axes to lower, same or higher, relative to your parent (builds-on) or the baseline (new), e.g. expected = { fees = \"lower\", dust = \"higher\" }. The PR comment and the site show each prediction against the measurement, within the axis's tolerance. A refuted prediction …",
         "Run the judge locally first (see README.md). CI then builds your submission and runs the same judge, which checks the properties and measures every axis. Those numbers are a claim from the PR run.",
         "There is no record to beat and no minimum improvement. If the checks pass, the PR is landed on main automatically, two clean runs there record it on the map, and the PR is closed. Failing and noisy attempts are recorded too."
       ],
@@ -884,6 +891,6 @@
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T16:36:38Z",
+  "generated_at": "2026-11-19T16:42:13Z",
   "site_schema_version": 1
 }

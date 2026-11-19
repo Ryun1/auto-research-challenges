@@ -943,6 +943,24 @@
     });
     return table([["Axis"], ["Median", "n"], ["Min – max"], ["Runs", "n"], ["Unit"]], rows, "axes");
   }
+  // #104: what the submitter expected per axis, against what was measured
+  // relative to the parent (builds-on) or the baseline. Information only.
+  function predictionsTable(s) {
+    var ps = (Array.isArray(s.predictions) ? s.predictions : []).filter(function (p) { return p && str(p.axis); });
+    if (!ps.length) return null;
+    var ref = str(ps[0].reference) || "reference";
+    var VERDICT = { "true": ["held", "o-good"], "false": ["refuted", "o-warn"] };
+    var rows = ps.map(function (p) {
+      var v = VERDICT[String(p.held)];
+      var m = v ? add(el("span"), str(p.measured), " ", el("span", "outcome " + v[1], v[0])) : str(p.measured) || "unknown";
+      return [p.axis, str(p.expected), m, num(p.own) === null ? "–" : fmt(p.own), num(p.reference_value) === null ? "–" : fmt(p.reference_value)];
+    });
+    var wrap = el("div");
+    add(wrap, el("h3", null, "Predicted against measured"),
+      el("p", "block-note", "Compared with " + ref + "'s accepted medians, within each axis's tolerance. A refuted prediction is a result, not a failure."),
+      table([["Axis"], ["Expected"], ["Measured"], ["This", "n"], [ref, "n"]], rows, "axes"));
+    return wrap;
+  }
   function taxTuple(s) {
     var dl = el("dl", "facts tuple");
     var t = s.taxonomy && typeof s.taxonomy === "object" ? s.taxonomy : {};
@@ -980,6 +998,8 @@
     row("Contract", str(s.contract));
     add(host, facts);
     if (str(s.summary)) add(host, el("p", "sub-summary", s.summary));
+    if (str(s.hypothesis)) add(host, el("h3", null, "Hypothesis"), el("p", "sub-summary", s.hypothesis));
+    add(host, predictionsTable(s));
     add(host, el("h3", null, "Taxonomy"), taxTuple(s));
     add(host, el("h3", null, "Checks"), checksTable(s));
     add(host, el("h3", null, "Axes"), axesTable(c, s));
