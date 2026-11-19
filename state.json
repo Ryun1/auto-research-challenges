@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-19T14:41:03Z",
+  "generated_at": "2026-11-19T15:06:02Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T15:04:27Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T15:05:11Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550664399",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "docs/directions-and-participant-docs",
+      "conclusion": null,
+      "created_at": "2026-11-19T15:03:37Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "DIRECTIONS.md for research challenges; participant doc fixes (#103, #105)",
+      "updated_at": "2026-11-19T15:03:41Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550512499",
+      "workflow": "CI"
+    },
+    {
+      "branch": "docs/directions-and-participant-docs",
+      "conclusion": "success",
+      "created_at": "2026-11-19T15:03:37Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "DIRECTIONS.md for research challenges; participant doc fixes (#103, #105)",
+      "updated_at": "2026-11-19T15:04:23Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550512256",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -408,40 +441,19 @@
       "updated_at": "2026-11-19T12:41:00Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44526035919",
       "workflow": "Comment"
-    },
-    {
-      "branch": "research-challenges",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:39:33Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Research challenge type, and open the coin-select pilot (#90)",
-      "updated_at": "2026-11-19T12:44:27Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44525923518",
-      "workflow": "CI"
-    },
-    {
-      "branch": "research-challenges",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:39:32Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Research challenge type, and open the coin-select pilot (#90)",
-      "updated_at": "2026-11-19T12:40:13Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44525920641",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T12:27:44Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T12:28:26Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44524086161",
-      "workflow": "Comment"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-19T15:03:33Z",
+      "draft": false,
+      "number": 106,
+      "title": "DIRECTIONS.md for research challenges; participant doc fixes (#103, #105)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/106",
+      "challenges": [
+        "coin-select"
+      ]
+    }
+  ]
 }
