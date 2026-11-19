@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-19T16:42:16Z",
+  "generated_at": "2026-11-19T17:00:19Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:58:39Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T16:59:33Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44572089122",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "feat/targets",
+      "conclusion": "success",
+      "created_at": "2026-11-19T16:57:56Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "External reference points ([[targets]]) on the site (#102)",
+      "updated_at": "2026-11-19T16:58:33Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44571962674",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "feat/targets",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:57:55Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "External reference points ([[targets]]) on the site (#102)",
+      "updated_at": "2026-11-19T16:57:59Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44571960115",
+      "workflow": "CI"
+    },
+    {
+      "branch": "Ryun1/ledger-cbor-decoder-loops",
+      "conclusion": null,
+      "created_at": "2026-11-19T16:43:24Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor: run the tx body, witness set and map-form output loops as one direct loop each, instead of rebuilding a Decoder per key",
+      "updated_at": "2026-11-19T16:44:11Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44569290854",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +59,12 @@
     },
     {
       "branch": "main",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-19T16:41:27Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Research submissions: optional hypothesis and expected axis effects (…",
-      "updated_at": "2026-11-19T16:41:31Z",
+      "updated_at": "2026-11-19T16:46:31Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44568931334",
       "workflow": "CI"
     },
@@ -397,51 +441,30 @@
       "updated_at": "2026-11-19T13:32:28Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44534143117",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:30:25Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Submission: carry the gate export as a tarball so file modes survive …",
-      "updated_at": "2026-11-19T13:35:59Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44534111951",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:17:47Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T13:18:27Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44532045215",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "fix-artifact-modes",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:16:59Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "Submission: keep file modes of the gate export (research build.sh)",
-      "updated_at": "2026-11-19T13:17:44Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531913482",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "fix-artifact-modes",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:16:59Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "Submission: keep file modes of the gate export (research build.sh)",
-      "updated_at": "2026-11-19T13:21:47Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44531913399",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-19T16:57:51Z",
+      "draft": false,
+      "number": 111,
+      "title": "External reference points ([[targets]]) on the site (#102)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/111",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-19T16:43:19Z",
+      "draft": false,
+      "number": 110,
+      "title": "ledger-cbor: run the tx body, witness set and map-form output loops as one direct loop each, instead of rebuilding a Decoder per key",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/110",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    }
+  ]
 }
