@@ -417,6 +417,7 @@
         "There is no record to beat and no minimum improvement. If the checks pass, the PR is landed on main automatically, two clean runs there record it on the map, and the PR is closed. Failing and noisy attempts are recorded too."
       ],
       "summary": "Cardano wallets must choose which UTxOs to spend for each payment (CIP-2). The transaction pays a fee that grows with its size, so fewer inputs is cheaper now. But always spending the biggest coins leaves a wallet full of small leftovers (dust) that cost more to spend later, and spending many small ones now costs fees today. Cheap online heuristics answer fast; exact searches find tidier selections but take longer. There is no single winner, which is what the map on the site is for.",
+      "targets": [],
       "taxonomy": {
         "axes": [
           {
@@ -887,10 +888,23 @@
         "After the merge. The maintainer merges PRs one at a time. The merge starts the Promote workflow on main, which takes about 20 minutes with warm caches (longer after a cold rebuild). It makes two independent runs, each on its own fresh pool and seed. Each run scores your tree and the current record's tree on the same sample, and it also builds and runs the upstream test suites of five packages (bin…"
       ],
       "summary": "Make cardano-ledger decode real mainnet Conway transactions in fewer instructions, without changing what it decodes or what it rejects. The editable code is the src/ of the decoding stack: cardano-ledger-binary (the Decoder monad, Annotator, coders, primitives), cardano-ledger-core and the era packages from Shelley to Conway (the per-field instances, MaryValue, BabbageTxOut, the Conway tx body...).",
+      "targets": [
+        {
+          "comparable": "different",
+          "id": "pallas",
+          "label": "pallas (Rust)",
+          "note": "About 22-25k instructions per transaction against the reference's 100-110k: 4.3x to 4.7x across the pools, 3.3x to 3.5x when pallas also hashes. A different language decoding into different structures, so it shows headroom, not a bar.",
+          "source": "This challenge's measure run 42721883592: Callgrind on the same 6 transaction pools",
+          "status": "measured-here",
+          "value": 4.5,
+          "values": {},
+          "year": null
+        }
+      ],
       "title": "Cardano ledger: faster Conway CBOR decoding (cardano-ledger, Haskell)",
       "to_beat": 1.364295051218643
     }
   ],
-  "generated_at": "2026-11-19T17:00:13Z",
+  "generated_at": "2026-11-19T17:07:55Z",
   "site_schema_version": 1
 }

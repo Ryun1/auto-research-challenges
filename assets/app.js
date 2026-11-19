@@ -1141,6 +1141,47 @@
     }
     return s;
   }
+  // [[targets]] (#102): external reference points. Context unless
+  // comparable is "exact"; then a simple challenge says how the record compares.
+  var TARGET_STATUS = { "measured-here": "measured here", reported: "reported", derived: "derived", composite: "composite" };
+  var TARGET_COMPARABLE = { exact: "like for like", comparable: "comparable", different: "different setup" };
+  function targetsSection(c) {
+    var ts = (Array.isArray(c.targets) ? c.targets : []).filter(function (t) { return t && str(t.label); });
+    if (!ts.length) return null;
+    var s = section("Reference points", el("span", "block-note", "Outside results, for context. Never ranked with submissions."));
+    var research = c.type === "research";
+    var axes = research ? (c.axes || []).filter(function (a) { return ts.some(function (t) { return t.values && num(t.values[a.id]) !== null; }); }) : [];
+    var rec = !research && c.record ? num(c.record.value) : null;
+    var headers = [["Reference"]];
+    if (research) axes.forEach(function (a) { headers.push([a.id, "n"]); });
+    else headers.push([TIMES ? "Speedup" : str(c.metric), "n"]);
+    headers.push(["Kind"]);
+    if (!research) headers.push(["vs record"]);
+    var rows = ts.map(function (t) {
+      var name = add(el("span"), el("strong", null, t.label));
+      if (num(t.year) !== null) add(name, el("span", "sub", " " + t.year));
+      var row = [name];
+      if (research) axes.forEach(function (a) { var v = t.values ? num(t.values[a.id]) : null; row.push(v === null ? "–" : fmt(v)); });
+      else row.push(val(t.value));
+      row.push(add(el("span"), (TARGET_STATUS[t.status] || str(t.status)) + ", ", el("span", "outcome" + (t.comparable === "exact" ? " o-claim" : ""), TARGET_COMPARABLE[t.comparable] || str(t.comparable))));
+      if (!research) {
+        var v = num(t.value), cmp = "context only";
+        if (t.comparable === "exact" && v !== null && rec !== null) {
+          var ahead = c.direction === "maximise" ? rec > v : rec < v;
+          cmp = rec === v ? "the record matches it" : ahead ? "the record beats it" : "the record trails it";
+        } else if (t.comparable === "exact") cmp = "no record yet";
+        row.push(cmp);
+      }
+      return row;
+    });
+    add(s, table(headers, rows, "targets"));
+    var notes = el("ul", "ctx-list ctx-sources");
+    ts.forEach(function (t) {
+      var li = add(el("li"), el("strong", null, t.label + ": "), str(t.note) ? t.note + " " : "", el("span", "ctx-source", "Source: " + str(t.source)));
+      add(notes, li);
+    });
+    return add(s, notes);
+  }
   function deferredSection(c) {
     var d = (c.contracts || []).filter(function (k) { return k.status === "deferred"; });
     if (!d.length) return null;
@@ -1232,10 +1273,10 @@
     var content, aside;
     if (c.type === "research") {
       if (R.slug !== c.slug) R = { slug: c.slug, id: null, x: 0, y: 1, nd: false };
-      content = add(el("div", "content"), mapSection(c), treeSection(c), subPanel(c), contextSection(c), taxSection(c), deferredSection(c));
+      content = add(el("div", "content"), mapSection(c), treeSection(c), subPanel(c), targetsSection(c), contextSection(c), taxSection(c), deferredSection(c));
       aside = add(el("div", "aside"), enter(c), researchAside(c));
     } else {
-      content = add(el("div", "content"), board(c), contextSection(c), attempts(c));
+      content = add(el("div", "content"), board(c), targetsSection(c), contextSection(c), attempts(c));
       aside = add(el("div", "aside"), enter(c), facts(c));
     }
     add(main, stage(c), add(el("div", "wrap body" + (c.type === "research" ? " body-research" : "")), content, aside));
