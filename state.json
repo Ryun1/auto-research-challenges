@@ -1,15 +1,48 @@
 {
-  "generated_at": "2026-11-19T11:15:17Z",
+  "generated_at": "2026-11-19T11:25:51Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
       "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-19T11:24:22Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-19T11:25:12Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44514526924",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "research-challenges",
       "conclusion": null,
+      "created_at": "2026-11-19T11:23:38Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "Research challenge type and the coin-select pilot (#90)",
+      "updated_at": "2026-11-19T11:23:42Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44514414874",
+      "workflow": "CI"
+    },
+    {
+      "branch": "research-challenges",
+      "conclusion": "success",
+      "created_at": "2026-11-19T11:23:38Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "Research challenge type and the coin-select pilot (#90)",
+      "updated_at": "2026-11-19T11:24:18Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44514414774",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
       "created_at": "2026-11-19T11:14:02Z",
       "event": "push",
-      "status": "in_progress",
+      "status": "completed",
       "title": "Docs: add a root README and a docs index (#91)",
-      "updated_at": "2026-11-19T11:14:06Z",
+      "updated_at": "2026-11-19T11:17:44Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44512950707",
       "workflow": "CI"
     },
@@ -408,40 +441,19 @@
       "updated_at": "2026-11-14T18:27:32Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43626048765",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-14T18:19:49Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor judge: hold the candidate's laziness to the reference's p…",
-      "updated_at": "2026-11-14T18:24:42Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43625983197",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-14T18:19:49Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor judge: hold the candidate's laziness to the reference's p…",
-      "updated_at": "2026-11-14T18:20:46Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43625983045",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-14T18:07:53Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-14T18:08:57Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/43624858367",
-      "workflow": "Comment"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-19T11:23:34Z",
+      "draft": true,
+      "number": 92,
+      "title": "Research challenge type and the coin-select pilot (#90)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/92",
+      "challenges": [
+        "coin-select"
+      ]
+    }
+  ]
 }
