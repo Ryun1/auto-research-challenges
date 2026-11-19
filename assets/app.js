@@ -1151,7 +1151,8 @@
     var s = section("Reference points", el("span", "block-note", "Outside results, for context. Never ranked with submissions."));
     var research = c.type === "research";
     var axes = research ? (c.axes || []).filter(function (a) { return ts.some(function (t) { return t.values && num(t.values[a.id]) !== null; }); }) : [];
-    var rec = !research && c.record ? num(c.record.value) : null;
+    // As the goal box: with nothing promoted, the baseline holds the record.
+    var rec = research ? null : c.record ? num(c.record.value) : c.baseline ? num(c.baseline.value) : null;
     var headers = [["Reference"]];
     if (research) axes.forEach(function (a) { headers.push([a.id, "n"]); });
     else headers.push([TIMES ? "Speedup" : str(c.metric), "n"]);
