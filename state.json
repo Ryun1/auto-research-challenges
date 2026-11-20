@@ -1,15 +1,26 @@
 {
-  "generated_at": "2026-11-20T13:08:13Z",
+  "generated_at": "2026-11-20T13:12:39Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
     {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-20T13:10:40Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-20T13:11:43Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44742008492",
+      "workflow": "Comment"
+    },
+    {
       "branch": "Ryun1/ledger-cbor-glue2",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-20T12:42:59Z",
       "event": "pull_request_target",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: read Metadatum and Plutus Data in one direct loop each, and build memo hashes evaluated",
-      "updated_at": "2026-11-20T12:43:48Z",
+      "updated_at": "2026-11-20T13:10:37Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44738097767",
       "workflow": "Submission"
     },
@@ -430,17 +441,6 @@
       "updated_at": "2026-11-19T15:05:11Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550664399",
       "workflow": "Comment"
-    },
-    {
-      "branch": "docs/directions-and-participant-docs",
-      "conclusion": "success",
-      "created_at": "2026-11-19T15:03:37Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "DIRECTIONS.md for research challenges; participant doc fixes (#103, #105)",
-      "updated_at": "2026-11-19T15:08:08Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550512499",
-      "workflow": "CI"
     }
   ],
   "pulls": [
