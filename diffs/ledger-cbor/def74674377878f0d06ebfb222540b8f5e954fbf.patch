@@ -1,0 +1,363 @@
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Annotated.hs b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Annotated.hs
+index 708d9ea..7a43caa 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Annotated.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Annotated.hs
+@@ -40,7 +40,6 @@ import Cardano.Ledger.Binary.Decoding.Decoder (
+   decodeMapContentsTraverse,
+   decodeNonEmptyList,
+   decodeWithByteSpan,
+-  fromPlainDecoder,
+   getDecoderVersion,
+   getOriginalBytes,
+   setTag,
+@@ -49,7 +48,6 @@ import Cardano.Ledger.Binary.Decoding.Decoder (
+ import Cardano.Ledger.Binary.Encoding (EncCBOR, Version, serialize')
+ import Cardano.Ledger.Binary.Version (natVersion)
+ import Codec.CBOR.Read (ByteOffset)
+-import qualified Codec.Serialise as Serialise (decode)
+ import Control.DeepSeq (NFData)
+ import Control.Monad
+ import Data.Aeson (FromJSON (..), ToJSON (..))
+@@ -303,5 +301,6 @@ decodeNonEmptyMapNoDuplicatesAnn decodeKey decodeValue = do
+ {-# INLINE decodeNonEmptyMapNoDuplicatesAnn #-}
+ 
+ instance DecCBOR (Annotator PV1.Data) where
+-  decCBOR = pure <$> fromPlainDecoder Serialise.decode
++  -- 'Serialise.decode', with the direct form of 'DecCBOR PV1.Data'.
++  decCBOR = pure <$> decCBOR
+   {-# INLINE decCBOR #-}
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/DecCBOR.hs b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/DecCBOR.hs
+index 5dfc4da..c52b532 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/DecCBOR.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/DecCBOR.hs
+@@ -553,7 +553,8 @@ instance (DSIGNAlgorithm v, Typeable a) => DecCBOR (SignedDSIGN v a) where
+ --------------------------------------------------------------------------------
+ 
+ instance KnownNat n => DecCBOR (PackedBytes n) where
+-  decCBOR = decCBOR >>= packByteString
++  -- Evaluated before it is returned: `packByteString` ends in a lazy `pure`.
++  decCBOR = decCBOR >>= packByteString >>= \pb -> pure $! pb
+   {-# INLINE decCBOR #-}
+ 
+ instance (HashAlgorithm h, Typeable a) => DecCBOR (Hash h a) where
+@@ -685,7 +686,9 @@ deriving instance DecCBOR EpochInterval
+ --------------------------------------------------------------------------------
+ 
+ instance DecCBOR PV1.Data where
+-  decCBOR = fromPlainDecoder decode
++  -- plutus-core's decoder, with a direct form that reads the value in one loop
++  -- ('withDirectDataTree') instead of running cborg over the rest of the input.
++  decCBOR = withDirectDataTree PV1.Constr PV1.Map PV1.List PV1.I PV1.B (fromPlainDecoder decode)
+   {-# INLINE decCBOR #-}
+ 
+ instance DecCBOR PV1.ScriptContext where
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+index 2f0a92a..8d341c5 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-binary/src/Cardano/Ledger/Binary/Decoding/Decoder.hs
+@@ -20,6 +20,8 @@ module Cardano.Ledger.Binary.Decoding.Decoder (
+   originalBytesExpectedFailureMessage,
+   decodeDirectFastPath,
+   plainWithDirect,
++  withDirectTree,
++  withDirectDataTree,
+   DecoderError (..),
+   C.ByteOffset,
+   ByteArray (..),
+@@ -471,6 +473,209 @@ plainWithDirect :: C.Decoder s a -> Decoder s a -> Decoder s a
+ plainWithDirect plain (Decoder _ dd) = Decoder (\_ _ -> plain) dd
+ {-# INLINE plainWithDirect #-}
+ 
++-- | Give a decoder of a tree of CBOR integers, definite byte and text strings, and
++-- definite or indefinite lists and maps (a 'Metadatum'-shaped value) a direct form
++-- that reads the whole tree in one pure loop, instead of the direct form its monadic
++-- definition builds (a `Decoder` per node).
++--
++-- The callbacks build the value of each node; the byte and text callbacks may
++-- decline (`Nothing`), as may the loop on any other token or encoding. On any
++-- decline the decoder's own direct form is run from the same offset instead, so
++-- this answers `DOk` only with what that form answers on the same bytes, provided
++-- the callbacks build the values the decoder builds: integers as `decodeInteger`
++-- reads them, byte strings as `decodeByteArray` and text strings as `decodeString`
++-- read definite ones, lists and maps of the nodes in input order. Every node's value
++-- is evaluated before it is put in its parent, and each list's spine is built
++-- before the list is passed on.
++withDirectTree ::
++  (Integer -> a) ->
++  (Version -> ByteArray -> Maybe a) ->
++  (Version -> Text.Text -> Maybe a) ->
++  ([a] -> a) ->
++  ([(a, a)] -> a) ->
++  Decoder s a ->
++  Decoder s a
++withDirectTree fInt fBytes fText fList fMap (Decoder dc dd) =
++  Decoder
++    dc
++    ( \v bs off -> case node v bs off of
++        DOk off' x -> pure (DOk off' x)
++        DBail -> dd v bs off
++    )
++  where
++    node v bs off
++      | not (dOkOff bs off) = DBail
++      | otherwise =
++          let !h = BS.index bs off
++           in case h `shiftR` 5 of
++                0 -> int bs off
++                1 -> int bs off
++                2 -> case dByteArray bs off of
++                  DOk off' ba -> done off' (fBytes v ba)
++                  DBail -> DBail
++                3 -> case dString bs off of
++                  DOk off' t -> done off' (fText v t)
++                  DBail -> DBail
++                4
++                  | h == 0x9f -> listIndef v bs (off + 1) []
++                  | otherwise -> case dListLen bs off of
++                      DOk off' n -> listN v bs off' n []
++                      DBail -> DBail
++                5
++                  | h == 0xbf -> mapIndef v bs (off + 1) []
++                  | otherwise -> case dMapLen bs off of
++                      DOk off' n -> mapN v bs off' n []
++                      DBail -> DBail
++                _ -> DBail
++    int bs off = case dInteger bs off of
++      DOk off' i -> let !x = fInt i in DOk off' x
++      DBail -> DBail
++    done off' = \case
++      Just x -> x `seq` DOk off' x
++      Nothing -> DBail
++    listOf off acc = let !xs = reverse acc; !x = fList xs in DOk off x
++    mapOf off acc = let !xs = reverse acc; !x = fMap xs in DOk off x
++    listN v bs !off !n acc
++      | n == 0 = listOf off acc
++      | otherwise = case node v bs off of
++          DOk off' e -> listN v bs off' (n - 1) (e : acc)
++          DBail -> DBail
++    listIndef v bs !off acc = case dBreakOr bs off of
++      DOk off' True -> listOf off' acc
++      DOk _ False -> case node v bs off of
++        DOk off' e -> listIndef v bs off' (e : acc)
++        DBail -> DBail
++      DBail -> DBail
++    mapN v bs !off !n acc
++      | n == 0 = mapOf off acc
++      | otherwise = case node v bs off of
++          DOk off1 k -> case node v bs off1 of
++            DOk off2 e -> mapN v bs off2 (n - 1) ((k, e) : acc)
++            DBail -> DBail
++          DBail -> DBail
++    mapIndef v bs !off acc = case dBreakOr bs off of
++      DOk off' True -> mapOf off' acc
++      DOk _ False -> case node v bs off of
++        DOk off1 k -> case node v bs off1 of
++          DOk off2 e -> mapIndef v bs off2 ((k, e) : acc)
++          DBail -> DBail
++        DBail -> DBail
++      DBail -> DBail
++{-# INLINE withDirectTree #-}
++
++-- | Give a decoder of Plutus 'Data' (as plutus-core's @decodeData@ reads it) a direct
++-- form that reads the whole value in one pure loop, instead of running cborg over the
++-- rest of the chunk ('fromPlainDecoder').
++--
++-- On every node it reads what @decodeData@ reads, in the same order, and nothing
++-- else: integers of major type 0 and 1 (@decodeInteger@); definite byte strings of at
++-- most 64 bytes (@decodeBoundedBytes@); definite and indefinite lists and maps of
++-- nodes (@decodeListLenOrIndef@ / @decodeMapLenOrIndef@ and the sequence readers);
++-- tags 121-127 and 1280-1400 over a list of nodes, and tag 102 over a two-element
++-- array of a 'Word64' and a list of nodes (@decodeConstr@). It declines everything
++-- else -- bignums (tags 2 and 3), indefinite byte strings, any other tag or token,
++-- a byte string over 64 bytes, truncation -- and the decoder's own direct form is
++-- then run from the same offset. The callbacks build the nodes: a constructor
++-- index and its fields, a map's pairs and a list's elements in input order, an
++-- integer, a byte string. Every node is evaluated before it is put in its parent
++-- and every spine is built: the value is in normal form, as `rnf` leaves it.
++withDirectDataTree ::
++  (Integer -> [a] -> a) ->
++  ([(a, a)] -> a) ->
++  ([a] -> a) ->
++  (Integer -> a) ->
++  (ByteString -> a) ->
++  Decoder s a ->
++  Decoder s a
++withDirectDataTree fConstr fMap fList fInt fBytes (Decoder dc dd) =
++  Decoder
++    dc
++    ( \v bs off -> case node bs off of
++        DOk off' x -> pure (DOk off' x)
++        DBail -> dd v bs off
++    )
++  where
++    node bs off
++      | not (dOkOff bs off) = DBail
++      | otherwise =
++          let !h = BS.index bs off
++           in case h `shiftR` 5 of
++                0 -> int bs off
++                1 -> int bs off
++                2 -> case dBytes bs off of
++                  DOk off' b
++                    | BS.length b <= 64 -> let !x = fBytes b in DOk off' x
++                  _ -> DBail
++                4 -> case items bs off of
++                  DOk off' xs -> let !x = fList xs in DOk off' x
++                  DBail -> DBail
++                5 -> case pairs bs off of
++                  DOk off' kvs -> let !x = fMap kvs in DOk off' x
++                  DBail -> DBail
++                6
++                  | h == 0xc2 || h == 0xc3 -> DBail
++                  | otherwise -> case dTag64 bs off of
++                      DOk off1 t
++                        | t == 102 -> extended bs off1
++                        | 121 <= t && t < 128 -> constr (toInteger t - 121) bs off1
++                        | 1280 <= t && t < 1401 -> constr ((toInteger t - 1280) + 7) bs off1
++                      _ -> DBail
++                _ -> DBail
++    int bs off = case dInteger bs off of
++      DOk off' i -> let !x = fInt i in DOk off' x
++      DBail -> DBail
++    constr !i bs off = case items bs off of
++      DOk off' xs -> let !x = fConstr i xs in DOk off' x
++      DBail -> DBail
++    extended bs off = case dListLenOrIndef bs off of
++      DOk off1 len -> case dWord64 bs off1 of
++        DOk off2 w -> case items bs off2 of
++          DOk off3 xs -> case len of
++            Just 2 -> let !x = fConstr (toInteger w) xs in DOk off3 x
++            Nothing -> case dBreakOr bs off3 of
++              DOk off4 True -> let !x = fConstr (toInteger w) xs in DOk off4 x
++              _ -> DBail
++            _ -> DBail
++          DBail -> DBail
++        DBail -> DBail
++      DBail -> DBail
++    -- A list of nodes, definite or indefinite: the spine in input order.
++    items bs off = case dListLenOrIndef bs off of
++      DOk off' (Just n) -> itemsN bs off' n []
++      DOk off' Nothing -> itemsIndef bs off' []
++      DBail -> DBail
++    itemsN bs !off !n acc
++      | n == 0 = let !xs = reverse acc in DOk off xs
++      | otherwise = case node bs off of
++          DOk off' e -> itemsN bs off' (n - 1) (e : acc)
++          DBail -> DBail
++    itemsIndef bs !off acc = case dBreakOr bs off of
++      DOk off' True -> let !xs = reverse acc in DOk off' xs
++      DOk _ False -> case node bs off of
++        DOk off' e -> itemsIndef bs off' (e : acc)
++        DBail -> DBail
++      DBail -> DBail
++    pairs bs off = case dMapLenOrIndef bs off of
++      DOk off' (Just n) -> pairsN bs off' n []
++      DOk off' Nothing -> pairsIndef bs off' []
++      DBail -> DBail
++    pairsN bs !off !n acc
++      | n == 0 = let !kvs = reverse acc in DOk off kvs
++      | otherwise = case node bs off of
++          DOk off1 k -> case node bs off1 of
++            DOk off2 e -> pairsN bs off2 (n - 1) ((k, e) : acc)
++            DBail -> DBail
++          DBail -> DBail
++    pairsIndef bs !off acc = case dBreakOr bs off of
++      DOk off' True -> let !kvs = reverse acc in DOk off' kvs
++      DOk _ False -> case node bs off of
++        DOk off1 k -> case node bs off1 of
++          DOk off2 e -> pairsIndef bs off2 ((k, e) : acc)
++          DBail -> DBail
++        DBail -> DBail
++      DBail -> DBail
++{-# INLINE withDirectDataTree #-}
++
+ -- | Try to decode a whole strict input with the direct form of the decoder.
+ -- `Nothing` means no answer: decode with `toPlainDecoder` instead. `Just` is
+ -- the value and the bytes left over after it.
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/MemoBytes/Internal.hs b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/MemoBytes/Internal.hs
+index 2d30ae3..1ab7e75 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/MemoBytes/Internal.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/MemoBytes/Internal.hs
+@@ -231,11 +231,18 @@ mkMemoBytesShort t sbs =
+ 
+ -- | Same as `mkMemoBytes`, but immediately makes a copy of the original bytes, in order to ensure
+ -- that potentially much larger source `LazyByteString` is not retained in memory.
+-mkMemoBytesForce :: t -> BSL.ByteString -> MemoBytes t
++mkMemoBytesForce :: forall t. t -> BSL.ByteString -> MemoBytes t
+ mkMemoBytesForce t bsl =
+   -- Note: we cannot simply use `toStrict` here, since it does not guarantee a copy, which is why we
+   -- must convert it to a `ShortByteString` and ensure it is fully evaluated.
+-  mkMemoBytesShort t $! toShort $ BSL.toStrict bsl
++  --
++  -- The hash is computed here, from the strict bytes the copy is made from (the same bytes),
++  -- instead of being left as a thunk that copies the `ShortByteString` back into a pinned
++  -- buffer when `rnf` (or anything else) first demands it.
++  let bs = BSL.toStrict bsl
++      sbs = toShort bs
++      hash = makeHashWithExplicitProxys (Proxy @(MemoHashIndex t)) bs
++   in sbs `seq` hash `seq` MemoBytes t sbs hash
+ 
+ -- | Create MemoBytes from its CBOR encoding
+ --
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Metadata.hs b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Metadata.hs
+index ebfaba9..c5e7662 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Metadata.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Metadata.hs
+@@ -38,6 +38,7 @@ import Cardano.Ledger.Binary (
+   natVersion,
+   peekTokenType,
+   unBA,
++  withDirectTree,
+  )
+ import Cardano.Ledger.Orphans ()
+ import Control.Applicative ((<|>))
+@@ -80,7 +81,17 @@ instance EncCBOR Metadatum where
+   encCBOR = encodeMetadatum
+ 
+ instance DecCBOR Metadatum where
+-  decCBOR = decodeMetadatum
++  -- The direct form reads the whole tree in one loop ('withDirectTree'); the
++  -- callbacks build what 'decodeMetadatum' builds, with its size checks (a string
++  -- over 64 bytes declines, and 'decodeMetadatum' then decides).
++  decCBOR =
++    withDirectTree
++      I
++      (\dv ba -> if dv > natVersion @2 && Prim.sizeofByteArray (unBA ba) > 64 then Nothing else Just (B (unBA ba)))
++      (\dv x -> if dv > natVersion @2 && TF.lengthWord8 x > 64 then Nothing else Just (S x))
++      List
++      Map
++      decodeMetadatum
+ 
+ instance ToJSON Metadatum where
+   toJSON = \case
+diff --git a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Plutus/Data.hs b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Plutus/Data.hs
+index 8efc63c..881264d 100644
+--- a/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Plutus/Data.hs
++++ b/challenges/ledger-cbor/candidate/cardano-ledger-core/src/Cardano/Ledger/Plutus/Data.hs
+@@ -51,7 +51,6 @@ import Cardano.Ledger.Binary (
+   decodeFullDecoder',
+   decodeNestedCborBytes,
+   encodeTag,
+-  fromPlainDecoder,
+   fromPlainEncoding,
+   ifDecoderVersionAtLeast,
+   natVersion,
+@@ -100,7 +99,8 @@ instance EncCBOR (PlutusData era) where
+   encCBOR (PlutusData d) = fromPlainEncoding $ Cborg.encode d
+ 
+ instance Typeable era => DecCBOR (Annotator (PlutusData era)) where
+-  decCBOR = pure <$> fromPlainDecoder Cborg.decode
++  -- 'Cborg.decode' (the 'Serialise' instance) with the direct form of 'DecCBOR PV1.Data'.
++  decCBOR = pure . PlutusData <$> decodePlainData
+ 
+ instance ToJSON (PlutusData era) where
+   toJSON (PlutusData d) = plutusDataToJson d
+@@ -230,7 +230,7 @@ instance Era era => DecCBOR (BinaryData era) where
+ 
+ -- | The plain 'PV1.Data' decoder, the one 'DecCBOR (Annotator (PlutusData era))' wraps.
+ decodePlainData :: Decoder s PV1.Data
+-decodePlainData = fromPlainDecoder Cborg.decode
++decodePlainData = decCBOR
+ 
+ -- | Construct `BinaryData` from a buffer of bytes, while ensuring that it can be later
+ -- safely converted to `Data` with `binaryDataToData`

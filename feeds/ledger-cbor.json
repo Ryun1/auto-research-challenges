@@ -3,10 +3,10 @@
     "pr:infra_failed": 3,
     "pr:valid_claim_better": 8,
     "promotion:infra_failed": 2,
-    "promotion:promoted": 4,
+    "promotion:promoted": 5,
     "promotion:rejected": 1
   },
-  "attempts_count": 18,
+  "attempts_count": 19,
   "bar": {
     "baseline": 1.000012450031894,
     "direction": "maximise",
@@ -18,12 +18,22 @@
   "benchmark": "ledger-cbor",
   "board": [
     {
+      "at": "2026-11-20T14:16:42Z",
+      "commit": "def74674377878f0d06ebfb222540b8f5e954fbf",
+      "delta": 0.5676886591494081,
+      "delta_pct": 56.77,
+      "model": "",
+      "rank": 1,
+      "solver": "Ryun1",
+      "value": 1.5677011091813022
+    },
+    {
       "at": "2026-11-19T18:43:12Z",
       "commit": "eb4318645592a69d7e4393078568b9e1a0f5f837",
       "delta": 0.40025126650637466,
       "delta_pct": 40.02,
       "model": "",
-      "rank": 1,
+      "rank": 2,
       "solver": "Ryun1",
       "value": 1.4002637165382688
     },
@@ -33,7 +43,7 @@
       "delta": 0.35077472939250476,
       "delta_pct": 35.08,
       "model": "",
-      "rank": 2,
+      "rank": 3,
       "solver": "Ryun1",
       "value": 1.3507871794243989
     },
@@ -43,7 +53,7 @@
       "delta": 0.1326623140445884,
       "delta_pct": 13.27,
       "model": "",
-      "rank": 3,
+      "rank": 4,
       "solver": "Ryun1",
       "value": 1.1326747640764825
     },
@@ -53,15 +63,15 @@
       "delta": 0.013417700846961811,
       "delta_pct": 1.34,
       "model": "",
-      "rank": 4,
+      "rank": 5,
       "solver": "Ryun1",
       "value": 1.013430150878856
     }
   ],
   "challenge": "ledger-cbor",
   "feed_schema_version": 1,
-  "fetched_at": "2026-11-20T13:13:49Z",
-  "generated_at": "2026-11-20T13:13:49Z",
+  "fetched_at": "2026-11-20T14:17:32Z",
+  "generated_at": "2026-11-20T14:17:32Z",
   "policy": {
     "allowed_paths": [
       "challenges/ledger-cbor/candidate/**"
@@ -108,10 +118,10 @@
     "selection_basis": "PR gate: only editable paths change; no symlinks or gitlinks; size cap"
   },
   "record": {
-    "at": "2026-11-19T18:43:12Z",
+    "at": "2026-11-20T14:16:42Z",
     "by": "Ryun1",
     "unit": "speedup",
-    "value": 1.4002637165382688
+    "value": 1.5677011091813022
   },
   "source": "builder",
   "truth_label": "promoted: two agreeing sandboxed runs on main, fresh seeds",
