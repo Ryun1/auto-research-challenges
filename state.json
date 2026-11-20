@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-20T10:28:14Z",
+  "generated_at": "2026-11-20T13:08:13Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "Ryun1/ledger-cbor-glue2",
+      "conclusion": null,
+      "created_at": "2026-11-20T12:42:59Z",
+      "event": "pull_request_target",
+      "status": "in_progress",
+      "title": "ledger-cbor: read Metadatum and Plutus Data in one direct loop each, and build memo hashes evaluated",
+      "updated_at": "2026-11-20T12:43:48Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44738097767",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "ledger-cbor-verify-coverage",
+      "conclusion": "success",
+      "created_at": "2026-11-20T12:37:55Z",
+      "event": "workflow_dispatch",
+      "status": "completed",
+      "title": "Preflight",
+      "updated_at": "2026-11-20T13:07:20Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44737391419",
+      "workflow": "Preflight"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -15,12 +37,12 @@
     },
     {
       "branch": "ledger-cbor-verify-coverage",
-      "conclusion": null,
+      "conclusion": "success",
       "created_at": "2026-11-20T10:25:41Z",
       "event": "pull_request",
-      "status": "in_progress",
+      "status": "completed",
       "title": "ledger-cbor: verify the whole pool plus curated hard-case txs",
-      "updated_at": "2026-11-20T10:25:45Z",
+      "updated_at": "2026-11-20T10:30:27Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44719140661",
       "workflow": "CI"
     },
@@ -419,31 +441,20 @@
       "updated_at": "2026-11-19T15:08:08Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550512499",
       "workflow": "CI"
-    },
-    {
-      "branch": "docs/directions-and-participant-docs",
-      "conclusion": "success",
-      "created_at": "2026-11-19T15:03:37Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "DIRECTIONS.md for research challenges; participant doc fixes (#103, #105)",
-      "updated_at": "2026-11-19T15:04:23Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44550512256",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T13:51:45Z",
-      "event": "push",
-      "status": "completed",
-      "title": "Dry-run follow-ups: suite status matcher, map SVG console error (#100)",
-      "updated_at": "2026-11-19T13:55:53Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44537680087",
-      "workflow": "CI"
     }
   ],
   "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-20T12:42:57Z",
+      "draft": false,
+      "number": 114,
+      "title": "ledger-cbor: read Metadatum and Plutus Data in one direct loop each, and build memo hashes evaluated",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/114",
+      "challenges": [
+        "ledger-cbor"
+      ]
+    },
     {
       "author": "Ryun1",
       "created_at": "2026-11-20T10:25:37Z",
