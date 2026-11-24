@@ -1,0 +1,71 @@
+diff --git a/challenges/coin-select/submissions/lf-consolidate/README.md b/challenges/coin-select/submissions/lf-threshold/README.md
+index c8df6d7..c7eefb2 100644
+--- a/challenges/coin-select/submissions/lf-consolidate/README.md
++++ b/challenges/coin-select/submissions/lf-threshold/README.md
+@@ -1,8 +1,8 @@
+-`builds-on baseline`: the same Python largest-first with one change output, plus
+-opportunistic consolidation. After largest-first has covered a payment, it also
+-spends up to `MAX_EXTRA = 2` of the smallest wallet UTxOs under 2 ADA, skipping any
+-worth less than the 6,160-lovelace fee of its own input, and recomputes the change.
++`builds-on lf-consolidate`, Directions item 4: the same largest-first with one change
++output and the same consolidation rule (up to 2 of the smallest UTxOs under 2 ADA worth
++more than their input fee), applied only while the wallet holds more than
++`THRESHOLD = 10` UTxOs under 2 ADA.
+ 
+-Why: on the judge's own scenarios (`contracts/wallet/sim.py`, seeds 1-5), 97% of
+-largest-first's final dust is reward-like deposits it never spends, not its own
+-change. Directions item 2.
++Sim (`contracts/wallet/sim.py`, seeds 1-3, 24 scenarios): fees 37.65 ADA, dust 9.54,
++inputs/tx 1.489, against lf-consolidate's 37.55 / 0.04 / 1.533. Reward-like deposits
++keep the wallet above the threshold most of the time, so it saves few inputs.
+diff --git a/challenges/coin-select/submissions/lf-consolidate/select b/challenges/coin-select/submissions/lf-threshold/select
+index 909ab51..7ac99e9 100755
+--- a/challenges/coin-select/submissions/lf-consolidate/select
++++ b/challenges/coin-select/submissions/lf-threshold/select
+@@ -1,12 +1,13 @@
+ #!/usr/bin/env python3
+-"""lf-consolidate: the baseline's CIP-2 largest-first with a single change output,
+-plus opportunistic consolidation: each payment also spends up to MAX_EXTRA of the
+-smallest UTxOs under DUST lovelace that are worth more than their own input fee."""
++"""lf-threshold: lf-consolidate (largest-first, one change output, up to MAX_EXTRA
++of the smallest UTxOs under DUST worth more than their input fee), but it
++consolidates only while the wallet holds more than THRESHOLD UTxOs under DUST."""
+ import json
+ import sys
+ 
+ DUST = 2_000_000  # the judge's dust line
+ MAX_EXTRA = 2
++THRESHOLD = 10
+ 
+ 
+ def main():
+@@ -58,6 +59,8 @@ def select(p, wallet, outs):
+     if not base:
+         return None
+     # consolidation: add the smallest dust UTxOs worth more than their input fee
++    if sum(1 for v in wallet.values() if v < DUST) <= THRESHOLD:
++        return base
+     in_fee = p["min_fee_a"] * sz["input"]
+     chosen = set(picked)
+     smalls = sorted((wallet[u], u) for u in wallet
+diff --git a/challenges/coin-select/submissions/lf-consolidate/submission.toml b/challenges/coin-select/submissions/lf-threshold/submission.toml
+index 37e40e4..85d240a 100644
+--- a/challenges/coin-select/submissions/lf-consolidate/submission.toml
++++ b/challenges/coin-select/submissions/lf-threshold/submission.toml
+@@ -1,10 +1,10 @@
+-id         = "lf-consolidate"
++id         = "lf-threshold"
+ contract   = "wallet@1"
+ novelty    = "builds-on"
+ direction  = ""
+-parent     = "baseline"
+-taxonomy   = { strategy = "largest-first", change = "single", consolidation = "opportunistic", language = "python" }
+-summary    = "Baseline largest-first plus opportunistic consolidation: each payment also spends up to 2 of the smallest UTxOs under 2 ADA that are worth more than their 6,160-lovelace input fee."
++parent     = "lf-consolidate"
++taxonomy   = { strategy = "largest-first", change = "single", consolidation = "threshold", language = "python" }
++summary    = "lf-consolidate that consolidates only while the wallet holds more than 10 UTxOs under 2 ADA (Directions item 4)."
+ model      = "claude-opus-5-5"
+-hypothesis = "Largest-first's dust is mostly deposits it never spends (97% in sim.py); also spending up to 2 small UTxOs per payment should remove it while keeping inputs/tx far below random-improve's, at about the same fees."
+-expected   = { fees = "same", dust = "lower", inputs_per_tx = "higher", latency_ms = "same", peak_rss_mib = "same" }
++hypothesis = "Small deposits arrive steadily, so the 10-UTxO threshold is crossed on most payments: consolidating past it saves few inputs (sim: 1.49 vs 1.53 per tx) while dust settles near the threshold (sim: ~9.5). Directions expected most of the dust saving with fewer inputs; expect that refuted."
++expected   = { fees = "same", dust = "higher", inputs_per_tx = "same", latency_ms = "same", peak_rss_mib = "same" }

@@ -2,7 +2,7 @@
   "challenges": [
     {
       "attempts": {
-        "accepted": 5,
+        "accepted": 6,
         "infra_failed": 0,
         "rejected": 3,
         "total": 9,
@@ -148,7 +148,8 @@
           "submissions": [
             "baseline",
             "lf-consolidate",
-            "lf-consolidate-c"
+            "lf-consolidate-c",
+            "lf-threshold"
           ]
         },
         {
@@ -640,6 +641,122 @@
             "language": "c",
             "strategy": "largest-first"
           }
+        },
+        {
+          "at": "2026-11-24T15:46:42Z",
+          "axes": {
+            "dust": {
+              "max": 9.5,
+              "median": 9.375,
+              "min": 9.25,
+              "n": 2
+            },
+            "fees": {
+              "max": 37.459304125,
+              "median": 37.391886,
+              "min": 37.324467875,
+              "n": 2
+            },
+            "inputs_per_tx": {
+              "max": 1.5298685782556751,
+              "median": 1.4833866700802183,
+              "min": 1.436904761904762,
+              "n": 2
+            },
+            "latency_ms": {
+              "max": 0.10707100000217906,
+              "median": 0.07562200000421626,
+              "min": 0.04885350000449762,
+              "n": 6
+            },
+            "peak_rss_mib": {
+              "max": 6.01171875,
+              "median": 5.822265625,
+              "min": 5.65234375,
+              "n": 6
+            }
+          },
+          "baseline": false,
+          "by": "Ryun1",
+          "checks": [
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "valid-txs"
+            },
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "serves-feasible"
+            }
+          ],
+          "claims": [],
+          "commit": "8f59b21925dff89ec9acb81d55e7ff89ea540c6a",
+          "contract": "wallet@1",
+          "diff": "diffs/coin-select/lf-threshold.patch",
+          "direction": "largest-first",
+          "hypothesis": "Small deposits arrive steadily, so the 10-UTxO threshold is crossed on most payments: consolidating past it saves few inputs (sim: 1.49 vs 1.53 per tx) while dust settles near the threshold (sim: ~9.5). Directions expected most of the dust saving with fewer inputs; expect that refuted.",
+          "id": "lf-threshold",
+          "model": "claude-opus-5-5",
+          "novelty": "builds-on",
+          "parent": "lf-consolidate",
+          "predictions": [
+            {
+              "axis": "dust",
+              "expected": "higher",
+              "held": true,
+              "measured": "higher",
+              "own": 9.375,
+              "reference": "lf-consolidate",
+              "reference_value": 0.375
+            },
+            {
+              "axis": "fees",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 37.391886,
+              "reference": "lf-consolidate",
+              "reference_value": 37.517046375
+            },
+            {
+              "axis": "inputs_per_tx",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 1.4833866700802183,
+              "reference": "lf-consolidate",
+              "reference_value": 1.5364201285704129
+            },
+            {
+              "axis": "latency_ms",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 0.07562200000421626,
+              "reference": "lf-consolidate",
+              "reference_value": 0.0677964999979963
+            },
+            {
+              "axis": "peak_rss_mib",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 5.822265625,
+              "reference": "lf-consolidate",
+              "reference_value": 6.255859375
+            }
+          ],
+          "proposed": [],
+          "summary": "lf-consolidate that consolidates only while the wallet holds more than 10 UTxOs under 2 ADA (Directions item 4).",
+          "taxonomy": {
+            "change": "single",
+            "consolidation": "threshold",
+            "language": "python",
+            "strategy": "largest-first"
+          }
         }
       ],
       "submit_steps": [
@@ -659,7 +776,7 @@
             "id": "strategy",
             "values": [
               {
-                "count": 3,
+                "count": 4,
                 "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
                 "id": "largest-first",
                 "proposed": false
@@ -701,7 +818,7 @@
             "id": "change",
             "values": [
               {
-                "count": 3,
+                "count": 4,
                 "definition": "One change output",
                 "id": "single",
                 "proposed": false
@@ -743,7 +860,7 @@
                 "proposed": false
               },
               {
-                "count": 0,
+                "count": 1,
                 "definition": "Consolidates once the wallet holds more than a chosen number of UTxOs",
                 "id": "threshold",
                 "proposed": false
@@ -755,7 +872,7 @@
             "id": "language",
             "values": [
               {
-                "count": 2,
+                "count": 3,
                 "definition": "Python 3",
                 "id": "python",
                 "proposed": false
@@ -1205,6 +1322,6 @@
       "to_beat": 1.5833781202731152
     }
   ],
-  "generated_at": "2026-11-24T15:47:02Z",
+  "generated_at": "2026-11-24T15:48:47Z",
   "site_schema_version": 1
 }
