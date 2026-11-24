@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "accepted": 6,
+    "accepted": 7,
     "infra_failed": 0,
     "rejected": 3,
     "total": 9,
@@ -87,10 +87,17 @@
         "random-improve",
         "random-improve-consolidate"
       ]
+    },
+    {
+      "name": "branch-and-bound",
+      "root": "bnb-exact",
+      "submissions": [
+        "bnb-exact"
+      ]
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-24T15:48:47Z",
+  "generated_at": "2026-11-24T15:49:33Z",
   "properties": [
     {
       "check": "mechanical",
@@ -663,6 +670,121 @@
         "language": "python",
         "strategy": "largest-first"
       }
+    },
+    {
+      "at": "2026-11-24T15:48:12Z",
+      "axes": {
+        "dust": {
+          "max": 1.0,
+          "median": 0.6875,
+          "min": 0.375,
+          "n": 2
+        },
+        "fees": {
+          "max": 37.95002775,
+          "median": 37.447168,
+          "min": 36.94430825,
+          "n": 2
+        },
+        "inputs_per_tx": {
+          "max": 1.9545178896300788,
+          "median": 1.9476380917344709,
+          "min": 1.9407582938388623,
+          "n": 2
+        },
+        "latency_ms": {
+          "max": 0.6606145000063179,
+          "median": 0.5284397500009419,
+          "min": 0.38015799999868705,
+          "n": 6
+        },
+        "peak_rss_mib": {
+          "max": 6.80078125,
+          "median": 6.25390625,
+          "min": 6.03515625,
+          "n": 6
+        }
+      },
+      "baseline": false,
+      "by": "Ryun1",
+      "checks": [
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "valid-txs"
+        },
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "serves-feasible"
+        }
+      ],
+      "claims": [],
+      "commit": "2dcdc559d3a4a73c2ffa41c602e9142dfe991e17",
+      "contract": "wallet@1",
+      "direction": "branch-and-bound",
+      "hypothesis": "No-change matches of <= 3 inputs exist for ~40% of payments (sim), but they use more inputs than largest-first, so the 2,860-lovelace change output saved is paid back in input fees: fees same, inputs/tx higher, dust ~0 from the lf-consolidate fallback.",
+      "id": "bnb-exact",
+      "model": "claude-opus-5-5",
+      "novelty": "new",
+      "parent": "",
+      "predictions": [
+        {
+          "axis": "dust",
+          "expected": "lower",
+          "held": true,
+          "measured": "lower",
+          "own": 0.6875,
+          "reference": "baseline",
+          "reference_value": 43.3125
+        },
+        {
+          "axis": "fees",
+          "expected": "same",
+          "held": true,
+          "measured": "same",
+          "own": 37.447168,
+          "reference": "baseline",
+          "reference_value": 37.2520403125
+        },
+        {
+          "axis": "inputs_per_tx",
+          "expected": "higher",
+          "held": true,
+          "measured": "higher",
+          "own": 1.9476380917344709,
+          "reference": "baseline",
+          "reference_value": 1.3081498142073729
+        },
+        {
+          "axis": "latency_ms",
+          "expected": "higher",
+          "held": false,
+          "measured": "same",
+          "own": 0.5284397500009419,
+          "reference": "baseline",
+          "reference_value": 0.0853629999753025
+        },
+        {
+          "axis": "peak_rss_mib",
+          "expected": "same",
+          "held": true,
+          "measured": "same",
+          "own": 6.25390625,
+          "reference": "baseline",
+          "reference_value": 5.716796875
+        }
+      ],
+      "proposed": [],
+      "summary": "Branch and bound for the fewest inputs (up to 3) whose total is within cost-of-change of the payment plus fee, so no change output; otherwise lf-consolidate (largest-first plus up to 2 small UTxOs).",
+      "taxonomy": {
+        "change": "none-when-possible",
+        "consolidation": "opportunistic",
+        "language": "python",
+        "strategy": "branch-and-bound"
+      }
     }
   ],
   "targets": [],
@@ -685,7 +807,7 @@
             "proposed": false
           },
           {
-            "count": 0,
+            "count": 1,
             "definition": "Depth-first search with pruning for a selection with no or minimal change",
             "id": "branch-and-bound",
             "proposed": false
@@ -733,7 +855,7 @@
             "proposed": false
           },
           {
-            "count": 0,
+            "count": 1,
             "definition": "Searches for an input set that needs no change, else falls back",
             "id": "none-when-possible",
             "proposed": false
@@ -751,7 +873,7 @@
             "proposed": false
           },
           {
-            "count": 3,
+            "count": 4,
             "definition": "Adds small inputs when they are cheap to carry",
             "id": "opportunistic",
             "proposed": false
@@ -769,7 +891,7 @@
         "id": "language",
         "values": [
           {
-            "count": 3,
+            "count": 4,
             "definition": "Python 3",
             "id": "python",
             "proposed": false
