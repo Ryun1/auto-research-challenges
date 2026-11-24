@@ -1,7 +1,40 @@
 {
-  "generated_at": "2026-11-24T15:49:36Z",
+  "generated_at": "2026-11-24T20:45:40Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-24T20:43:52Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-24T20:44:44Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45483818801",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "coin-select-multiasset",
+      "conclusion": null,
+      "created_at": "2026-11-24T20:42:57Z",
+      "event": "pull_request",
+      "status": "in_progress",
+      "title": "coin-select: score multi-asset and datum UTxOs (wallet-multiasset@1)",
+      "updated_at": "2026-11-24T20:43:01Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45483663341",
+      "workflow": "CI"
+    },
+    {
+      "branch": "coin-select-multiasset",
+      "conclusion": "success",
+      "created_at": "2026-11-24T20:42:57Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "coin-select: score multi-asset and datum UTxOs (wallet-multiasset@1)",
+      "updated_at": "2026-11-24T20:43:45Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45483663309",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -408,40 +441,19 @@
       "updated_at": "2026-11-19T16:34:51Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567552156",
       "workflow": "Submission"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:33:39Z",
-      "event": "push",
-      "status": "completed",
-      "title": "context.toml: why a challenge matters, on the public site (#107)",
-      "updated_at": "2026-11-19T16:34:18Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567464387",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:33:39Z",
-      "event": "push",
-      "status": "completed",
-      "title": "context.toml: why a challenge matters, on the public site (#107)",
-      "updated_at": "2026-11-19T16:37:37Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44567464269",
-      "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:08:53Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion…",
-      "updated_at": "2026-11-19T16:13:47Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786222",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-24T20:42:53Z",
+      "draft": false,
+      "number": 119,
+      "title": "coin-select: score multi-asset and datum UTxOs (wallet-multiasset@1)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/119",
+      "challenges": [
+        "coin-select"
+      ]
+    }
+  ]
 }
