@@ -1,6 +1,6 @@
 {
   "attempts": {
-    "accepted": 3,
+    "accepted": 4,
     "infra_failed": 0,
     "rejected": 3,
     "total": 6,
@@ -74,7 +74,8 @@
       "name": "largest-first",
       "root": "baseline",
       "submissions": [
-        "baseline"
+        "baseline",
+        "lf-consolidate"
       ]
     },
     {
@@ -87,7 +88,7 @@
     }
   ],
   "feed_schema_version": 2,
-  "generated_at": "2026-11-24T14:51:59Z",
+  "generated_at": "2026-11-24T14:54:27Z",
   "properties": [
     {
       "check": "mechanical",
@@ -315,6 +316,121 @@
         "language": "rust",
         "strategy": "random-improve"
       }
+    },
+    {
+      "at": "2026-11-24T14:53:34Z",
+      "axes": {
+        "dust": {
+          "max": 0.5,
+          "median": 0.375,
+          "min": 0.25,
+          "n": 2
+        },
+        "fees": {
+          "max": 37.9103495,
+          "median": 37.517046375,
+          "min": 37.12374325,
+          "n": 2
+        },
+        "inputs_per_tx": {
+          "max": 1.5680612846199176,
+          "median": 1.5364201285704129,
+          "min": 1.504778972520908,
+          "n": 2
+        },
+        "latency_ms": {
+          "max": 0.07074999999190368,
+          "median": 0.0677964999979963,
+          "min": 0.0651999999945474,
+          "n": 6
+        },
+        "peak_rss_mib": {
+          "max": 6.7421875,
+          "median": 6.255859375,
+          "min": 5.9140625,
+          "n": 6
+        }
+      },
+      "baseline": false,
+      "by": "Ryun1",
+      "checks": [
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "valid-txs"
+        },
+        {
+          "check": "mechanical",
+          "detail": "",
+          "ok": true,
+          "property": "serves-feasible"
+        }
+      ],
+      "claims": [],
+      "commit": "b0c0943b9258e0769feef178dde48c63d28eee4f",
+      "contract": "wallet@1",
+      "direction": "largest-first",
+      "hypothesis": "Largest-first's dust is mostly deposits it never spends (97% in sim.py); also spending up to 2 small UTxOs per payment should remove it while keeping inputs/tx far below random-improve's, at about the same fees.",
+      "id": "lf-consolidate",
+      "model": "claude-opus-5-5",
+      "novelty": "builds-on",
+      "parent": "baseline",
+      "predictions": [
+        {
+          "axis": "dust",
+          "expected": "lower",
+          "held": true,
+          "measured": "lower",
+          "own": 0.375,
+          "reference": "baseline",
+          "reference_value": 43.3125
+        },
+        {
+          "axis": "fees",
+          "expected": "same",
+          "held": true,
+          "measured": "same",
+          "own": 37.517046375,
+          "reference": "baseline",
+          "reference_value": 37.2520403125
+        },
+        {
+          "axis": "inputs_per_tx",
+          "expected": "higher",
+          "held": false,
+          "measured": "same",
+          "own": 1.5364201285704129,
+          "reference": "baseline",
+          "reference_value": 1.3081498142073729
+        },
+        {
+          "axis": "latency_ms",
+          "expected": "same",
+          "held": true,
+          "measured": "same",
+          "own": 0.0677964999979963,
+          "reference": "baseline",
+          "reference_value": 0.0853629999753025
+        },
+        {
+          "axis": "peak_rss_mib",
+          "expected": "same",
+          "held": true,
+          "measured": "same",
+          "own": 6.255859375,
+          "reference": "baseline",
+          "reference_value": 5.716796875
+        }
+      ],
+      "proposed": [],
+      "summary": "Baseline largest-first plus opportunistic consolidation: each payment also spends up to 2 of the smallest UTxOs under 2 ADA that are worth more than their 6,160-lovelace input fee.",
+      "taxonomy": {
+        "change": "single",
+        "consolidation": "opportunistic",
+        "language": "python",
+        "strategy": "largest-first"
+      }
     }
   ],
   "targets": [],
@@ -325,7 +441,7 @@
         "id": "strategy",
         "values": [
           {
-            "count": 1,
+            "count": 2,
             "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
             "id": "largest-first",
             "proposed": false
@@ -367,7 +483,7 @@
         "id": "change",
         "values": [
           {
-            "count": 1,
+            "count": 2,
             "definition": "One change output",
             "id": "single",
             "proposed": false
@@ -403,7 +519,7 @@
             "proposed": false
           },
           {
-            "count": 1,
+            "count": 2,
             "definition": "Adds small inputs when they are cheap to carry",
             "id": "opportunistic",
             "proposed": false
@@ -421,7 +537,7 @@
         "id": "language",
         "values": [
           {
-            "count": 1,
+            "count": 2,
             "definition": "Python 3",
             "id": "python",
             "proposed": false

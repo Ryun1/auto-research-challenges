@@ -1,0 +1,110 @@
+diff --git a/challenges/coin-select/submissions/baseline/README.md b/challenges/coin-select/submissions/lf-consolidate/README.md
+index 4257981..c8df6d7 100644
+--- a/challenges/coin-select/submissions/baseline/README.md
++++ b/challenges/coin-select/submissions/lf-consolidate/README.md
+@@ -1,5 +1,8 @@
+-The reference submission for `wallet@1`: Python largest-first. It sorts the wallet
+-by value, adds inputs until they cover the outputs and the fee (priced with one
+-change output), makes a single change output when the leftover is at least min-ada,
+-and otherwise folds the leftover into the fee. It refuses only when the whole wallet
+-cannot pay. It is the root of the lineage tree and the yardstick for preflight.
++`builds-on baseline`: the same Python largest-first with one change output, plus
++opportunistic consolidation. After largest-first has covered a payment, it also
++spends up to `MAX_EXTRA = 2` of the smallest wallet UTxOs under 2 ADA, skipping any
++worth less than the 6,160-lovelace fee of its own input, and recomputes the change.
++
++Why: on the judge's own scenarios (`contracts/wallet/sim.py`, seeds 1-5), 97% of
++largest-first's final dust is reward-like deposits it never spends, not its own
++change. Directions item 2.
+diff --git a/challenges/coin-select/submissions/baseline/select b/challenges/coin-select/submissions/lf-consolidate/select
+index dc1f0dd..909ab51 100755
+--- a/challenges/coin-select/submissions/baseline/select
++++ b/challenges/coin-select/submissions/lf-consolidate/select
+@@ -1,8 +1,13 @@
+ #!/usr/bin/env python3
+-"""Baseline for coin-select: CIP-2 largest-first with a single change output."""
++"""lf-consolidate: the baseline's CIP-2 largest-first with a single change output,
++plus opportunistic consolidation: each payment also spends up to MAX_EXTRA of the
++smallest UTxOs under DUST lovelace that are worth more than their own input fee."""
+ import json
+ import sys
+ 
++DUST = 2_000_000  # the judge's dust line
++MAX_EXTRA = 2
++
+ 
+ def main():
+     p = None
+@@ -41,18 +46,43 @@ def select(p, wallet, outs):
+     min_ada = (160 + sz["output"]) * p["coins_per_utxo_byte"]
+     need = sum(outs)
+     total, picked = 0, []
++    base = None
+     for uid in sorted(wallet, key=lambda i: (-wallet[i], i)):
+         picked.append(uid)
+         total += wallet[uid]
+-        n = len(picked)
+-        fee_c, size = fee(n, len(outs) + 1)
+-        if size > p["max_tx_size"]:
++        base = finish(fee, min_ada, p, picked, total, need, len(outs))
++        if base is False:
+             return None
+-        spare = total - need
+-        if spare - fee_c >= min_ada:
+-            return {"inputs": picked, "change": [spare - fee_c], "fee": fee_c}
+-        if spare >= fee(n, len(outs))[0]:
+-            return {"inputs": picked, "change": [], "fee": spare}
++        if base:
++            break
++    if not base:
++        return None
++    # consolidation: add the smallest dust UTxOs worth more than their input fee
++    in_fee = p["min_fee_a"] * sz["input"]
++    chosen = set(picked)
++    smalls = sorted((wallet[u], u) for u in wallet
++                    if u not in chosen and in_fee < wallet[u] < DUST)
++    for v, u in smalls[:MAX_EXTRA]:
++        r = finish(fee, min_ada, p, picked + [u], total + v, need, len(outs))
++        if not r:
++            break
++        picked.append(u)
++        total += v
++        base = r
++    return base
++
++
++def finish(fee, min_ada, p, picked, total, need, n_outs):
++    """Reply for these inputs; None if they do not cover; False if too big."""
++    n = len(picked)
++    fee_c, size = fee(n, n_outs + 1)
++    if size > p["max_tx_size"]:
++        return False
++    spare = total - need
++    if spare - fee_c >= min_ada:
++        return {"inputs": list(picked), "change": [spare - fee_c], "fee": fee_c}
++    if spare >= fee(n, n_outs)[0]:
++        return {"inputs": list(picked), "change": [], "fee": spare}
+     return None
+ 
+ 
+diff --git a/challenges/coin-select/submissions/baseline/submission.toml b/challenges/coin-select/submissions/lf-consolidate/submission.toml
+index 7a4a6a5..37e40e4 100644
+--- a/challenges/coin-select/submissions/baseline/submission.toml
++++ b/challenges/coin-select/submissions/lf-consolidate/submission.toml
+@@ -1,6 +1,10 @@
+-id        = "baseline"
+-contract  = "wallet@1"
+-novelty   = "new"
+-direction = "largest-first"
+-taxonomy  = { strategy = "largest-first", change = "single", consolidation = "none", language = "python" }
+-summary   = "CIP-2 largest-first: take the biggest UTxOs until the payment and fee are covered, one change output."
++id         = "lf-consolidate"
++contract   = "wallet@1"
++novelty    = "builds-on"
++direction  = ""
++parent     = "baseline"
++taxonomy   = { strategy = "largest-first", change = "single", consolidation = "opportunistic", language = "python" }
++summary    = "Baseline largest-first plus opportunistic consolidation: each payment also spends up to 2 of the smallest UTxOs under 2 ADA that are worth more than their 6,160-lovelace input fee."
++model      = "claude-opus-5-5"
++hypothesis = "Largest-first's dust is mostly deposits it never spends (97% in sim.py); also spending up to 2 small UTxOs per payment should remove it while keeping inputs/tx far below random-improve's, at about the same fees."
++expected   = { fees = "same", dust = "lower", inputs_per_tx = "higher", latency_ms = "same", peak_rss_mib = "same" }
