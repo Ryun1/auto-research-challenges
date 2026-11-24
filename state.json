@@ -1,7 +1,29 @@
 {
-  "generated_at": "2026-11-24T14:54:29Z",
+  "generated_at": "2026-11-24T15:00:03Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-24T14:58:16Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-24T14:59:09Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45420037591",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/coin-select-lf-consolidate-c",
+      "conclusion": "success",
+      "created_at": "2026-11-24T14:56:33Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "coin-select: lf-consolidate-c (builds-on lf-consolidate)",
+      "updated_at": "2026-11-24T14:58:07Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45419725531",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -418,28 +440,6 @@
       "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
       "updated_at": "2026-11-19T16:17:49Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562614893",
-      "workflow": "CI"
-    },
-    {
-      "branch": "feat/context-toml",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:07:58Z",
-      "event": "pull_request_target",
-      "status": "completed",
-      "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
-      "updated_at": "2026-11-19T16:08:40Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562613691",
-      "workflow": "Submission"
-    },
-    {
-      "branch": "docs/ledger-cbor-wall-guard-wording",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:07:58Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion",
-      "updated_at": "2026-11-19T16:12:21Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562613042",
       "workflow": "CI"
     }
   ],
