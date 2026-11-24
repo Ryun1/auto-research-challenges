@@ -1,7 +1,51 @@
 {
-  "generated_at": "2026-11-24T15:02:26Z",
+  "generated_at": "2026-11-24T15:45:11Z",
   "repo": "Ryun1/auto-research-challenge-builder",
   "runs": [
+    {
+      "branch": "main",
+      "conclusion": null,
+      "created_at": "2026-11-24T15:44:55Z",
+      "event": "workflow_run",
+      "status": "in_progress",
+      "title": "Comment",
+      "updated_at": "2026-11-24T15:45:02Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45429084325",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "main",
+      "conclusion": "success",
+      "created_at": "2026-11-24T15:43:32Z",
+      "event": "workflow_run",
+      "status": "completed",
+      "title": "Comment",
+      "updated_at": "2026-11-24T15:44:26Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45428817651",
+      "workflow": "Comment"
+    },
+    {
+      "branch": "Ryun1/coin-select-bnb-exact",
+      "conclusion": "success",
+      "created_at": "2026-11-24T15:42:19Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "coin-select: bnb-exact (new: branch-and-bound, none-when-possible)",
+      "updated_at": "2026-11-24T15:44:51Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45428589877",
+      "workflow": "Submission"
+    },
+    {
+      "branch": "Ryun1/coin-select-lf-threshold",
+      "conclusion": "success",
+      "created_at": "2026-11-24T15:41:29Z",
+      "event": "pull_request_target",
+      "status": "completed",
+      "title": "coin-select: lf-threshold (builds-on lf-consolidate)",
+      "updated_at": "2026-11-24T15:43:25Z",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/45428431883",
+      "workflow": "Submission"
+    },
     {
       "branch": "main",
       "conclusion": "success",
@@ -397,51 +441,19 @@
       "updated_at": "2026-11-19T16:13:47Z",
       "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786222",
       "workflow": "CI"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:08:53Z",
-      "event": "push",
-      "status": "completed",
-      "title": "ledger-cbor README: explain both wall-time limits from max_dispersion…",
-      "updated_at": "2026-11-19T16:09:38Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562786062",
-      "workflow": "Promote"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:08:45Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T16:09:41Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562761466",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "main",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:08:43Z",
-      "event": "workflow_run",
-      "status": "completed",
-      "title": "Comment",
-      "updated_at": "2026-11-19T16:09:21Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562756227",
-      "workflow": "Comment"
-    },
-    {
-      "branch": "feat/context-toml",
-      "conclusion": "success",
-      "created_at": "2026-11-19T16:07:59Z",
-      "event": "pull_request",
-      "status": "completed",
-      "title": "context.toml: why a challenge matters, on the public site (#101, step 1)",
-      "updated_at": "2026-11-19T16:17:49Z",
-      "url": "https://github.com/Ryun1/auto-research-challenge-builder/actions/runs/44562614893",
-      "workflow": "CI"
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "author": "Ryun1",
+      "created_at": "2026-11-24T15:42:14Z",
+      "draft": false,
+      "number": 118,
+      "title": "coin-select: bnb-exact (new: branch-and-bound, none-when-possible)",
+      "url": "https://github.com/Ryun1/auto-research-challenge-builder/pull/118",
+      "challenges": [
+        "coin-select"
+      ]
+    }
+  ]
 }
