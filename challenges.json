@@ -2,7 +2,7 @@
   "challenges": [
     {
       "attempts": {
-        "accepted": 4,
+        "accepted": 5,
         "infra_failed": 0,
         "rejected": 3,
         "total": 7,
@@ -147,7 +147,8 @@
           "root": "baseline",
           "submissions": [
             "baseline",
-            "lf-consolidate"
+            "lf-consolidate",
+            "lf-consolidate-c"
           ]
         },
         {
@@ -523,6 +524,122 @@
             "language": "python",
             "strategy": "largest-first"
           }
+        },
+        {
+          "at": "2026-11-24T15:01:26Z",
+          "axes": {
+            "dust": {
+              "max": 0.625,
+              "median": 0.5,
+              "min": 0.375,
+              "n": 2
+            },
+            "fees": {
+              "max": 37.525573,
+              "median": 37.443171500000005,
+              "min": 37.36077,
+              "n": 2
+            },
+            "inputs_per_tx": {
+              "max": 1.564102564102564,
+              "median": 1.5525869963369965,
+              "min": 1.5410714285714286,
+              "n": 2
+            },
+            "latency_ms": {
+              "max": 0.05315900000368856,
+              "median": 0.037740249993589714,
+              "min": 0.019645500003662164,
+              "n": 6
+            },
+            "peak_rss_mib": {
+              "max": 3.1953125,
+              "median": 2.740234375,
+              "min": 2.47265625,
+              "n": 6
+            }
+          },
+          "baseline": false,
+          "by": "Ryun1",
+          "checks": [
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "valid-txs"
+            },
+            {
+              "check": "mechanical",
+              "detail": "",
+              "ok": true,
+              "property": "serves-feasible"
+            }
+          ],
+          "claims": [],
+          "commit": "9a14d1331b665ea3fee05e1af6c137fb795be023",
+          "contract": "wallet@1",
+          "diff": "diffs/coin-select/lf-consolidate-c.patch",
+          "direction": "largest-first",
+          "hypothesis": "Same algorithm, byte-identical replies, so fees, dust and inputs/tx match lf-consolidate; a small C binary with no interpreter and no heap should peak far below Python's ~6 MiB and Rust's ~3 MiB, and reply faster.",
+          "id": "lf-consolidate-c",
+          "model": "claude-opus-5-5",
+          "novelty": "builds-on",
+          "parent": "lf-consolidate",
+          "predictions": [
+            {
+              "axis": "dust",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 0.5,
+              "reference": "lf-consolidate",
+              "reference_value": 0.375
+            },
+            {
+              "axis": "fees",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 37.443171500000005,
+              "reference": "lf-consolidate",
+              "reference_value": 37.517046375
+            },
+            {
+              "axis": "inputs_per_tx",
+              "expected": "same",
+              "held": true,
+              "measured": "same",
+              "own": 1.5525869963369965,
+              "reference": "lf-consolidate",
+              "reference_value": 1.5364201285704129
+            },
+            {
+              "axis": "latency_ms",
+              "expected": "lower",
+              "held": false,
+              "measured": "same",
+              "own": 0.037740249993589714,
+              "reference": "lf-consolidate",
+              "reference_value": 0.0677964999979963
+            },
+            {
+              "axis": "peak_rss_mib",
+              "expected": "lower",
+              "held": false,
+              "measured": "same",
+              "own": 2.740234375,
+              "reference": "lf-consolidate",
+              "reference_value": 6.255859375
+            }
+          ],
+          "proposed": [],
+          "summary": "lf-consolidate ported to C with static buffers and no heap use; replies are byte-identical to the Python version on sim.py's scenarios.",
+          "taxonomy": {
+            "change": "single",
+            "consolidation": "opportunistic",
+            "language": "c",
+            "strategy": "largest-first"
+          }
         }
       ],
       "submit_steps": [
@@ -542,7 +659,7 @@
             "id": "strategy",
             "values": [
               {
-                "count": 2,
+                "count": 3,
                 "definition": "Sort by value, take the biggest UTxOs until the payment and fee are covered",
                 "id": "largest-first",
                 "proposed": false
@@ -584,7 +701,7 @@
             "id": "change",
             "values": [
               {
-                "count": 2,
+                "count": 3,
                 "definition": "One change output",
                 "id": "single",
                 "proposed": false
@@ -620,7 +737,7 @@
                 "proposed": false
               },
               {
-                "count": 2,
+                "count": 3,
                 "definition": "Adds small inputs when they are cheap to carry",
                 "id": "opportunistic",
                 "proposed": false
@@ -650,7 +767,7 @@
                 "proposed": false
               },
               {
-                "count": 0,
+                "count": 1,
                 "definition": "C or C++",
                 "id": "c",
                 "proposed": false
@@ -1088,6 +1205,6 @@
       "to_beat": 1.5833781202731152
     }
   ],
-  "generated_at": "2026-11-24T14:59:57Z",
+  "generated_at": "2026-11-24T15:02:21Z",
   "site_schema_version": 1
 }

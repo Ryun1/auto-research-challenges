@@ -1,0 +1,357 @@
+diff --git a/challenges/coin-select/submissions/lf-consolidate/README.md b/challenges/coin-select/submissions/lf-consolidate-c/README.md
+index c8df6d7..4c1eb72 100644
+--- a/challenges/coin-select/submissions/lf-consolidate/README.md
++++ b/challenges/coin-select/submissions/lf-consolidate-c/README.md
+@@ -1,8 +1,6 @@
+-`builds-on baseline`: the same Python largest-first with one change output, plus
+-opportunistic consolidation. After largest-first has covered a payment, it also
+-spends up to `MAX_EXTRA = 2` of the smallest wallet UTxOs under 2 ADA, skipping any
+-worth less than the 6,160-lovelace fee of its own input, and recomputes the change.
+-
+-Why: on the judge's own scenarios (`contracts/wallet/sim.py`, seeds 1-5), 97% of
+-largest-first's final dust is reward-like deposits it never spends, not its own
+-change. Directions item 2.
++`builds-on lf-consolidate`: the same largest-first with one change output plus
++opportunistic consolidation of up to 2 UTxOs under 2 ADA, ported to C. Static
++buffers, no heap, `gcc -O2 -s -static` (dynamic if `libc.a` is missing). Its replies are byte-identical to the Python
++`lf-consolidate` on every payment of `sim.py`'s scenarios for seeds 1-5 and 12345
++(10,102 replies), so fees, dust and inputs/tx should match; the point is memory
++and latency.
+diff --git a/challenges/coin-select/submissions/lf-consolidate/build.sh b/challenges/coin-select/submissions/lf-consolidate-c/build.sh
+index 581a3b0..2d482a1 100755
+--- a/challenges/coin-select/submissions/lf-consolidate/build.sh
++++ b/challenges/coin-select/submissions/lf-consolidate-c/build.sh
+@@ -1,3 +1,6 @@
+ #!/usr/bin/env bash
+-set -eu
+-test -x select
++set -euo pipefail
++cd "$(dirname "$0")"
++# Static: no libc.so / ld.so pages to load at start (0.8 MiB cold cgroup peak vs
++# 2.3 MiB dynamic in an arm64 ubuntu:24.04 probe). Dynamic if libc.a is missing.
++gcc -O2 -s -static -o select select.c 2>/dev/null || gcc -O2 -s -o select select.c
+diff --git a/challenges/coin-select/submissions/lf-consolidate/select b/challenges/coin-select/submissions/lf-consolidate/select
+deleted file mode 100755
+index 909ab51..0000000
+--- a/challenges/coin-select/submissions/lf-consolidate/select
++++ /dev/null
+@@ -1,89 +0,0 @@
+-#!/usr/bin/env python3
+-"""lf-consolidate: the baseline's CIP-2 largest-first with a single change output,
+-plus opportunistic consolidation: each payment also spends up to MAX_EXTRA of the
+-smallest UTxOs under DUST lovelace that are worth more than their own input fee."""
+-import json
+-import sys
+-
+-DUST = 2_000_000  # the judge's dust line
+-MAX_EXTRA = 2
+-
+-
+-def main():
+-    p = None
+-    wallet = {}
+-    for line in sys.stdin:
+-        msg = json.loads(line)
+-        t = msg["type"]
+-        if t == "params":
+-            p = msg
+-        elif t == "deposit":
+-            for u in msg["utxos"]:
+-                wallet[u["id"]] = u["lovelace"]
+-        elif t == "pay":
+-            reply = select(p, wallet, [o["lovelace"] for o in msg["outputs"]])
+-            if reply is None:
+-                out = {"refuse": True}
+-            else:
+-                for i in reply["inputs"]:
+-                    del wallet[i]
+-                for k, c in enumerate(reply["change"]):
+-                    wallet["%s#%d" % (msg["id"], k)] = c
+-                out = reply
+-            sys.stdout.write(json.dumps(out) + "\n")
+-            sys.stdout.flush()
+-        elif t == "end":
+-            return
+-
+-
+-def select(p, wallet, outs):
+-    sz = p["size"]
+-
+-    def fee(n_in, n_out):
+-        size = sz["base"] + sz["input"] * n_in + sz["output"] * n_out
+-        return p["min_fee_a"] * size + p["min_fee_b"], size
+-
+-    min_ada = (160 + sz["output"]) * p["coins_per_utxo_byte"]
+-    need = sum(outs)
+-    total, picked = 0, []
+-    base = None
+-    for uid in sorted(wallet, key=lambda i: (-wallet[i], i)):
+-        picked.append(uid)
+-        total += wallet[uid]
+-        base = finish(fee, min_ada, p, picked, total, need, len(outs))
+-        if base is False:
+-            return None
+-        if base:
+-            break
+-    if not base:
+-        return None
+-    # consolidation: add the smallest dust UTxOs worth more than their input fee
+-    in_fee = p["min_fee_a"] * sz["input"]
+-    chosen = set(picked)
+-    smalls = sorted((wallet[u], u) for u in wallet
+-                    if u not in chosen and in_fee < wallet[u] < DUST)
+-    for v, u in smalls[:MAX_EXTRA]:
+-        r = finish(fee, min_ada, p, picked + [u], total + v, need, len(outs))
+-        if not r:
+-            break
+-        picked.append(u)
+-        total += v
+-        base = r
+-    return base
+-
+-
+-def finish(fee, min_ada, p, picked, total, need, n_outs):
+-    """Reply for these inputs; None if they do not cover; False if too big."""
+-    n = len(picked)
+-    fee_c, size = fee(n, n_outs + 1)
+-    if size > p["max_tx_size"]:
+-        return False
+-    spare = total - need
+-    if spare - fee_c >= min_ada:
+-        return {"inputs": list(picked), "change": [spare - fee_c], "fee": fee_c}
+-    if spare >= fee(n, n_outs)[0]:
+-        return {"inputs": list(picked), "change": [], "fee": spare}
+-    return None
+-
+-
+-main()
+diff --git a/challenges/coin-select/submissions/lf-consolidate-c/select.c b/challenges/coin-select/submissions/lf-consolidate-c/select.c
+new file mode 100644
+index 0000000..99dba78
+--- /dev/null
++++ b/challenges/coin-select/submissions/lf-consolidate-c/select.c
+@@ -0,0 +1,203 @@
++/* lf-consolidate-c: lf-consolidate (largest-first, one change output, plus
++ * opportunistic consolidation of up to MAX_EXTRA UTxOs under DUST) in C, with
++ * static buffers and no heap use, to keep peak memory low.
++ * Replies are byte-identical to the Python lf-consolidate. */
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++
++#define DUST 2000000LL
++#define MAX_EXTRA 2
++#define MAXU 16384
++#define IDLEN 32
++#define LINE (1 << 20)
++
++typedef long long i64;
++
++static char line[LINE];
++static char out[LINE];
++static char ids[MAXU][IDLEN];
++static i64 vals[MAXU];
++static int nu;
++static int order[MAXU];
++static int picked[MAXU];
++static int smalls[MAXU];
++
++static i64 fee_a, fee_b, coins_per_byte, max_size, sz_base, sz_in, sz_out;
++
++/* integer value following "key": anywhere after p (within the line) */
++static i64 num_after(const char *p, const char *key) {
++    const char *q = strstr(p, key);
++    if (!q) return 0;
++    q += strlen(key);
++    while (*q == ' ' || *q == ':' || *q == '"') q++;
++    return strtoll(q, NULL, 10);
++}
++
++/* copy the string value of "key": found inside [p, end) into dst */
++static int str_in(const char *p, const char *end, const char *key, char *dst, int cap) {
++    const char *q = strstr(p, key);
++    if (!q || q >= end) return 0;
++    q += strlen(key);
++    while (*q == ' ' || *q == ':') q++;
++    if (*q != '"') return 0;
++    q++;
++    int n = 0;
++    while (*q && *q != '"' && n < cap - 1) dst[n++] = *q++;
++    dst[n] = 0;
++    return 1;
++}
++
++static i64 lov_in(const char *p, const char *end) {
++    const char *q = strstr(p, "\"lovelace\"");
++    if (!q || q >= end) return -1;
++    q += 10;
++    while (*q == ' ' || *q == ':') q++;
++    return strtoll(q, NULL, 10);
++}
++
++static int by_value_desc(const void *a, const void *b) {
++    int x = *(const int *)a, y = *(const int *)b;
++    if (vals[x] != vals[y]) return vals[x] > vals[y] ? -1 : 1;
++    return strcmp(ids[x], ids[y]);
++}
++
++static int by_value_asc(const void *a, const void *b) {
++    int x = *(const int *)a, y = *(const int *)b;
++    if (vals[x] != vals[y]) return vals[x] < vals[y] ? -1 : 1;
++    return strcmp(ids[x], ids[y]);
++}
++
++static i64 size_of(int n_in, int n_out) { return sz_base + sz_in * n_in + sz_out * n_out; }
++static i64 fee_of(int n_in, int n_out) { return fee_a * size_of(n_in, n_out) + fee_b; }
++
++/* 1 = covered (change/fee set), 0 = not yet, -1 = too big */
++static int finish(int n, i64 total, i64 need, int n_outs, i64 *change, i64 *fee) {
++    i64 min_ada = (160 + sz_out) * coins_per_byte;
++    if (size_of(n, n_outs + 1) > max_size) return -1;
++    i64 spare = total - need, fc = fee_of(n, n_outs + 1);
++    if (spare - fc >= min_ada) { *change = spare - fc; *fee = fc; return 1; }
++    if (spare >= fee_of(n, n_outs)) { *change = -1; *fee = spare; return 1; }
++    return 0;
++}
++
++static void add_utxo(const char *id, i64 v) {
++    if (nu >= MAXU) exit(3);
++    strncpy(ids[nu], id, IDLEN - 1);
++    ids[nu][IDLEN - 1] = 0;
++    vals[nu] = v;
++    nu++;
++}
++
++static void deposit(const char *p) {
++    const char *a = strstr(p, "\"utxos\"");
++    if (!a) return;
++    const char *o = strchr(a, '{');
++    while (o) {
++        const char *e = strchr(o, '}');
++        if (!e) break;
++        char id[IDLEN];
++        i64 v = lov_in(o, e);
++        if (str_in(o, e, "\"id\"", id, IDLEN) && v >= 0) add_utxo(id, v);
++        o = strchr(e, '{');
++    }
++}
++
++static void pay(const char *p) {
++    char pid[IDLEN] = "";
++    const char *a = strstr(p, "\"outputs\"");
++    /* the pay id is the "id" key outside the outputs array */
++    str_in(p, a ? a : p + strlen(p), "\"id\"", pid, IDLEN);
++    if (!pid[0] && a) str_in(strchr(a, ']') ? strchr(a, ']') : a, p + strlen(p), "\"id\"", pid, IDLEN);
++    i64 need = 0;
++    int n_outs = 0;
++    if (a) {
++        const char *end = strchr(a, ']');
++        const char *o = strchr(a, '{');
++        while (o && end && o < end) {
++            const char *e = strchr(o, '}');
++            i64 v = lov_in(o, e);
++            if (v >= 0) { need += v; n_outs++; }
++            o = strchr(e, '{');
++        }
++    }
++    for (int i = 0; i < nu; i++) order[i] = i;
++    qsort(order, nu, sizeof(int), by_value_desc);
++    int np = 0, ok = 0;
++    i64 total = 0, change = -1, fee = 0;
++    for (int k = 0; k < nu; k++) {
++        picked[np++] = order[k];
++        total += vals[order[k]];
++        int r = finish(np, total, need, n_outs, &change, &fee);
++        if (r < 0) break;
++        if (r > 0) { ok = 1; break; }
++    }
++    if (!ok) { fputs("{\"refuse\":true}\n", stdout); fflush(stdout); return; }
++    /* consolidation: smallest UTxOs under DUST worth more than their input fee */
++    i64 in_fee = fee_a * sz_in;
++    int ns = 0;
++    for (int k = 0; k < nu; k++) {
++        int chosen = 0;
++        for (int j = 0; j < np; j++) if (picked[j] == k) { chosen = 1; break; }
++        if (!chosen && vals[k] > in_fee && vals[k] < DUST) smalls[ns++] = k;
++    }
++    qsort(smalls, ns, sizeof(int), by_value_asc);
++    for (int k = 0; k < ns && k < MAX_EXTRA; k++) {
++        i64 c2, f2;
++        if (finish(np + 1, total + vals[smalls[k]], need, n_outs, &c2, &f2) <= 0) break;
++        picked[np++] = smalls[k];
++        total += vals[smalls[k]];
++        change = c2;
++        fee = f2;
++    }
++    /* reply, in the same JSON shape Python's json.dumps writes */
++    int w = snprintf(out, LINE, "{\"inputs\": [");
++    for (int j = 0; j < np; j++)
++        w += snprintf(out + w, LINE - w, "%s\"%s\"", j ? ", " : "", ids[picked[j]]);
++    if (change >= 0) w += snprintf(out + w, LINE - w, "], \"change\": [%lld], \"fee\": %lld}\n", change, fee);
++    else w += snprintf(out + w, LINE - w, "], \"change\": [], \"fee\": %lld}\n", fee);
++    fputs(out, stdout);
++    fflush(stdout);
++    /* apply: drop the inputs (compact in place), then add the change output */
++    for (int j = 0; j < np; j++) vals[picked[j]] = -1;
++    int m = 0;
++    for (int k = 0; k < nu; k++) {
++        if (vals[k] < 0) continue;
++        if (m != k) { memcpy(ids[m], ids[k], IDLEN); vals[m] = vals[k]; }
++        m++;
++    }
++    nu = m;
++    if (change >= 0) {
++        char cid[IDLEN];
++        snprintf(cid, IDLEN, "%s#0", pid);
++        add_utxo(cid, change);
++    }
++}
++
++int main(void) {
++    while (fgets(line, LINE, stdin)) {
++        const char *t = strstr(line, "\"type\"");
++        if (!t) continue;
++        t += 6;
++        while (*t == ' ' || *t == ':') t++;
++        if (!strncmp(t, "\"params\"", 8)) {
++            fee_a = num_after(line, "\"min_fee_a\"");
++            fee_b = num_after(line, "\"min_fee_b\"");
++            coins_per_byte = num_after(line, "\"coins_per_utxo_byte\"");
++            max_size = num_after(line, "\"max_tx_size\"");
++            const char *s = strstr(line, "\"size\"");
++            if (s) {
++                sz_base = num_after(s, "\"base\"");
++                sz_in = num_after(s, "\"input\"");
++                sz_out = num_after(s, "\"output\"");
++            }
++        } else if (!strncmp(t, "\"deposit\"", 9)) {
++            deposit(line);
++        } else if (!strncmp(t, "\"pay\"", 5)) {
++            pay(line);
++        } else if (!strncmp(t, "\"end\"", 5)) {
++            break;
++        }
++    }
++    return 0;
++}
+diff --git a/challenges/coin-select/submissions/lf-consolidate/submission.toml b/challenges/coin-select/submissions/lf-consolidate-c/submission.toml
+index 37e40e4..59a4cc9 100644
+--- a/challenges/coin-select/submissions/lf-consolidate/submission.toml
++++ b/challenges/coin-select/submissions/lf-consolidate-c/submission.toml
+@@ -1,10 +1,10 @@
+-id         = "lf-consolidate"
++id         = "lf-consolidate-c"
+ contract   = "wallet@1"
+ novelty    = "builds-on"
+ direction  = ""
+-parent     = "baseline"
+-taxonomy   = { strategy = "largest-first", change = "single", consolidation = "opportunistic", language = "python" }
+-summary    = "Baseline largest-first plus opportunistic consolidation: each payment also spends up to 2 of the smallest UTxOs under 2 ADA that are worth more than their 6,160-lovelace input fee."
++parent     = "lf-consolidate"
++taxonomy   = { strategy = "largest-first", change = "single", consolidation = "opportunistic", language = "c" }
++summary    = "lf-consolidate ported to C with static buffers and no heap use; replies are byte-identical to the Python version on sim.py's scenarios."
+ model      = "claude-opus-5-5"
+-hypothesis = "Largest-first's dust is mostly deposits it never spends (97% in sim.py); also spending up to 2 small UTxOs per payment should remove it while keeping inputs/tx far below random-improve's, at about the same fees."
+-expected   = { fees = "same", dust = "lower", inputs_per_tx = "higher", latency_ms = "same", peak_rss_mib = "same" }
++hypothesis = "Same algorithm, byte-identical replies, so fees, dust and inputs/tx match lf-consolidate; a small C binary with no interpreter and no heap should peak far below Python's ~6 MiB and Rust's ~3 MiB, and reply faster."
++expected   = { fees = "same", dust = "same", inputs_per_tx = "same", latency_ms = "lower", peak_rss_mib = "lower" }
